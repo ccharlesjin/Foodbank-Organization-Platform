@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="login_register_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<div class="box">
+    <div class="forms">
+        <div class="form-wrapper">
+            <div class="title">
+                <h1>JOIN US</h1>
+                <span>Start Your Fantasy Journey</span>
+            </div>
+            <div class="input-wrapper">
+                <div class="input-item">
+                    <span class="input-title">Name*</span>
+                    <input type="text" class="ipt">
+                </div>
+                <div class="input-item">
+                    <span class="input-title">Email*</span>
+                    <input type="text" class="ipt">
+                </div>
+                <div class="input-item">
+                    <span class="input-title">Password*</span>
+                    <input type="password" class="ipt">
+                    <span class="tips">Mast be at least 8 characters</span>
+                </div>
+                <button class="btn">Regist</button>
+                <div class="login-tips">
+                    Already have an account?<a href="login.html">Log in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg">
+        <div class="text">Food Unites, Strengthens Us</div>
+        <img src="./asset/1.jpg" class="bg-img img-one" alt="img-one">
+        <img src="./asset/2.jpg" class="bg-img img-two" alt="img-two">
+    </div>
+</div>
+<script>
+    const imgs = document.querySelectorAll('.bg-img')
+    let flag = true
+    setInterval(function() {
+        if(flag) {
+            imgs[0].style.opacity = 0
+            imgs[1].style.opacity = 1
+        } else {
+            imgs[0].style.opacity = 1
+            imgs[1].style.opacity = 0
+        }
+        flag = !flag
+    }, 5000)
+</script>
+
+<body>
+</body>
+
+</html>

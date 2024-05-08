@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="login_register_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<div class="box">
+    <div class="forms">
+        <div class="form-wrapper">
+            <div class="title">
+                <h1>LOGIN</h1>
+                <span>Start Your Fantasy Journey</span>
+            </div>
+            <div class="input-wrapper">
+                <div class="input-item">
+                    <span class="input-title">Email*</span>
+                    <input type="text" class="ipt">
+                </div>
+                <div class="input-item">
+                    <span class="input-title">Password*</span>
+                    <input type="password" class="ipt">
+                    <span class="tips">Mast be at least 8 characters</span>
+                </div>
+                <button class="btn">Get Started</button>
+                <div class="other-login">
+                    <svg t="1715166733677" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1459" width="128" height="128">
+                        <path d="M1024 512c0-282.763636-229.236364-512-512-512C229.236364 0 0 229.236364 0 512s229.236364 512 512 512C794.763636 1024 1024 794.763636 1024 512zM374.504727 512 374.504727 414.021818l60.043636 0L434.548364 354.769455c0-79.918545 23.877818-137.495273 111.383273-137.495273l104.075636 0 0 97.745455-73.262545 0c-36.724364 0-45.056 24.389818-45.056 49.943273l0 49.058909 112.919273 0L629.201455 512l-97.512727 0 0 295.517091L434.548364 807.517091 434.548364 512 374.504727 512z" p-id="1460"></path></svg>
+                    <span>FaceBook</span>
+                </div>
+                <div class="login-tips">
+                    Don't have an account?<a href="register.html">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg">
+        <div class="text">Feed Hope, End Hunger</div>
+        <img src="./asset/2.jpg" class="bg-img img-one" alt="img-one">
+        <img src="./asset/1.jpg" class="bg-img img-two" alt="img-two">
+    </div>
+</div>
+<script>
+    const imgs = document.querySelectorAll('.bg-img')
+    let flag = true
+    setInterval(function() {
+        if(flag) {
+            imgs[0].style.opacity = 0
+            imgs[1].style.opacity = 1
+        } else {
+            imgs[0].style.opacity = 1
+            imgs[1].style.opacity = 0
+        }
+        flag = !flag
+    }, 5000)
+</script>
+
+<body>
+</body>
+
+</html>

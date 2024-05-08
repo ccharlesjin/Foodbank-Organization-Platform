@@ -1,0 +1,50 @@
+/* 基本 CSS */
+body {
+    font-family: Arial, sans-serif; /* 使用无衬线字体 */
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4; /* 设置背景色 */
+    color: #333; /* 主文字颜色 */
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.header, .footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+}
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background: #333;
+    color: white;
+    border: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background: #555;
+}
