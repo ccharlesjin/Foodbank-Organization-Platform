@@ -20,15 +20,13 @@ router.post('/user_login', function(req, res, next) {
       if (results.length > 0) {
 
           res.send('Login successful!');
-          // 登陆成功跳转more_detail页面
-          res.sendFile(path.join(__dirname, '../public', '/more_detail.html'));
+          // 登陆成功跳转user页面
+          res.sendFile(path.join(__dirname, '../public', '/user.html'));
 
       } else {
           res.send('Username or password is incorrect');
       }
   });
-
-  //  console.log(email);
 });
 
 module.exports = router;
