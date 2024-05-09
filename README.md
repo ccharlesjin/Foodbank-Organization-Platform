@@ -1,6 +1,20 @@
-# Template Repository for COMP SCI 2207/7207 Web & Database Computing (2023 Semester 1)
+# 项目介绍
+The "FoodBank" platform is a comprehensive web application designed to enhance engagement and management within volunteer organizations. This platform will enable users to seamlessly sign up, log in, and interact with their respective volunteer organizations through a variety of intuitive features. Leveraging technologies such as NodeJS, Express, Vue.JS, and AJAX, alongside a MySQL database, our application aims to provide a robust and accessible environment for both volunteers and organization managers.
+ 
+# 环境依赖
+ Windows 10 or later, macOS Catalina or later, or any of the current major Linux distributions are recommended.
+ 
+# 目录结构描述
 
-Contains environment files for WDC 2023. Copy this template for a general sandbox.
-
-Auto commit/push/sync to Github is disabled by default in this template repository.  
-Enable the GitDoc extension to use this fucntionality (either in your VSCode settings, or in the Dev Container settings) 
+ 
+# 使用说明
+ 1. Start the Docker environment
+ 2. Starting the mysql Service:`service mysql start`
+ 3. Migrate the database according to FoodBank.sql
+ 4. Start the project on port 3018:`node app.js`
+ 
+ 
+# 版本内容更新
+##### v0.0.1-k: Static File Implementation: index.html,about.html,location.html,login.html,register.html
+##### v0.0.2-k: Create the Branches table and implement location.html to dynamically update the name and location of the organization's branches by querying the Branches table.
+##### v0.0.3-w: 
