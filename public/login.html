@@ -15,26 +15,28 @@
                 <h1>LOGIN</h1>
                 <span>Start Your Fantasy Journey</span>
             </div>
-            <div class="input-wrapper">
-                <div class="input-item">
-                    <span class="input-title">Email*</span>
-                    <input type="text" class="ipt">
+            <form action="/users/user_login" method="POST">
+                <div class="input-wrapper">
+                    <div class="input-item">
+                        <span class="input-title">Email*</span>
+                        <input type="text" class="ipt" name="email">
+                    </div>
+                    <div class="input-item">
+                        <span class="input-title">Password*</span>
+                        <input type="password" class="ipt" name="password">
+                        <span class="tips">Mast be at least 8 characters</span>
+                    </div>
+                    <button class="btn" type="submit">Get Started</button>
+                    <div class="other-login">
+                        <svg t="1715166733677" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1459" width="128" height="128">
+                            <path d="M1024 512c0-282.763636-229.236364-512-512-512C229.236364 0 0 229.236364 0 512s229.236364 512 512 512C794.763636 1024 1024 794.763636 1024 512zM374.504727 512 374.504727 414.021818l60.043636 0L434.548364 354.769455c0-79.918545 23.877818-137.495273 111.383273-137.495273l104.075636 0 0 97.745455-73.262545 0c-36.724364 0-45.056 24.389818-45.056 49.943273l0 49.058909 112.919273 0L629.201455 512l-97.512727 0 0 295.517091L434.548364 807.517091 434.548364 512 374.504727 512z" p-id="1460"></path></svg>
+                        <span>FaceBook</span>
+                    </div>
+                    <div class="login-tips">
+                        Don't have an account?<a href="register.html">Register</a>
+                    </div>
                 </div>
-                <div class="input-item">
-                    <span class="input-title">Password*</span>
-                    <input type="password" class="ipt">
-                    <span class="tips">Mast be at least 8 characters</span>
-                </div>
-                <button class="btn">Get Started</button>
-                <div class="other-login">
-                    <svg t="1715166733677" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1459" width="128" height="128">
-                        <path d="M1024 512c0-282.763636-229.236364-512-512-512C229.236364 0 0 229.236364 0 512s229.236364 512 512 512C794.763636 1024 1024 794.763636 1024 512zM374.504727 512 374.504727 414.021818l60.043636 0L434.548364 354.769455c0-79.918545 23.877818-137.495273 111.383273-137.495273l104.075636 0 0 97.745455-73.262545 0c-36.724364 0-45.056 24.389818-45.056 49.943273l0 49.058909 112.919273 0L629.201455 512l-97.512727 0 0 295.517091L434.548364 807.517091 434.548364 512 374.504727 512z" p-id="1460"></path></svg>
-                    <span>FaceBook</span>
-                </div>
-                <div class="login-tips">
-                    Don't have an account?<a href="register.html">Register</a>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
     <div class="bg">
