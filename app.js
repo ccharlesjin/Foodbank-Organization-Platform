@@ -13,6 +13,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 module.exports = app;
-app.listen(3010, () => {
-    console.log('Server is running on http://localhost:3010');
+app.listen(3018, () => {
+    console.log('Server is running on http://localhost:3018');
 });
