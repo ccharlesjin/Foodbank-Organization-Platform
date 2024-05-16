@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/ProfileCss.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">FOODBANK AUSTRALIA</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="location.html">Location</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a href="#" onclick="loadSection('info')">Personal Info</a></li>
+            <li><a href="#" onclick="loadSection('security')">Security</a></li>
+            <li><a href="#" onclick="loadSection('activities')">Organization Activities</a></li>
+            <li><a href="/manager/members">Member Management</a></li>
+            <li><a href="/manager/events">Events Management</a></li>
+            <li><a href="/manager/updates">Post Updates</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1>Welcome to Your Profile</h1>
+        <!-- Container for avatar that supports clicking to change the image -->
+        <div class="avatar-container" onclick="document.getElementById('fileInput').click();">
+            <img src="/1.jpg" alt="User Avatar" class="avatar" id="avatarImage">
+            <div class="overlay">Change</div>
+        </div>
+        <input type="file" id="fileInput" style="display: none;" accept="image/*">
+        <div class="user-info">
+            <p><strong>Username:</strong> <span id="username">john_doe</span></p>
+            <p><strong>Email:</strong> <span id="email">john@example.com</span></p>
+            <p><strong>Full Name:</strong> <span id="fullname">John Doe</span></p>
+            <p><strong>Age:</strong> <span id="age">30</span></p>
+            <p><strong>Organization:</strong> <span id="organization">FoodBank</span></p>
+            <!-- Button to open modal for editing user info -->
+            <button type="button" id="editUserInfo">Edit User Info</button>
+        </div>
+    </div>
+
+    <!-- Modal for editing user info -->
+    <div id="editModal" class="modal_changeinfo">
+        <div class="modal-content">
+            <span class="close">&times;</span> <!-- Close button for the modal -->
+            <form id="editForm">
+                <label for="username">Username:</label>
+                <input type="text" id="editUsername" name="username">
+
+                <label for="email">Email:</label>
+                <input type="email" id="editEmail" name="email">
+
+                <label for="fullname">Full Name:</label>
+                <input type="text" id="editFullname" name="fullname">
+
+                <label for="age">Age:</label>
+                <input type="number" id="editAge" name="age">
+
+                <!-- Button to save the updated user info -->
+                <button type="button" onclick="saveUserInfo()">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for changing password -->
+    <div id="changePasswordModal" class="modal_changepass">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('changePasswordModal')">&times;</span>
+            <form id="changePasswordForm">
+                <label for="newPassword">New Password:</label>
+                <input type="password" id="newPassword" name="newPassword">
+                <span id="passwordError" style="color: red; display: none;"></span>
+                <button type="button" onclick="saveNewPassword()">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        var currentSection = 'info'; // Initialize to the default section displayed on page load
+
+        function loadSection(section) {
+            if (section === 'logout') {
+                window.location.href = '/';
+            } else if (section === 'info') {
+                window.location.href = '/manager/profile'; // Ensure this path is correct
+            } else if (section === currentSection) {
+                window.location.reload();
+            } else {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/users/' + section, true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        document.querySelector('.content').innerHTML = xhr.responseText;
+                        currentSection = section; // Update the active section
+                    }
+                };
+                xhr.send();
+            }
+        }
+
+        // Set up for changing the user avatar on file select
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            if (event.target.files && event.target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarImage').src = e.target.result; // Change the avatar image
+                };
+                reader.readAsDataURL(event.target.files[0]); // Read the selected image file
+            }
+        });
+
+        // Open the edit user info modal
+        document.getElementById('editUserInfo').onclick = function() {
+            document.getElementById('editModal').style.display = 'block';
+            // Pre-fill form with current user info
+            document.getElementById('editUsername').value = document.getElementById('username').textContent;
+            document.getElementById('editEmail').value = document.getElementById('email').textContent;
+            document.getElementById('editFullname').value = document.getElementById('fullname').textContent;
+            document.getElementById('editAge').value = document.getElementById('age').textContent;
+        }
+
+        // Close the modal
+        document.getElementsByClassName('close')[0].onclick = function() {
+            document.getElementById('editModal').style.display = "none";
+        }
+
+        // Save updated user info and close the modal
+        function saveUserInfo() {
+            document.getElementById('username').textContent = document.getElementById('editUsername').value;
+            document.getElementById('email').textContent = document.getElementById('editEmail').value;
+            document.getElementById('fullname').textContent = document.getElementById('editFullname').value;
+            document.getElementById('age').textContent = document.getElementById('editAge').value;
+            document.getElementById('editModal').style.display = "none";
+        }
+
+        var currentPassword = "examplePassword123"; // 模拟当前密码
+
+        function changePassword() {
+            document.getElementById('changePasswordModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        function saveNewPassword() {
+            var newPassword = document.getElementById('newPassword').value;
+            var passwordError = document.getElementById('passwordError');
+            passwordError.style.display = 'none'; // 先隐藏错误提示
+
+            // 检查密码是否和旧密码相同
+            if (newPassword === currentPassword) {
+                passwordError.textContent = "It cannot be the same as the previous password";
+                passwordError.style.display = 'block';
+                return;
+            }
+
+            // 检查密码复杂度
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[_])[A-Za-z\d_]{8,}$/.test(newPassword)) {
+                passwordError.textContent = "The password does not meet the requirements, please contain uppercase and lowercase letters, underscores and numbers, and at least 8 supplements";
+                passwordError.style.display = 'block';
+                return;
+            }
+
+            // 如果通过验证，假设更新密码
+            currentPassword = newPassword; // 更新当前密码
+            alert('Password has been updated!');
+            closeModal('changePasswordModal');
+        }
+
+        document.querySelectorAll('.activity-join').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const row = this.closest('tr');
+            const participantsCell = row.querySelector('.activity-participants');
+            let participants = parseInt(row.dataset.participants, 10);
+
+            if (this.checked) {
+                participants -= 1; // 参与人数减少
+            } else {
+                participants += 1; // 如果取消勾选，参与人数增加
+            }
+
+            participantsCell.textContent = `${participants} participants`;
+            row.dataset.participants = participants; // 更新行的数据属性以保持一致性
+            });
+        });
+    </script>
+</body>
+</html>

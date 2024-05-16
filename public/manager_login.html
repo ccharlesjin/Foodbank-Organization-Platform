@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="login_register_style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
+<body>
 <div class="box">
     <div class="forms">
         <div class="form-wrapper">
@@ -59,36 +60,40 @@
         flag = !flag
     }, 5000)
 
-
     document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();  // 阻止表单的常规提交
-    const email = document.querySelector('input[name="email"]').value;
-    const password = document.querySelector('input[name="password"]').value;
+        event.preventDefault();  // 阻止表单的常规提交
+        const email = document.querySelector('input[name="email"]').value;
+        const password = document.querySelector('input[name="password"]').value;
 
-    fetch('/users/manager_login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-    })
-    .then(response => {
-        if(response.ok) {
-            window.location.href = 'user.html'; // 登录成功，重定向
-        } else {
-            return response.text();
-        }
-    })
-    .then(text => {
-        if (text) {
-            alert(text); // 显示错误消息
-        }
-    })
-    .catch(error => console.error('Error:', error));
-});
+        fetch('/users/manager_login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json(); // 确保响应是 200 OK
+            } else {
+                throw new Error('Failed to login'); // 抛出错误，如果状态码不是 200
+            }
+        })
+        .then(data => {
+            if (data.token) {
+                localStorage.setItem('jwt', data.token); // 保存 JWT 到 localStorage
+                window.location.href = '/manager'; // 跳转到管理页面
+            } else {
+                alert("No token received, check server response.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Login failed: ' + error.message); // 显示错误消息
+        });
+    });
+
 </script>
-
-<body>
 </body>
 
 </html>

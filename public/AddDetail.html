@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add More Detail</title>
+    <link rel="stylesheet" href="AddDetail.css">
+    <script>
+        window.onload = function() {
+            var form = document.querySelector('form');
+            form.onsubmit = function(e) {
+                e.preventDefault(); // 阻止表单默认提交行为
+                // 进行表单验证或其他你需要的处理
+                window.location.href = 'Profile.html'; // 页面跳转
+            }
+        }
+    </script>
+</head>
+<body>
+    <form action="/AddDetail" method="post">
+        <h1>Just one step to complete registration!</h1>
+        <label for="Phonenumber">Phone number:</label>
+        <input type="Phonenumber" id="Phonenumber" name="Phonenumber" required>
+
+        <label for="fullname">Full Name:</label>
+        <input type="text" id="fullname" name="fullname" required>
+
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" required>
+
+        <label for="organization">Registering Organization:</label>
+        <select id="organization" name="organization" required>
+            <option value="organization1">Sydney</option>
+            <option value="organization2">Melbourne</option>
+            <option value="organization3">Adelaide</option>
+        </select>
+
+        <input type="submit" value="Complete, All down!">
+    </form>
+</body>
+</html>
