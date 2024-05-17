@@ -58,6 +58,36 @@
         }
         flag = !flag
     }, 5000)
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const emailInput = document.querySelector('input[name="email"]');
+    const passwordInput = document.querySelector('input[name="password"]');
+
+    form.addEventListener('submit', function(event) {
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        let valid = true;
+        let errorMessage = '';
+
+        // 验证电子邮箱格式
+        if (!email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
+            errorMessage += '电子邮箱格式无效。';
+            valid = false;
+        }
+
+        // 验证密码长度
+        if (password.length < 8) {
+            errorMessage += '密码至少需要8个字符。';
+            valid = false;
+        }
+
+        // 如果验证失败，显示错误消息并阻止表单提交
+        if (!valid) {
+            alert(errorMessage);
+            event.preventDefault();
+        }
+    });
+});
 </script>
 </body>
 

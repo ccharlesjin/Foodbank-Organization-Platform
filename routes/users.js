@@ -116,7 +116,7 @@ router.post('/manager_register', function(req, res) {
               return;
           }
           //注册步骤1完成，继续添加信息
-          res.sendFile(path.join(__dirname, '../public', '/more_details.html'));
+          res.sendFile(path.join(__dirname, '../public', '/AddDetail.html'));
       });
   });
 
