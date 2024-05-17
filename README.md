@@ -14,6 +14,8 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
  4. Start the project on port 3018:`node app.js`
 
 
+# Please check Milestone 1 related description file: '/FoodBank_Project_Description.pdf'
+
 # Version updates
 ##### v0.0.1-k: Static File Implementation: index.html,about.html,location.html,login.html,register.html.
 ##### v0.0.2-k: Create the Branches table and implement location.html to dynamically update the name and location of the organization's branches by querying the Branches table.
