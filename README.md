@@ -26,3 +26,5 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
 ##### v0.0.8-z: Finish features of administrator, including editing, adding and deleting users, managers and branches, sign up other administrators.
 ##### v0.0.8-j: Merged the branch of manager and administrator, applied JWT verification to both manager and administrator login strategy.
 ##### v0.0.9-w: The personal profile interface has been further improved, including the ability to change avatars and edit personal profile information; users can change passwords, such as requirements for password security levels and restrictions on passwords not being the same as before; and the display of users on active pages. They all use partial refresh and modal box.
+##### v0.0.10-z: In administrator manage website: Successfully connected the application to a MySQL database, and ensured seamless synchronization between the user interface and the database for all create, read, update, delete operations.
+##### v0.0.11-z: In adding users, organization, branch or administrator: setting to pop up a table to let popole operate.
