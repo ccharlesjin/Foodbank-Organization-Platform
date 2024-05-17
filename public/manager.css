@@ -738,6 +738,7 @@ tr:hover {
 .container{
     min-height:100%;
     margin-bottom:-10px;
+    background-color: #eef1ef;
 }
 
 html,body{height:100%;margin:0;padding:0;}
@@ -748,19 +749,23 @@ html,body{height:100%;margin:0;padding:0;}
     height:10px;
 }
 
+.empty,footer{
+    height:10px;
+    background-color: #eef1ef;
+}
+
 footer {
     text-align: center;
-    /* padding: 10px 0; */
     background-color: white; /* 背景颜色 */
     color: black; /* 文字颜色 */
-    width: 100%; /* 宽度100%，填满容器 */
+    width: calc(100% - 280px); /* 宽度100%，填满容器 */
     box-shadow: 0px -4px 4px rgba(0,0,0,0.1); /* 轻微阴影，增加层次感 */
-    /* margin-top: auto; */
-    /* 将页脚推到底部 */
     margin-left: 240px;
-    width:auto;
+    position: fixed;
+    bottom: 5px;
 }
 
 footer p {
     margin: 0;
+    text-align: center;
 }

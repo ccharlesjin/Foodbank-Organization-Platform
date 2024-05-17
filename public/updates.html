@@ -10,7 +10,7 @@
 </head>
 
 <body class="full-height body">
-    <div id="app">
+    <div id="app" class="container">
         <header class="navbar">
             <div v-for="branch in branches" :key="branch.branch_id" class="logo-container">
                 <div v-if="branch.branch_id === managerBranchId[0]" class="logo">

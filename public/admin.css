@@ -481,8 +481,9 @@ footer {
     box-shadow: 0px -4px 4px rgba(0,0,0,0.1); /* 轻微阴影，增加层次感 */
     /* margin-top: auto; */
     /* 将页脚推到底部 */
-    margin-left: 240px;
-    width:auto;
+    /* margin-left: 240px; */
+    position: fixed;
+    bottom: 5px;
 }
 
 footer p {
