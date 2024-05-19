@@ -36,3 +36,4 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
 ##### v0.0.13-j: Improved and integrated the UI design for the manager section, ensuring consistency between the manager and administrator UI. Updated the CSS for the footer section.
 ##### v0.0.14-j: The authentication part of the entire management system has been completed using cookie-parser. Upon successful login, the system places the token in a cookie and sends it to the client.
 ##### v0.0.15-k: Use regular expressions to verify email format and password length when users and managers register, and make correct prompts.
+##### v0.0.16-k: Complete third-party login

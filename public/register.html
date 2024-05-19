@@ -88,6 +88,14 @@
         }
     });
 });
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userNotFound = urlParams.get('userNotFound');
+    if (userNotFound) {
+        alert('未查询到用户，请注册');
+        
+    }
+};
 </script>
 </body>
 
