@@ -37,3 +37,5 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
 ##### v0.0.14-j: The authentication part of the entire management system has been completed using cookie-parser. Upon successful login, the system places the token in a cookie and sends it to the client.
 ##### v0.0.15-k: Use regular expressions to verify email format and password length when users and managers register, and make correct prompts.
 ##### v0.0.16-k: Complete third-party login
+##### v0.0.17-k: Use twitter-api-v2 to synchronize activity information to Twitter after the administrator adds an activity.
+##### v0.0.18-k: Modify the project's registration and login logic, use hashing and salting to save and verify passwords.
