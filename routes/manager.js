@@ -2,6 +2,31 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 const db = require('../db');
+const { TwitterApi } = require('twitter-api-v2');
+
+const twitterClient = new TwitterApi({
+    appKey: 'Xso7vaPY6aUciaFUrjuSQkpcb',
+    appSecret: 'aDgRAODetYs4gM7zHJJ1hZy0KV6j69pRV4qeT4ARsdQBYW0VHX',
+    accessToken: '1792569146322137089-eqnQ8w620D3OkbWbTK6y3u1LJM1LnU',
+    accessSecret: 'iOBKbdpZA8fFyGKLLg89BFviC6hSlYaEedm3TxNJoJEKx',
+  });
+
+  // 创建一个读写权限的客户端
+  const rwClient = twitterClient.readWrite;
+
+//   // 定义一个异步函数发送推文
+//   const textTweet = async () => {
+//     try {
+//       // 使用v2 API发送推文
+//       await rwClient.v2.tweet("This tweet has been created using nodejs and OAuth 1.0a User Context");
+
+//     } catch (error) {
+//       console.error("Error sending tweet:", error);
+//     }
+// };
+
+//   // 调用函数
+//   textTweet();
 
 // const { authenticateManagerToken } = require('../middleware/authMiddleware');
 
@@ -166,24 +191,53 @@ router.delete('/delete-event/:id', (req, res) => {
     });
 });
 
-// 添加新活动
+
 router.post('/add-event', (req, res) => {
     const { activity_name, activity_date, activity_number_of_people, activity_information } = req.body;
+    const branch_id = req.user.branch_id;
+
+    // 首先插入活动
     const sqlInsert = `
         INSERT INTO Activity (activity_name, activity_date, activity_number_of_people, activity_information, branch_id)
         VALUES (?, ?, ?, ?, ?);
     `;
 
-    db.query(sqlInsert, [activity_name, activity_date, activity_number_of_people, activity_information, [req.user.branch_id]], (err, result) => {
+    db.query(sqlInsert, [activity_name, activity_date, activity_number_of_people, activity_information, branch_id], (err, result) => {
         if (err) {
             console.error('Database error:', err);
             res.status(500).json({ message: 'Error adding event' });
             return;
         }
-        res.json({ message: 'Event added successfully.', newEvent: req.body }); // 假设返回新成员数据
+
+        // 获取 branch_name
+        const getBranchNameQuery = `SELECT branch_name FROM Branches WHERE branch_id = ?`;
+
+        db.query(getBranchNameQuery, [branch_id], (err, branchResult) => {
+            if (err) {
+                console.error('Database error:', err);
+                res.status(500).json({ message: 'Error fetching branch name' });
+                return;
+            }
+
+            const branch_name = branchResult[0].branch_name;
+
+            const textTweet = async () => {
+                try {
+                    const tweetContent = `New event created: ${activity_name} on ${activity_date} in ${branch_name}. Number of participants: ${activity_number_of_people}. Details: ${activity_information}`;
+                    await rwClient.v2.tweet(tweetContent);
+                } catch (error) {
+                    console.error("Error sending tweet:", error);
+                }
+            };
+
+            // 调用函数
+            textTweet();
+
+            // 发送响应
+            res.json({ message: 'Event added successfully.', newEvent: req.body });
+        });
     });
 });
-
 router.get('/:section', function(req, res, next) {
     const section = req.params.section;
     let activitiesHtml;

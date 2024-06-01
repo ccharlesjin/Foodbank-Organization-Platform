@@ -25,11 +25,19 @@ router.get('/profile', function(req, res) {
     res.sendFile(path.join(__dirname, '../public', '/Profile.html'));
 });
 
+
+// 生成盐和哈希函数
+const generateHash = (password, salt = '10') => {
+    const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+    return hash ;
+};
+
 //用户登录
 router.post('/user_login', function(req, res) {
-  const { email, password } = req.body;
-  const sql = 'SELECT * FROM User WHERE email = ? AND password = ?';
-  db.execute(sql, [email, password], (error, results) => {
+    const { email, password } = req.body;
+    const hashedPassword = generateHash(password); // 对密码进行哈希处理
+    const sql = 'SELECT * FROM User WHERE email = ? AND password = ?';
+    db.execute(sql, [email, hashedPassword], (error, results) => {
       if (error) {
           res.send('Error during login: ' + error.message);
           return;
@@ -52,9 +60,10 @@ router.post('/user_login', function(req, res) {
 
 //用户注册
 router.post('/user_register', function(req, res) {
-  const { user_name, password, email } = req.body;
+    const { user_name, password, email } = req.body;
+    const hashedPassword = generateHash(password); // 对密码进行哈希处理
     const sql = 'INSERT INTO User (user_name, password, email) VALUES (?, ?, ?)';
-    db.execute(sql, [user_name, password, email], (error, results) => {
+    db.execute(sql, [user_name, hashedPassword, email], (error, results) => {
         if (error) {
             res.send('Error during registration: ' + error.message);
             return;
@@ -71,9 +80,9 @@ router.post('/user_register', function(req, res) {
 //经理登录
 router.post('/manager_login', function(req, res) {
     const { email, password } = req.body;
-    const sqlQuery = `SELECT User_ID, branch_id FROM Manager WHERE email = ? AND password = ?`;
-
-    db.query(sqlQuery, [email, password], (err, results) => {
+    const hashedPassword = generateHash(password); // 对密码进行哈希处理
+    const sqlQuery = 'SELECT User_ID, branch_id FROM Manager WHERE email = ? AND password = ?';
+    db.query(sqlQuery, [email, hashedPassword], (err, results) => {
         if (err) {
             console.error('Database error:', err);
             res.status(500).json({ message: 'Internal server error' });
@@ -81,6 +90,7 @@ router.post('/manager_login', function(req, res) {
         }
         if (results.length > 0) {
             const user = results[0];
+            //console.log(user.User_ID,email,user.branch_id);
             const token = jwt.sign({
                 user_id: user.User_ID,
                 email: email,
@@ -109,8 +119,9 @@ router.post('/manager_login', function(req, res) {
   //经理注册
 router.post('/manager_register', function(req, res) {
     const { user_name, password, email } = req.body;
-      const sql = 'INSERT INTO Manager (user_name, password, email) VALUES (?, ?, ?)';
-      db.execute(sql, [user_name, password, email], (error, results) => {
+    const hashedPassword = generateHash(password); // 对密码进行哈希处理
+    const sql = 'INSERT INTO Manager (user_name, password, email) VALUES (?, ?, ?)';
+    db.execute(sql, [user_name, hashedPassword, email], (error, results) => {
           if (error) {
               res.send('Error during registration: ' + error.message);
               return;
@@ -126,9 +137,9 @@ router.post('/manager_register', function(req, res) {
 //管理登录
 router.post('/admin_login', function(req, res) {
     const { email, password } = req.body;
-    const sqlQuery = `SELECT User_ID, Email FROM Administrator WHERE email = ? AND password = ?`;
-
-    db.query(sqlQuery, [email, password], (err, results) => {
+    const hashedPassword = generateHash(password); // 对密码进行哈希处理
+    const sqlQuery = 'SELECT User_ID, Email FROM Administrator WHERE email = ? AND password = ?';
+    db.query(sqlQuery, [email, hashedPassword], (err, results) => {
         if (err) {
             console.error('Database error:', err);
             res.status(500).json({ message: 'Internal server error' });

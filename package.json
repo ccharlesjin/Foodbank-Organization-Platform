@@ -12,6 +12,7 @@
   "dependencies": {
     "all": "^0.0.0",
     "axios": "^1.6.8",
+    "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
     "express-mysql-session": "^3.0.2",
@@ -22,7 +23,9 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.9.7",
     "passport": "^0.4.1",
-    "passport-github2": "^0.1.12"
+    "passport-github2": "^0.1.12",
+    "twit": "^2.2.11",
+    "twitter-api-v2": "^1.17.0"
   },
   "devDependencies": {
     "babel-plugin-component": "^1.1.1"
