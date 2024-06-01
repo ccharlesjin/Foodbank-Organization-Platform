@@ -71,13 +71,13 @@
 
         // 验证电子邮箱格式
         if (!email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
-            errorMessage += '电子邮箱格式无效。';
+            errorMessage += 'The email format is not valid.';
             valid = false;
         }
 
         // 验证密码长度
         if (password.length < 8) {
-            errorMessage += '密码至少需要8个字符。';
+            errorMessage += 'Passwords need to be at least 8 characters.';
             valid = false;
         }
 
@@ -92,8 +92,8 @@ window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     const userNotFound = urlParams.get('userNotFound');
     if (userNotFound) {
-        alert('未查询到用户，请注册');
-        
+        alert('No user found, please register');
+
     }
 };
 </script>

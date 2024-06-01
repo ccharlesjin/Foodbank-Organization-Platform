@@ -51,7 +51,7 @@ router.post('/user_login', function(req, res) {
 
       } else {
         //   res.send('Username or password is incorrect');
-        res.status(401).send('Username or password is incorrect'); // 使用 401 状态码表示授权失败
+        res.status(401).send('Email or password is incorrect'); // 使用 401 状态码表示授权失败
         return;
       }
   });
@@ -107,7 +107,7 @@ router.post('/manager_login', function(req, res) {
             return;
         } else {
 
-            res.status(401).send('Username or password is incorrect'); // 使用 401 状态码表示授权失败
+            res.status(401).send('Email or password is incorrect'); // 使用 401 状态码表示授权失败
             return;
         }
     });
@@ -162,7 +162,7 @@ router.post('/admin_login', function(req, res) {
             return;
         } else {
 
-            res.status(401).send('Username or password is incorrect'); // 使用 401 状态码表示授权失败
+            res.status(401).send('Email or password is incorrect'); // 使用 401 状态码表示授权失败
             return;
         }
     });
