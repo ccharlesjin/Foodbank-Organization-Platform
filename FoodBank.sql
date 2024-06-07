@@ -7,16 +7,18 @@ CREATE TABLE IF NOT EXISTS Branches (
     branch_id INT AUTO_INCREMENT PRIMARY KEY,
     branch_name VARCHAR(255),
     description VARCHAR(255),
-    image_url VARCHAR(255)
+    image_url VARCHAR(255),
+    hero_url VARCHAR(255),
+    introduction VARCHAR(255)
 );
 
 -- 插入 Branches 数据
-INSERT INTO Branches (branch_name, description, image_url) VALUES
-('Sydney', '330A/330B George St, Sydney NSW 2000', 'pictures/sydney.png'),
-('Melbourne', 'Corner of, 14 Acland Street, St Leonards Ave, St Kilda VIC 3182', 'pictures/melbourne.png'),
-('Brisbane', '322 Wecker Rd, Carindale QLD 4152', 'pictures/brisbane.png'),
-('Adelaide', '89/93 Henley Beach Rd, Mile End SA 5031', 'pictures/adelaide.png'),
-('Perth', '38 Kings Park Rd, West Perth WA 6005', 'pictures/perth.png');
+INSERT INTO Branches (branch_name, description, image_url, hero_url, introduction) VALUES
+('Sydney', '330A/330B George St, Sydney NSW 2000', 'pictures/sydney.png', 'pictures/Foodbank_Sydney.webp', 'Welcome to the Sydney branch of Foodbank, where we work tirelessly to fight hunger and support the community.'),
+('Melbourne', 'Corner of, 14 Acland Street, St Leonards Ave, St Kilda VIC 3182', 'pictures/melbourne.png', 'pictures/Foodbank_Melbourne.webp', 'Join us at the Melbourne branch of Foodbank, dedicated to providing food relief and assistance to those in need.'),
+('Brisbane', '322 Wecker Rd, Carindale QLD 4152', 'pictures/brisbane.png', 'pictures/Foodbank_Brisbane.webp', 'The Brisbane branch of Foodbank is committed to reducing hunger and supporting our local community through various initiatives.'),
+('Adelaide', '89/93 Henley Beach Rd, Mile End SA 5031', 'pictures/adelaide.png', 'pictures/Foodbank_Adelaide.webp', 'Our Adelaide branch of Foodbank focuses on providing essential food items to families and individuals in need.'),
+('Perth', '38 Kings Park Rd, West Perth WA 6005', 'pictures/perth.png', 'pictures/Foodbank_Perth.webp', 'At the Perth branch of Foodbank, we strive to make a difference in the lives of those facing food insecurity.');
 
 -- 创建 User 表
 CREATE TABLE IF NOT EXISTS User (
