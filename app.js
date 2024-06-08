@@ -1,10 +1,14 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cookieParser = require('cookie-parser');
-
+const bodyParser = require('body-parser');
+// const notificationRoutes = require('./notificationRoutes');
 const path = require('path');
 
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -19,7 +23,7 @@ const { authenticateManagerToken, authenticateAdminToken } = require('./middlewa
 app.use('/manager', authenticateManagerToken, managerRouter);
 app.use('/admin', authenticateAdminToken, adminRouter);
 app.use('/users', usersRouter);
-
+// app.use('/api', notificationRoutes);
 app.use('/', indexRouter);
 
 module.exports = app;

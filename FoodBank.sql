@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS Branches (
     description VARCHAR(255),
     image_url VARCHAR(255),
     hero_url VARCHAR(255),
-    introduction VARCHAR(255)
+    introduction TEXT
 );
 
 -- 插入 Branches 数据

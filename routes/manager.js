@@ -3,6 +3,7 @@ var router = express.Router();
 var path = require('path');
 const db = require('../db');
 const { TwitterApi } = require('twitter-api-v2');
+const { sendEmail } = require('../emailService');
 
 const twitterClient = new TwitterApi({
     appKey: 'Xso7vaPY6aUciaFUrjuSQkpcb',
@@ -311,12 +312,101 @@ router.get('/api/updates', (req, res) => {
     });
 });
 
-router.post('/post-update', (req, res) => {
-    const { title, content, visibility, selectedMembers, timestamp } = req.body;
-    const managerId = req.user.user_id; // 获取当前用户ID
-    const branchId = req.user.branch_id; // 获取当前用户所属分支ID
+// router.post('/post-update', (req, res) => {
+//     const { title, content, visibility, selectedMembers, timestamp } = req.body;
+//     const managerId = req.user.user_id; // 获取当前用户ID
+//     const branchId = req.user.branch_id; // 获取当前用户所属分支ID
 
-    // 将ISO 8601日期时间字符串转换为MySQL日期时间格式
+//     // 将ISO 8601日期时间字符串转换为MySQL日期时间格式
+//     const postTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+//     const sqlInsertUpdate = `
+//         INSERT INTO Updates (title, content, visibility, post_time, manager_id, branch_id)
+//         VALUES (?, ?, ?, ?, ?, ?);
+//     `;
+
+//     // 插入更新信息
+//     db.query(sqlInsertUpdate, [title, content, visibility, postTime, managerId, branchId], (err, result) => {
+//         if (err) {
+//             console.error('Database error:', err);
+//             res.status(500).json({ message: 'Error posting update' });
+//             return;
+//         }
+
+//         const updateId = result.insertId; // 获取新插入的更新的ID
+
+//         // 如果可见性是private，则插入selectedMembers中的用户
+//         if (visibility === 'private' && selectedMembers && selectedMembers.length > 0) {
+//             const sqlInsertUpdatesUsers = `
+//                 INSERT INTO Updates_Users (update_id, user_id)
+//                 VALUES ?
+//             `;
+
+//             const updatesUsersData = selectedMembers.map(userId => [updateId, userId]);
+
+//             db.query(sqlInsertUpdatesUsers, [updatesUsersData], (err, result) => {
+//                 if (err) {
+//                     console.error('Database error:', err);
+//                     res.status(500).json({ message: 'Error posting update' });
+//                     return;
+//                 }
+
+//             // 发送电子邮件通知
+//             selectedMembers.forEach(userId => {
+//                 const getUserEmailQuery = 'SELECT email FROM User WHERE user_id = ?';
+//                 db.query(getUserEmailQuery, [userId], (err, userResult) => {
+//                     if (err) {
+//                         console.error('Database error:', err);
+//                         return;
+//                     }
+
+//                     if (userResult.length > 0) {
+//                         const userEmail = userResult[0].email;
+//                         const subject = `New Private Update: ${title}`;
+//                         const text = `You have a new private update: ${content}`;
+//                         sendEmail(userEmail, subject, text);
+//                     }
+//                 });
+//             });
+
+//                 res.json({ message: 'Update posted successfully.' });
+//             });
+
+//         } else {
+//             // 处理 public 和 inside branch 可见性的情况
+//             const viewName = visibility === 'public' ? 'PublicUpdates' : 'InsideBranchUpdates';
+//             const getBranchMembersQuery = `
+//                 SELECT email FROM User
+//                 JOIN ${viewName} ON User.branch_id = ${viewName}.branch_id
+//                 WHERE User.branch_id = ?;
+//             `;
+
+//             db.query(getBranchMembersQuery, [branchId], (err, membersResult) => {
+//                 if (err) {
+//                     console.error('Database error:', err);
+//                     res.status(500).json({ message: 'Error posting update' });
+//                     return;
+//                 }
+
+//                 membersResult.forEach(member => {
+//                     const userEmail = member.email;
+//                     const subject = `New ${visibility} Update: ${title}`;
+//                     const text = `You have a new ${visibility} update: ${content}`;
+//                     sendEmail(userEmail, subject, text);
+//                 });
+
+//                 // 如果不是private或者没有选中成员，直接返回成功消息
+//                 res.json({ message: 'Update posted successfully.' });
+//             });
+//         }
+//     });
+// });
+
+// 发布新更新
+router.post('/post-update', (req, res) => {
+    const { title, content, visibility, selectedMembers } = req.body;
+    const managerId = req.user.user_id;
+    const branchId = req.user.branch_id;
     const postTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     const sqlInsertUpdate = `
@@ -324,7 +414,6 @@ router.post('/post-update', (req, res) => {
         VALUES (?, ?, ?, ?, ?, ?);
     `;
 
-    // 插入更新信息
     db.query(sqlInsertUpdate, [title, content, visibility, postTime, managerId, branchId], (err, result) => {
         if (err) {
             console.error('Database error:', err);
@@ -332,15 +421,13 @@ router.post('/post-update', (req, res) => {
             return;
         }
 
-        const updateId = result.insertId; // 获取新插入的更新的ID
+        const updateId = result.insertId;
 
-        // 如果可见性是private，则插入selectedMembers中的用户
         if (visibility === 'private' && selectedMembers && selectedMembers.length > 0) {
             const sqlInsertUpdatesUsers = `
                 INSERT INTO Updates_Users (update_id, user_id)
                 VALUES ?
             `;
-
             const updatesUsersData = selectedMembers.map(userId => [updateId, userId]);
 
             db.query(sqlInsertUpdatesUsers, [updatesUsersData], (err, result) => {
@@ -350,14 +437,54 @@ router.post('/post-update', (req, res) => {
                     return;
                 }
 
+                // 发送电子邮件通知
+                selectedMembers.forEach(userId => {
+                    const getUserEmailQuery = 'SELECT email FROM User WHERE user_id = ?';
+                    db.query(getUserEmailQuery, [userId], (err, userResult) => {
+                        if (err) {
+                            console.error('Database error:', err);
+                            return;
+                        }
+
+                        if (userResult.length > 0) {
+                            const userEmail = userResult[0].email;
+                            const subject = `New Private Update: ${title}`;
+                            const text = `You have a new private update: ${content}`;
+                            sendEmail(userEmail, subject, text);
+                        }
+                    });
+                });
+
                 res.json({ message: 'Update posted successfully.' });
             });
         } else {
-            // 如果不是private或者没有选中成员，直接返回成功消息
-            res.json({ message: 'Update posted successfully.' });
+            const viewName = visibility === 'public' ? 'PublicUpdates' : 'InsideBranchUpdates';
+            const getBranchMembersQuery = `
+                SELECT email FROM User
+                JOIN ${viewName} ON User.branch_id = ${viewName}.branch_id
+                WHERE User.branch_id = ?;
+            `;
+
+            db.query(getBranchMembersQuery, [branchId], (err, membersResult) => {
+                if (err) {
+                    console.error('Database error:', err);
+                    res.status(500).json({ message: 'Error posting update' });
+                    return;
+                }
+
+                membersResult.forEach(member => {
+                    const userEmail = member.email;
+                    const subject = `New ${visibility} Update: ${title}`;
+                    const text = `You have a new ${visibility} update: ${content}`;
+                    sendEmail(userEmail, subject, text);
+                });
+
+                res.json({ message: 'Update posted successfully.' });
+            });
         }
     });
 });
+
 
 router.delete('/delete-update/:id', (req, res) => {
     const updateId = req.params.id;
@@ -391,6 +518,34 @@ router.delete('/delete-update/:id', (req, res) => {
     });
 });
 
+// router.put('/update-update/:id', (req, res) => {
+//     const updateId = req.params.id;
+//     const { title, content } = req.body;
+//     const editTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+//     if (!title || !content) {
+//         return res.status(400).json({ message: 'Title and content are required' });
+//     }
+
+//     const sqlUpdate = `
+//         UPDATE Updates
+//         SET title = ?, content = ?, post_time = ?
+//         WHERE update_id = ?;
+//     `;
+
+//     db.query(sqlUpdate, [title, content, editTime, updateId], (err, result) => {
+//         if (err) {
+//             console.error('Database error:', err);
+//             return res.status(500).json({ message: 'Error updating update' });
+//         }
+
+
+
+//         res.json({ message: 'Update edited successfully.' });
+//     });
+// });
+
+// 更新现有更新
 router.put('/update-update/:id', (req, res) => {
     const updateId = req.params.id;
     const { title, content } = req.body;
@@ -411,6 +566,71 @@ router.put('/update-update/:id', (req, res) => {
             console.error('Database error:', err);
             return res.status(500).json({ message: 'Error updating update' });
         }
+
+        const getUpdateDetailsQuery = `
+            SELECT visibility, branch_id FROM Updates WHERE update_id = ?;
+        `;
+        db.query(getUpdateDetailsQuery, [updateId], (err, updateResult) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({ message: 'Error updating update' });
+            }
+
+            if (updateResult.length > 0) {
+                const { visibility, branch_id } = updateResult[0];
+
+                if (visibility === 'private') {
+                    const getSelectedMembersQuery = `
+                        SELECT user_id FROM Updates_Users WHERE update_id = ?;
+                    `;
+                    db.query(getSelectedMembersQuery, [updateId], (err, selectedMembersResult) => {
+                        if (err) {
+                            console.error('Database error:', err);
+                            return res.status(500).json({ message: 'Error updating update' });
+                        }
+
+                        selectedMembersResult.forEach(member => {
+                            const userId = member.user_id;
+                            const getUserEmailQuery = 'SELECT email FROM User WHERE user_id = ?';
+                            db.query(getUserEmailQuery, [userId], (err, userResult) => {
+                                if (err) {
+                                    console.error('Database error:', err);
+                                    return;
+                                }
+
+                                if (userResult.length > 0) {
+                                    const userEmail = userResult[0].email;
+                                    const subject = `Updated Private Update: ${title}`;
+                                    const text = `A private update has been updated: ${content}`;
+                                    sendEmail(userEmail, subject, text);
+                                }
+                            });
+                        });
+                    });
+                } else {
+                    const viewName = visibility === 'public' ? 'PublicUpdates' : 'InsideBranchUpdates';
+                    const getBranchMembersQuery = `
+                        SELECT email FROM User
+                        JOIN ${viewName} ON User.branch_id = ${viewName}.branch_id
+                        WHERE User.branch_id = ?;
+                    `;
+
+                    db.query(getBranchMembersQuery, [branch_id], (err, membersResult) => {
+                        if (err) {
+                            console.error('Database error:', err);
+                            return res.status(500).json({ message: 'Error updating update' });
+                        }
+
+                        membersResult.forEach(member => {
+                            const userEmail = member.email;
+                            const subject = `Updated ${visibility} Update: ${title}`;
+                            const text = `An ${visibility} update has been updated: ${content}`;
+                            sendEmail(userEmail, subject, text);
+                        });
+                    });
+                }
+            }
+        });
 
         res.json({ message: 'Update edited successfully.' });
     });
