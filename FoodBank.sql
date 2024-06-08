@@ -14,11 +14,16 @@ CREATE TABLE IF NOT EXISTS Branches (
 
 -- 插入 Branches 数据
 INSERT INTO Branches (branch_name, description, image_url, hero_url, introduction) VALUES
-('Sydney', '330A/330B George St, Sydney NSW 2000', 'pictures/sydney.png', 'pictures/Foodbank_Sydney.webp', 'Welcome to the Sydney branch of Foodbank, where we work tirelessly to fight hunger and support the community.'),
-('Melbourne', 'Corner of, 14 Acland Street, St Leonards Ave, St Kilda VIC 3182', 'pictures/melbourne.png', 'pictures/Foodbank_Melbourne.webp', 'Join us at the Melbourne branch of Foodbank, dedicated to providing food relief and assistance to those in need.'),
-('Brisbane', '322 Wecker Rd, Carindale QLD 4152', 'pictures/brisbane.png', 'pictures/Foodbank_Brisbane.webp', 'The Brisbane branch of Foodbank is committed to reducing hunger and supporting our local community through various initiatives.'),
-('Adelaide', '89/93 Henley Beach Rd, Mile End SA 5031', 'pictures/adelaide.png', 'pictures/Foodbank_Adelaide.webp', 'Our Adelaide branch of Foodbank focuses on providing essential food items to families and individuals in need.'),
-('Perth', '38 Kings Park Rd, West Perth WA 6005', 'pictures/perth.png', 'pictures/Foodbank_Perth.webp', 'At the Perth branch of Foodbank, we strive to make a difference in the lives of those facing food insecurity.');
+('Sydney', '330A/330B George St, Sydney NSW 2000', 'pictures/sydney.png', 'pictures/Foodbank_Sydney.webp',
+'Welcome to the Sydney branch of Foodbank, where we work tirelessly to fight hunger and support the community. Our team is dedicated to providing food relief and assistance to those in need. Through various initiatives, we aim to reduce food insecurity and create a stronger, more resilient community. Join us in our mission to fight hunger and make a positive impact on the lives of individuals and families in Sydney. We believe that together, we can make a significant difference. Your support and participation are crucial to our success. By working hand in hand, we can build a future where no one has to worry about their next meal. Get involved today and be a part of this impactful journey. From food drives to community outreach programs, there are many ways to contribute and make a difference. Together, we can create lasting change and ensure a brighter future for all. We welcome volunteers, donors, and partners to join our cause and help us reach more people in need. Every effort counts, and your involvement can make a real difference in the fight against hunger.'),
+('Melbourne', 'Corner of, 14 Acland Street, St Leonards Ave, St Kilda VIC 3182', 'pictures/melbourne.png', 'pictures/Foodbank_Melbourne.webp',
+'Join us at the Melbourne branch of Foodbank, dedicated to providing food relief and assistance to those in need. Our mission is to ensure that no one in Melbourne goes hungry. We work with local communities, businesses, and volunteers to collect and distribute food to those who need it most. Through our programs, we aim to promote food security and support the well-being of our community members. Your involvement and support are vital in helping us achieve our goals. Together, we can make a difference and build a hunger-free Melbourne. With every contribution, you help create a better future for countless individuals and families. Get involved today and support our cause. From volunteering your time to donating funds or food items, there are many ways to help us fight hunger and make a positive impact. We also organize community events and educational programs to raise awareness about food insecurity and encourage community engagement. Join our efforts to ensure that everyone in Melbourne has access to nutritious food.'),
+('Brisbane', '322 Wecker Rd, Carindale QLD 4152', 'pictures/brisbane.png', 'pictures/Foodbank_Brisbane.webp',
+'The Brisbane branch of Foodbank is committed to reducing hunger and supporting our local community through various initiatives. We focus on collecting surplus food and redistributing it to those in need. Our goal is to ensure that everyone in Brisbane has access to nutritious food. We work closely with local organizations and volunteers to make this possible. Join us in our efforts to fight hunger and support the community. Your contributions and participation are essential in helping us create a better, hunger-free Brisbane. Together, we can make a lasting impact. Each action you take helps us move closer to our goal of eliminating hunger in our community. Join us and make a difference. Whether it’s through organizing food drives, participating in fundraising events, or spreading awareness about food insecurity, your efforts are invaluable. We believe that by working together, we can build a stronger, healthier community where no one has to worry about their next meal. Support our cause and help us make a real difference.'),
+('Adelaide', '89/93 Henley Beach Rd, Mile End SA 5031', 'pictures/adelaide.png', 'pictures/Foodbank_Adelaide.webp',
+'Our Adelaide branch of Foodbank focuses on providing essential food items to families and individuals in need. We strive to alleviate hunger and food insecurity through our comprehensive food distribution programs. By partnering with local charities, businesses, and volunteers, we ensure that surplus food reaches those who need it most. We believe in the power of community and the impact of collective action. Join us in our mission to create a hunger-free Adelaide. Your support and involvement can make a significant difference in the lives of many. Together, we can build a stronger, more supportive community. Every contribution counts in our fight against hunger. Get involved today and help us make a positive change. From hosting food drives to volunteering at our distribution centers, there are many ways to contribute. We also offer educational programs to inform the public about food insecurity and ways to combat it. Join us in our efforts to provide food and hope to those in need, and help create a brighter future for everyone in Adelaide.'),
+('Perth', '38 Kings Park Rd, West Perth WA 6005', 'pictures/perth.png', 'pictures/Foodbank_Perth.webp',
+'At the Perth branch of Foodbank, we strive to make a difference in the lives of those facing food insecurity. Our dedicated team works tirelessly to collect and distribute food to individuals and families in need. Through our various programs and initiatives, we aim to reduce hunger and promote well-being in our community. We rely on the support of volunteers, donors, and partners to achieve our goals. Join us in our efforts to fight hunger and build a stronger, more resilient community. Together, we can create a hunger-free Perth and provide hope to those in need. Every effort you make contributes to our mission. Get involved and support our cause today. Whether it’s through donating, volunteering, or raising awareness, your contributions are vital to our success. We also collaborate with local organizations to maximize our impact and reach more people. Help us ensure that everyone in Perth has access to the nutritious food they need to thrive. Together, we can make a significant impact and create a better future for all.');
 
 -- 创建 User 表
 CREATE TABLE IF NOT EXISTS User (
@@ -151,3 +156,20 @@ CREATE OR REPLACE VIEW PrivateUpdates AS
 SELECT Updates.* FROM Updates
 JOIN Updates_Users ON Updates.update_id = Updates_Users.update_id
 WHERE visibility = 'private';
+
+
+CREATE TABLE IF NOT EXISTS EmailNotifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    branch_id INT,
+    notification_type ENUM('updates', 'events', 'all'),
+    FOREIGN KEY (user_id) REFERENCES User(user_id),
+    FOREIGN KEY (branch_id) REFERENCES Branches(branch_id)
+);
+
+INSERT INTO EmailNotifications (user_id, branch_id, notification_type) VALUES
+(1, 1, 'updates'),
+(1, 2, 'events'),
+(2, 3, 'all'),
+(3, 4, 'updates'),
+(4, 5, 'events');
