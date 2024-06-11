@@ -87,7 +87,6 @@ INSERT INTO Activity (activity_name, activity_date, activity_number_of_people, a
 CREATE TABLE IF NOT EXISTS User_in_activities (
     user_id INT,
     activity_id INT,
-    status ENUM('Yes', 'No', 'Maybe') NOT NULL,
     remarks VARCHAR(255),
     reply_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, activity_id),
@@ -97,9 +96,9 @@ CREATE TABLE IF NOT EXISTS User_in_activities (
 
 -- 插入 User_in_activities 数据
 -- 插入 User_in_activities 数据
-INSERT INTO User_in_activities (user_id, activity_id, status, remarks) VALUES
-(1, 2, 'Yes', 'Looking forward to it'),
-(1, 1, 'No', 'Not available on that date');
+INSERT INTO User_in_activities (user_id, activity_id, remarks) VALUES
+(2, 2, 'Looking forward to it'),
+(1, 1, 'Available on that date');
 
 
 

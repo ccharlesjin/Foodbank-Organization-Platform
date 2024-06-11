@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
+const SECRET_KEY_User = 'user_secret_key';
 const SECRET_KEY_MANAGER = 'manager_secret_key';
 const SECRET_KEY_ADMIN = 'admin_secret_key';
 
@@ -29,7 +30,8 @@ const authenticateToken = (secretKey) => {
     };
 };
 
+const authenticateUserToken = authenticateToken(SECRET_KEY_User);
 const authenticateManagerToken = authenticateToken(SECRET_KEY_MANAGER);
 const authenticateAdminToken = authenticateToken(SECRET_KEY_ADMIN);
 
-module.exports = { authenticateManagerToken, authenticateAdminToken };
+module.exports = { authenticateUserToken, authenticateManagerToken, authenticateAdminToken };

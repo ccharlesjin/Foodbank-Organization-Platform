@@ -17,13 +17,14 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var managerRouter = require('./routes/manager');
 var adminRouter = require('./routes/admin');
+var userRouter = require('./routes/user');
 
-const { authenticateManagerToken, authenticateAdminToken } = require('./middleware/authMiddleware');
+const { authenticateUserToken, authenticateManagerToken, authenticateAdminToken } = require('./middleware/authMiddleware');
 
 app.use('/manager', authenticateManagerToken, managerRouter);
 app.use('/admin', authenticateAdminToken, adminRouter);
 app.use('/users', usersRouter);
-// app.use('/api', notificationRoutes);
+app.use('/user', authenticateUserToken, userRouter);
 app.use('/', indexRouter);
 
 module.exports = app;

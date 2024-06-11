@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/manager.css">
+    <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.prod.js"></script>
+</head>
+<body class="full-height body">
+    <div id="app" class="container">
+        <header>
+            <div class="navbar">
+                <div class="logo">FOODBANK AUSTRALIA</div>
+                <nav>
+                    <ul>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/about.html">About</a></li>
+                        <li><a href="/location.html">Location</a></li>
+                        <li><a href="#" id="logout-button" @click="loadSection('logout')">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li><a href="/user/profile">Personal Info</a></li>
+                <li><a href="/user/activities">Organization Activities</a></li>
+                <li><a href="/user/announcements">Announcements</a></li>
+            </ul>
+        </div>
+
+        <!-- <div class="content">
+            <h2>Activities</h2>
+            <ul>
+                <li v-for="activity in activities" :key="activity.activity_id" @click="showActivityModal(activity)">
+                    {{ activity.activity_name }} - {{ getBranchName(activity.branch_id) }} - {{ new Date(activity.activity_date).toLocaleDateString() }} - {{ activity.activity_number_of_people }} people
+                    <button type="button" v-if="isUserJoined(activity.activity_id)" @click.stop="leaveActivity(activity.activity_id)">out activity</button>
+                </li>
+            </ul>
+        </div> -->
+
+        <main class="main full-height flex-grow content">
+            <h2>Activities</h2>
+
+            <div class="table-container">
+                <table id="membersTable">
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Number of people</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="activity in activities" :key="activity.activity_id">
+                            <td>{{ activity.activity_name }}</td>
+                            <td>{{ new Date(activity.activity_date).toLocaleDateString() }}</td>
+                            <td>{{ activity.activity_number_of_people }}</td>
+                            <td>
+                                <button type="button" class="edit-volunteers edit-member" @click="showActivityModal(activity)" v-if="!joinedActivities.includes(activity.activity_id)">Join</button>
+
+                                <button type="button" class="edit-volunteers delete-member" @click="leaveActivity(activity.activity_id)" v-if="joinedActivities.includes(activity.activity_id)">Leave</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <div name="modal">
+            <div id="activityModal" class="modal-overlay" v-if="showActivityModalFlag">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <h3>{{ selectedActivity.activity_name }}</h3>
+                        <button type="button" @click="showActivityModalFlag = false">X</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Location: {{ getBranchName(selectedActivity.branch_id) }}</p>
+                        <p>Date: {{ new Date(selectedActivity.activity_date).toLocaleDateString() }}</p>
+                        <p>Number of People: {{ selectedActivity.activity_number_of_people }}</p>
+                        <form @submit.prevent="joinActivity">
+                            <label for="remark">Remark:</label>
+                            <input type="text" v-model="remark">
+                            <button type="submit">Join</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    activities: [],  // 确保初始化 activities 属性
+                    selectedActivity: {},
+                    showActivityModalFlag: false,
+                    remark: '',
+                    user_id: '',
+                    joinedActivities: [],
+                    branches:[],
+                };
+            },
+            methods: {
+                fetchActivities() {
+                    fetch('/user/api/activities', { method: 'GET' })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.activities = data;
+                    })
+                    .catch(error => console.error('Error loading activities:', error));
+                },
+                fetchBranches() {
+                    fetch('/api/branches', {
+                        method: 'GET',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.branches = data;
+                        console.log('Got branches:', data)
+                    })
+                    .catch(error => console.error('Error loading branches:', error));
+                },
+                getBranchName(branchId) {
+                    const branch = this.branches.find(branch => branch.branch_id === branchId);
+                    return branch ? branch.branch_name : 'Unknown';
+                },
+                fetchUserInfo() {
+                    fetch('/user/api/user_info', {
+                        method: 'GET',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.user_id = data.user_id; // 获取当前用户ID
+                    })
+                    .catch(error => console.error('Error loading user info:', error));
+                },
+                showActivityModal(activity) {
+                    this.selectedActivity = activity;
+                    this.showActivityModalFlag = true;
+                },
+                joinActivity() {
+                    fetch('/user/api/join_activity', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            user_id: this.user_id,
+                            activity_id: this.selectedActivity.activity_id,
+                            status: 'Yes',
+                            remarks: this.remark
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.showActivityModalFlag = false;
+                        alert('Successfully participate in this activity!');
+                        this.joinedActivities.push(this.selectedActivity.activity_id);
+                    })
+                    .catch(error => console.error('Error joining activity:', error));
+                },
+                isUserJoined(activityId) {
+                    return this.joinedActivities.includes(activityId);
+                },
+                leaveActivity(activityId) {
+                    fetch('/user/api/leave_activity', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            user_id: this.user_id,
+                            activity_id: activityId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert('Successfully quit this activity!');
+                        const index = this.joinedActivities.indexOf(activityId);
+                        if (index > -1) {
+                            this.joinedActivities.splice(index, 1);
+                        }
+                        this.fetchActivities();
+                    })
+                    .catch(error => console.error('Error leaving activity:', error));
+                },
+                fetchJoinedActivities() {
+                    fetch(`/user/api/user_activities`, {
+                        method: 'GET',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.joinedActivities = data.map(activity => activity.activity_id);
+                        console.log('joinedActivities:', this.joinedActivities);
+                    })
+                    .catch(error => console.error('Error loading joined activities:', error));
+                },
+                loadSection(section) {
+                    console.log('load section!');
+                    if (section === 'logout') {
+                        fetch('/user/logout', { method: 'GET' })
+                        .then(response => {
+                            window.location.href = '/login.html';
+                        })
+                        .catch(error => {
+                            console.error('Logout failed:', error);
+                        });
+                    }
+                },
+            },
+            mounted() {
+                // this.fetchUserInfo();
+                this.fetchBranches();
+                this.fetchActivities();
+                this.fetchJoinedActivities();
+            }
+        });
+        app.mount('#app');
+    </script>
+</body>
+</html>

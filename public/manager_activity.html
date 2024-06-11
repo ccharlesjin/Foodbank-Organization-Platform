@@ -26,7 +26,8 @@
         <div class="sidebar">
             <h2>Dashboard</h2>
             <ul>
-                <li class="current-menu"><a href="#">Personal Info</a></li>
+                <li><a href="#" @click="loadSection('info')">Personal Info</a></li>
+                <li><a href="#">Organization Activities</a></li>
                 <li><a href="/manager/members">Member Management</a></li>
                 <li><a href="/manager/events">Events Management</a></li>
                 <li><a href="/manager/updates">Post Updates</a></li>
@@ -35,23 +36,44 @@
         </div>
 
         <div class="content">
-            <h1>Welcome to Your Profile</h1>
-            <div id="errorContainer" style="color: red;"></div>
-            <div class="avatar-container" @click="triggerFileInput">
-                <img :src="avatar" alt="User Avatar" class="avatar" id="avatarImage">
-                <div class="overlay">Change</div>
-            </div>
-            <input type="file" id="fileInput" style="display: none;" @change="handleFileChange" accept="image/*">
-            <div class="user-info" v-if="manager && manager.length > 0 && manager[0]">
-                <p><strong>Username:</strong> <span>{{ manager[0].user_name }}</span></p>
-                <p><strong>Email:</strong> <span>{{ manager[0].email }}</span></p>
-                <p><strong>Full Name:</strong> <span>{{ manager[0].full_name }}</span></p>
-                <p><strong>Phone Number:</strong> <span>{{ manager[0].phone_number }}</span></p>
-                <p><strong>Organization:</strong> <span>{{ getBranchName(manager[0].branch_id) }}</span></p>
-                <button type="button" id="showEditModal" @click="showEditModal = !showEditModal">Edit User Info</button>
-                <hr>
-                <button type="button" id="showChangePasswordModal" @click="showChangePasswordModal = !showChangePasswordModal">Change Password</button>
-            </div>
+            <table class="activity-container">
+                <thead>
+                    <tr>
+                        <th> </th>
+                        <th>Activity Name</th>
+                        <th>Date</th>
+                        <th>Participants</th>
+                        <th>Description</th>
+                        <th>Join?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="/images/sydney.jpg" alt="Sydney Activities" class="activity-image"></td>
+                        <td>Sydney Beach Cleanup</td>
+                        <td>2024-05-15</td>
+                        <td class="activity-participants">50 participants</td>
+                        <td>Help clean up the Sydney beach area.</td>
+                        <td><button type="button" class="activity-btn" style="background-color: green;">Join</button></td>
+                    </tr>
+                    <tr>
+                        <td><img src="/images/melbourne.jpg" alt="Melbourne Activities" class="activity-image"></td>
+                        <td>Melbourne Park Music Festival</td>
+                        <td>2024-06-20</td>
+                        <td class="activity-participants">200 participants</td>
+                        <td>Enjoy live music in the park.</td>
+                        <td><button type="button" class="activity-btn" style="background-color: green;">Join</button></td>
+                    </tr>
+                    <tr>
+                        <td><img src="/images/adelaide.jpg" alt="Adelaide Activities" class="activity-image"></td>
+                        <td>Adelaide Art Walk</td>
+                        <td>2024-07-05</td>
+                        <td class="activity-participants">80 participants</td>
+                        <td>Explore street art around Adelaide.</td>
+                        <td><button type="button" class="activity-btn" style="background-color: green;">Join</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <div name="modal">
@@ -64,13 +86,13 @@
                     <div class="modal-body">
                         <form @submit.prevent="saveUserInfo">
                             <label for="username">Username:</label>
-                            <input type="text" v-model="editInfo[0].user_name">
+                            <input type="text" v-model="editUserInfo.user_name">
                             <label for="email">Email:</label>
-                            <input type="text" v-model="editInfo[0].email">
+                            <input type="text" v-model="editUserInfo.email">
                             <label for="fullname">Full Name:</label>
-                            <input type="text" v-model="editInfo[0].full_name">
+                            <input type="text" v-model="editUserInfo.full_name">
                             <label for="phone_number">Phone Number:</label>
-                            <input type="text" v-model="editInfo[0].phone_number">
+                            <input type="text" v-model="editUserInfo.phone_number">
                             <button type="submit">Save</button>
                         </form>
                     </div>
@@ -105,7 +127,19 @@
                     managerBranchId: [],
                     manager: [],
                     branches: [],
-                    editInfo: [],
+                    userInfo: {
+                        username: '',
+                        email: '',
+                        fullname: '',
+                        phoneNumber: '',
+                        organization: ''
+                    },
+                    editUserInfo: {
+                        user_name: '',
+                        email: '',
+                        full_name: '',
+                        phone_number: ''
+                    },
                     showEditModal: false,
                     showChangePasswordModal: false,
                     avatar: '/1.jpg',
@@ -149,14 +183,11 @@
                     .then(data => {
                         console.log("Loaded manager:", data);
                         this.manager = data;
-                        this.editInfo = data;
-                        console.log('edit', this.editInfo);
-
                     })
                     .catch(error => console.error('Error loading the manager-info:', error));
                 },
                 async saveUserInfo() {
-                    console.log(this.editInfo);
+                    console.log(this.editUserInfo);
                     try {
                         const managerUserId = this.manager[0].user_id;
                         const response = await fetch(`/manager/api/user/${managerUserId}`, {
@@ -164,7 +195,7 @@
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(this.editInfo)
+                            body: JSON.stringify(this.editUserInfo)
                         });
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
@@ -181,19 +212,6 @@
                         this.error = `An error occurred while saving user info: ${error.message}`;
                     }
                 },
-                triggerFileInput() {
-                    this.$refs.fileInput.click();
-                },
-                handleFileChange(event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            this.avatar = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                },
                 async saveNewPassword() {
                     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[_])[A-Za-z\d_]{8,}$/.test(this.newPassword)) {
                         this.passwordError = "The password does not meet the requirements, please contain uppercase and lowercase letters, underscores and numbers, and at least 8 supplements";
@@ -203,7 +221,6 @@
                         const response = await fetch('/manager/api/User/changePassword', {
                             method: 'POST',
                             headers: {
-                                'Authorization': 'Bearer ' + this.getCookie('token'),
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({ newPassword: this.newPassword })
@@ -222,16 +239,6 @@
                         console.error('Error:', error);
                         this.passwordError = `An error occurred while changing password: ${error.message}`;
                     }
-                },
-                getCookie(name) {
-                    const cookieArr = document.cookie.split(";");
-                    for (let i = 0; i < cookieArr.length; i++) {
-                        const cookiePair = cookieArr[i].split("=");
-                        if (name == cookiePair[0].trim()) {
-                            return decodeURIComponent(cookiePair[1]);
-                        }
-                    }
-                    return null;
                 },
                 loadSection(section) {
                     console.log('load section!');

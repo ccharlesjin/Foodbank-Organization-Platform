@@ -16,6 +16,7 @@ const crypto = require('crypto');
 // const SECRET_KEY_ADMIN = crypto.randomBytes(32).toString('base64');
 const SECRET_KEY_MANAGER = 'manager_secret_key';
 const SECRET_KEY_ADMIN = 'admin_secret_key';
+const SECRET_KEY_User = 'user_secret_key';
 
 
 // 配置静态文件服务
@@ -36,26 +37,40 @@ const generateHash = (password, salt = '10') => {
 router.post('/user_login', function(req, res) {
     const { email, password } = req.body;
     const hashedPassword = generateHash(password); // 对密码进行哈希处理
-    const sql = 'SELECT * FROM User WHERE email = ? AND password = ?';
-    db.execute(sql, [email, hashedPassword], (error, results) => {
-      if (error) {
-          res.send('Error during login: ' + error.message);
-          return;
-      }
-      if (results.length > 0) {
-          // 登陆成功跳转user页面
-          //res.sendFile(path.join(__dirname, '../public', '/user.html'));
-          //跳转改为前端执行
-          res.status(200).json({message: "Login successful!"});
-          return;
+    const sqlQuery = 'SELECT User_ID, branch_id FROM User WHERE email = ? AND password = ?';
+    db.query(sqlQuery, [email, hashedPassword], (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            res.status(500).json({ message: 'Internal server error' });
+            return;
+        }
+        if (results.length > 0) {
+            const user = results[0];
+            //console.log(user.User_ID,email,user.branch_id);
+            const token = jwt.sign({
+                user_id: user.User_ID,
+                email: email,
+                branch_id: user.branch_id
+            }, SECRET_KEY_User, { expiresIn: '1h' });
+            res.cookie('jwt', token, {
+                httpOnly: true, // 使 cookie 仅服务器可访问，增加安全性
+                secure: true, // 仅通过 HTTPS 发送 cookie
+                sameSite: 'strict', // 严格的同站策略，增强 CSRF 保护
+                maxAge: 3600000 // 有效期，单位毫秒
+            });
+            console.log("Sending token:", token); // 添加日志输出token
+            res.json({ token: token, message: 'Login successful' });
+            return;
+        } else {
 
-      } else {
-        //   res.send('Username or password is incorrect');
-        res.status(401).send('Email or password is incorrect'); // 使用 401 状态码表示授权失败
-        return;
-      }
-  });
+            res.status(401).send('Email or password is incorrect'); // 使用 401 状态码表示授权失败
+            return;
+        }
+    });
 });
+
+
+
 
 
 //用户注册
@@ -69,7 +84,7 @@ router.post('/user_register', function(req, res) {
             return;
         }
         //注册步骤1完成，继续添加信息
-        res.sendFile(path.join(__dirname, '../public', '/AddDetail.html'));
+        res.sendFile(path.join(__dirname, '../public', '/Profile.html'));
     });
 });
 
@@ -197,25 +212,25 @@ router.get('/:section', function(req, res, next) {
                             <td><img src="/images/sydney.jpg" alt="Sydney Activities" class="activity-image"></td>
                             <td>Sydney Beach Cleanup</td>
                             <td>2024-05-15</td>
-                            <td>50 participants</td>
+                            <td class="activity-participants">50 participants</td>
                             <td>Help clean up the Sydney beach area.</td>
-                            <td><input type="checkbox" class="activity-join" name="joinActivity" value="Sydney"></td>
+                            <td><button class="activity-btn" style="background-color: green;">Join</button></td>
                         </tr>
                         <tr>
                             <td><img src="/images/melbourne.jpg" alt="Melbourne Activities" class="activity-image"></td>
                             <td>Melbourne Park Music Festival</td>
                             <td>2024-06-20</td>
-                            <td>200 participants</td>
+                            <td class="activity-participants">200 participants</td>
                             <td>Enjoy live music in the park.</td>
-                            <td><input type="checkbox" class="activity-join" name="joinActivity" value="Melbourne"></td>
+                            <td><button class="activity-btn" style="background-color: green;">Join</button></td>
                         </tr>
                         <tr>
                             <td><img src="/images/adelaide.jpg" alt="Adelaide Activities" class="activity-image"></td>
                             <td>Adelaide Art Walk</td>
                             <td>2024-07-05</td>
-                            <td>80 participants</td>
+                            <td class="activity-participants">80 participants</td>
                             <td>Explore street art around Adelaide.</td>
-                            <td><input type="checkbox" class="activity-join" name="joinActivity" value="Adelaide"></td>
+                            <td><button class="activity-btn" style="background-color: green;">Join</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -227,6 +242,32 @@ router.get('/:section', function(req, res, next) {
     }
 });
 
+router.get('/api/updates', (req, res) => {
+    const userId = req.user.user_id; // 获取当前用户ID
+    const branchId = req.user.branch_id; // 获取当前用户所属分支ID
 
+    const sqlQuery = `
+        SELECT *
+        FROM (
+            SELECT * FROM PublicUpdates
+            UNION
+            SELECT * FROM InsideBranchUpdates WHERE branch_id = ?
+            UNION
+            SELECT * FROM PrivateUpdates WHERE update_id IN (
+                SELECT update_id FROM Updates_Users WHERE user_id = ?
+            )
+        ) AS combinedUpdates
+        ORDER BY post_time DESC;
+    `;
+
+    db.query(sqlQuery, [branchId, userId], (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            res.status(500).json({ message: 'Error fetching updates' });
+            return;
+        }
+        res.json(results);
+    });
+});
 
 module.exports = router;

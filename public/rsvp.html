@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSVP Management</title>
+    <link rel="stylesheet" href="manager.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body class="full-height body">
+    <div id="app" class="container">
+        <header>
+            <div class="navbar">
+                <div class="logo">RSVP Management</div>
+                <nav>
+                    <ul>
+                        <li><a href="/home">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/location">Location</a></li>
+                        <li><a href="#" id="logout-button" onclick="loadSection('logout', event)">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li><a href="/manager/profile">Personal Info</a></li>
+                <li><a href="/manager/members">Member Management</a></li>
+                <li><a href="/manager/events">Events Management</a></li>
+                <li><a href="/manager/updates">Post Updates</a></li>
+                <li class="current-menu"><a href="/manager/rsvp">RSVP Management</a></li>
+            </ul>
+        </div>
+        <main class="main full-height flex-grow content">
+            <h2>RSVP Management</h2>
+            <div>
+                <label for="activitySelect">Select Event:</label>
+                <select id="activitySelect" v-model="selectedActivity" @change="fetchRSVPs">
+                    <option v-for="activity in activities" :value="activity.activity_id">{{ activity.activity_name }}</option>
+                </select>
+            </div>
+            <div v-if="selectedActivity">
+                <div>
+                    <p>Total Participants: {{ totalParticipants }}</p>
+                    <p>Participation Rate: {{ participationRate }}%</p>
+                </div>
+                <div>
+                    <div class="table-container">
+                        <h2>Participants List</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User Name</th>
+                                    <th>Remarks</th>
+                                    <th>Reply Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="attendee in attendees" :key="attendee.user_id">
+                                    <td v-for="memberInActivities in membersInActivities" :key="memberInActivities.user_id">
+                                        <div v-for="member in members" :key="member.user_id">
+                                            <div v-if="member.user_id === memberInActivities.user_id">
+                                                {{ member.user_name }}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ attendee.remarks }}</td>
+                                    <td>{{ new Date(attendee.reply_date).toLocaleDateString() }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>RSVP Management System &copy; 2024</p>
+        </footer>
+    </div>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    members:[],
+                    membersInActivities: [],
+                    activities: [],
+                    selectedActivity: null,
+                    attendees: [],
+                    totalParticipants: 0,
+                    participationRate: 0,
+                    totalUsers: 0 ,// Assuming you get this data from the backend or calculate it based on branch
+                    branchId: 0,
+                };
+            },
+            methods: {
+                fetchMembers() {
+                    fetch('/manager/api/members', {
+                        method: 'GET',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Loaded members:", data);
+                        this.members = data;
+                    })
+                    .catch(error => console.error('Error loading the members:', error));
+                },
+                fetchMembersInActivities() {
+                    fetch('/manager/api/rsvp/users', {
+                        method: 'GET',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Loaded members in activities:", data);
+                        this.membersInActivities = data;
+                    })
+                    .catch(error => console.error('Error loading the members in activities:', error));
+                },
+                fetchBranchID() {
+                    fetch('/manager/api/branch_id')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.branchId = data;
+                        this.fetchTotalUsers(this.branchId);
+                    })
+                    .catch(error => console.error('Error fetching branchId:', error));
+                },
+                fetchActivities() {
+                    fetch('/manager/api/activities')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.activities = data;
+                    })
+                    .catch(error => console.error('Error fetching activities:', error));
+                },
+                fetchRSVPs() {
+                    fetch(`/manager/api/activities/${this.selectedActivity}/participants`)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.attendees = data;
+                        this.totalParticipants = data.length;
+                        if (this.totalUsers > 0){
+                            this.calculateParticipationRate();
+                        }
+                    })
+                    .catch(error => console.error('Error fetching attendees:', error));
+                },
+                fetchTotalUsers(branchId) {
+                    fetch(`/manager/api/branch/${branchId}/user-count`)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.totalUsers = data.totalUsers;
+                        console.log('total user:', this.totalUsers);
+                        this.calculateParticipationRate();
+                    })
+                    .catch(error => console.error('Error fetching total users:', error));
+                },
+                calculateParticipationRate() {
+                    if (this.totalUsers > 0) {
+                        this.participationRate = ((this.totalParticipants / this.totalUsers) * 100).toFixed(2);
+                    } else {
+                        this.participationRate = 0;
+                    }
+                    console.log(`Participation Rate: ${this.participationRate}%`);
+                }
+
+            },
+            mounted() {
+                this.fetchActivities(); // Load activities list on mount
+                this.fetchTotalUsers(this.branchId);
+                this.fetchMembers();
+                this.fetchMembersInActivities();
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
