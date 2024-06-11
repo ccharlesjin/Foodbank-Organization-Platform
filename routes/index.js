@@ -7,10 +7,22 @@ const db = require('../db');
 var passport = require('passport');
 var GitHubStrategy = require('passport-github2').Strategy;
 
-const { authenticateManagerToken, authenticateAdminToken } = require('../middleware/authMiddleware');
+const { authenticateUserToken, authenticateManagerToken, authenticateAdminToken } = require('../middleware/authMiddleware');
 
 
-//受保护的静态文件路由
+//Protected static file routes
+router.get('/Profile.html', authenticateUserToken, function(req, res) {
+    res.sendFile(path.join(__dirname, '../public', 'Profile.html'));
+});
+
+router.get('/user_announcements.html', authenticateUserToken, function(req, res) {
+    res.sendFile(path.join(__dirname, '../public', 'user_announcements.html'));
+});
+
+router.get('/user_activity.html', authenticateUserToken, function(req, res) {
+    res.sendFile(path.join(__dirname, '../public', 'user_activity.html'));
+});
+
 router.get('/members.html', authenticateManagerToken, function(req, res) {
     res.sendFile(path.join(__dirname, '../public', 'members.html'));
 });
@@ -20,6 +32,14 @@ router.get('/events.html', authenticateManagerToken, function(req, res) {
 });
 
 router.get('/updates.html', authenticateManagerToken, function(req, res) {
+    res.sendFile(path.join(__dirname, '../public', 'updates.html'));
+});
+
+router.get('/manager_profile.html', authenticateManagerToken, function(req, res) {
+    res.sendFile(path.join(__dirname, '../public', 'updates.html'));
+});
+
+router.get('/rsvp.html', authenticateManagerToken, function(req, res) {
     res.sendFile(path.join(__dirname, '../public', 'updates.html'));
 });
 
@@ -40,7 +60,8 @@ router.get('/admin.html', authenticateAdminToken, function(req, res) {
 });
 
 
-// 配置静态文件服务
+
+// Configured static file service
 router.use(express.static(path.join(__dirname, '../public')));
 
 router.get('/', function(req, res) {
@@ -54,10 +75,6 @@ router.get('/home', function(req, res) {
 router.get('/location', function(req, res) {
     res.sendFile(path.join(__dirname, '../public', '/location.html'));
    });
-
-// router.get('/contact', function(req, res) {
-//     res.sendFile(path.join(__dirname, '../public', '/contact.html'));
-//    });
 
 router.get('/api/branches', (req, res) => {
     db.query('SELECT * FROM Branches', (err, result) => {

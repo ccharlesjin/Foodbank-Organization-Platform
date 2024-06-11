@@ -2,7 +2,6 @@ const express = require('express');
 const mysql = require('mysql2');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-// const notificationRoutes = require('./notificationRoutes');
 const path = require('path');
 
 const app = express();

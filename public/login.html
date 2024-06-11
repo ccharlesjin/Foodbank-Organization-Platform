@@ -75,7 +75,7 @@
     })
     .then(response => {
         if(response.ok) {
-            window.location.href = 'Profile.html'; // 登录成功，重定向
+            window.location.href = '/user/profile'; // 登录成功，重定向
         } else {
             return response.text();
         }

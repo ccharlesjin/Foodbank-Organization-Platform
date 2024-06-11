@@ -40,3 +40,6 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
 ##### v0.0.17-k: Use twitter-api-v2 to synchronize activity information to Twitter after the administrator adds an activity.
 ##### v0.0.18-k: Modify the project's registration and login logic, use hashing and salting to save and verify passwords.
 ##### v0.0.19-k: Add branch_details.html to display branch introductions and announcements
+##### v0.0.20-j: Implemented email notifications via Google's OAuth2: an email will be sent to the branch members when a post is updated or an event is held.
+##### v0.0.21-j: Integrated with the user management section and refactored the User interface using Vue.js.
+##### v0.0.22-z: Completed the RSVP section and made corresponding modifications to the database. Branch managers can now view RSVP information for different events.
