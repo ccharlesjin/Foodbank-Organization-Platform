@@ -78,11 +78,11 @@ body, html {
     margin : 85px 0px 0px 0px;
     overflow: clip;
     background: url('pictures/index.jpeg') no-repeat center center/cover;
-    height: calc(100vh - 85px); 
+    height: calc(100vh - 85px);
     display: flex;
     justify-content: center;
     align-items: center;
-   
+
     /* padding-top: 60px; 为顶部导航栏留出空间 */
 }
 
@@ -127,7 +127,7 @@ body, html {
     /* padding: 20px 0 0 0; */
     max-width: 1200px;
     margin: 85px auto 0 auto; /* 上边距为80px以避开固定的导航栏 */
-    height: calc(100vh - 85px); 
+    height: calc(100vh - 85px);
     box-sizing: border-box;
     overflow: clip;
     background-color: #eef1ef;
@@ -144,9 +144,22 @@ body, html {
     padding-left: 43.833px; /* 左侧内边距 */
     /* padding-top: 30px; 左侧内边距 */
     display: block; /* 确保内边距正确显示 */
-    
-}
 
+}
+#announcement {
+    margin-bottom: 20px; /* 设置底部间距 */
+}
+#introduction {
+    font-size: 15px; /* 设置字体大小，可以根据需要调整 */
+    line-height: 1.6;
+
+}
+#branch-title {
+    text-align: center; /* 居中对齐 */
+}
+#announcement-title {
+    text-align: center; /* 居中对齐 */
+}
 .cta-button {
     display: inline-block;
     padding: 10px 20px;
@@ -169,7 +182,7 @@ body, html {
     text-align: center;
 }
 .product-header{
-    padding-top: 20px; 
+    padding-top: 20px;
     margin-left: 135px;
     background-color: #eef1ef;
 }
@@ -195,7 +208,7 @@ body, html {
     transition: box-shadow 0.3s ease, color 0.3s ease; /* 平滑过渡效果 */
 }
 .product-item:hover {
-    
+
     box-shadow: 0 8px 16px rgba(0,0,0,0.3); /* 悬停时增加阴影效果 */
 }
 .picture{
@@ -231,7 +244,7 @@ body, html {
 .word_and_svg{
     display: flex;  /* 使用flex布局使子元素水平排列 */
     align-items: center;  /* 垂直居中 */
-    justify-content: center; 
+    justify-content: center;
     transition: fill 0.3s ease;
     fill: #000;
 }

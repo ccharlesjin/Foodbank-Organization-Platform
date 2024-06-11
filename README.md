@@ -39,3 +39,4 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
 ##### v0.0.16-k: Complete third-party login
 ##### v0.0.17-k: Use twitter-api-v2 to synchronize activity information to Twitter after the administrator adds an activity.
 ##### v0.0.18-k: Modify the project's registration and login logic, use hashing and salting to save and verify passwords.
+##### v0.0.19-k: Add branch_details.html to display branch introductions and announcements

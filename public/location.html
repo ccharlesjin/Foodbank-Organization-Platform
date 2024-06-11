@@ -35,7 +35,7 @@
                         <img :src="branch.image_url" alt="branch.name">
 
                     </div>
-                    <a class="word_and_svg" href="login.html" style="text-decoration: none;">
+                    <a class="word_and_svg"  :href="'branch_details.html?branch_name=' + branch.branch_name" style="text-decoration: none;">
 
                         <h2>{{ branch.branch_name }}</h2>
                             <svg width="15" height="15" viewBox="0 0 10 17" xmlns="http://www.w3.org/2000/svg">

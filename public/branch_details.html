@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - FoodBank Australia</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">FOODBANK AUSTRALIA</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="location.html">Location</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="content-wrapper">
+        <div class="image-content">
+            <img id="hero-image" src="pictures/about.png" alt="Community Engagement">
+        </div>
+        <div class="text-content">
+            <h1 id="branch-title">Introduction</h1>
+            <p id="introduction">Loading</p>
+            <h1 id="announcement-title">Announcements</h1>
+            <div id="announcements-container">
+                <p id="announcement">Loading</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Function to get query parameters
+        function getParameterByName(name) {
+            const url = new URL(window.location.href);
+            return url.searchParams.get(name);
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const branchName = getParameterByName('branch_name');
+            if (branchName) {
+                document.getElementById('branch-title').innerText = `${branchName} Branches`;
+
+                axios.get(`/api/branch?branch_name=${branchName}`)
+                    .then(response => {
+                        document.getElementById('introduction').innerText = response.data.introduction;
+                        document.getElementById('hero-image').src = response.data.hero_url || 'pictures/about.png';
+                    })
+                    .catch(error => {
+                        console.error("There was an error fetching the introduction:", error);
+                        document.getElementById('introduction').innerText = 'Error loading introduction';
+                    });
+
+                axios.get(`/api/announcements?branch_name=${branchName}`)
+                    .then(response => {
+                        const announcements = response.data.announcements;
+                        const container = document.getElementById('announcements-container');
+                        container.innerHTML = ''; // 清空容器
+                        if (announcements.length > 0) {
+                            announcements.forEach(content => {
+                                const p = document.createElement('p');
+                                p.className = 'announcement';
+                                p.innerText = `• ${content}`; // 在内容前添加圆点
+                                p.style.marginBottom = '20px'; // 设置底部间距
+                                container.appendChild(p);
+                            });
+                        } else {
+                            container.innerText = 'No announcements available.';
+                        }
+                    })
+                    .catch(error => {
+                        console.error("There was an error fetching the announcements:", error);
+                        document.getElementById('announcement').innerText = 'Error loading announcements';
+                    });
+            } else {
+                document.getElementById('introduction').innerText = 'Branch name not provided';
+                document.getElementById('announcement').innerText = 'Branch name not provided';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -92,6 +92,66 @@ passport.use(new GitHubStrategy({
   });
 
 
+
+// 获取图片和简介的路由
+  router.get('/api/branch', (req, res) => {
+    const branchName = req.query.branch_name;
+    if (!branchName) {
+        res.status(400).json({ error: 'Branch name is required' });
+        return;
+    }
+    const sql = 'SELECT introduction, hero_url FROM Branches WHERE branch_name = ?';
+    db.execute(sql, [branchName], (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            res.status(500).json({ error: 'Database error' });
+            return;
+        }
+        if (results.length > 0) {
+            res.json({
+                introduction: results[0].introduction,
+                hero_url: results[0].hero_url
+            });
+        } else {
+            res.status(404).json({ error: 'Branch not found' });
+        }
+    });
+});
+
+
+
+
+// 获取公告的路由
+router.get('/api/announcements', (req, res) => {
+    const branchName = req.query.branch_name;
+    if (!branchName) {
+        res.status(400).json({ error: 'Branch name is required' });
+        return;
+    }
+    const sqlBranch = 'SELECT branch_id FROM Branches WHERE branch_name = ?';
+    db.execute(sqlBranch, [branchName], (err, branchResults) => {
+        if (err) {
+            console.error('Database error:', err);
+            res.status(500).json({ error: 'Database error' });
+            return;
+        }
+        if (branchResults.length > 0) {
+            const branchId = branchResults[0].branch_id;
+            const sqlUpdate = 'SELECT content FROM Updates WHERE branch_id = ? AND visibility = "public"';
+            db.execute(sqlUpdate, [branchId], (err, updateResults) => {
+                if (err) {
+                    console.error('Database error:', err);
+                    res.status(500).json({ error: 'Database error' });
+                    return;
+                }
+                res.json({ announcements: updateResults.map(row => row.content) });
+            });
+        } else {
+            res.status(404).json({ error: 'Branch not found' });
+        }
+    });
+});
+
   router.get('/githubsignin', passport.initialize(), passport.authenticate('github', { scope: [ 'user:email' ], session: false }), function(req, res){ /* Leave empty */ });
 
   router.get('/githubsignin/callback', passport.initialize(), passport.authenticate('github', { failureRedirect: '/loginfailed.html', session: false }), function(req, res, next) {
