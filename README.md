@@ -26,20 +26,24 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
 ##### v0.0.5-j: Implemented the member data management of the branch administrator, allowing administrators to add, edit, and delete member data.
 ##### v0.0.6-j: The file structure has been modified to ensure consistency with the main branch, using a new database structure.
 ##### v0.0.7-j: Use cookie and JWT to verify manager's identity. Manager will not be able to login or fetch the member data if not verified.
-##### v0.0.8-z: Finish features of administrator, including editing, adding and deleting users, managers and branches, sign up other administrators.
-##### v0.0.8-j: Merged the branch of manager and administrator, applied JWT verification to both manager and administrator login strategy.
-##### v0.0.9-w: Improved the personal profile interface, including the ability to change avatars and edit personal profile information. Users can now change their passwords with added requirements for password security levels and restrictions to ensure passwords are not the same as before.
-##### v0.0.9-w: Implemented partial refresh and modal box functionality for user interface elements. Enhanced the display of user information on active pages, providing a more dynamic and seamless user experience.
-##### v0.0.10-z: In administrator manage website: Successfully connected the application to a MySQL database, and ensured seamless synchronization between the user interface and the database for all create, read, update, delete operations.
-##### v0.0.11-z: In adding users, organization, branch or administrator: setting to pop up a table to let popole operate.
-##### v0.0.12-j: Completed the update post functionality for the branch manager section and improved the corresponding database logic. Now, the manager can choose to publish notifications as public, inside branch, or private categories.
-##### v0.0.13-j: Improved and integrated the UI design for the manager section, ensuring consistency between the manager and administrator UI. Updated the CSS for the footer section.
-##### v0.0.14-j: The authentication part of the entire management system has been completed using cookie-parser. Upon successful login, the system places the token in a cookie and sends it to the client.
-##### v0.0.15-k: Use regular expressions to verify email format and password length when users and managers register, and make correct prompts.
-##### v0.0.16-k: Complete third-party login
-##### v0.0.17-k: Use twitter-api-v2 to synchronize activity information to Twitter after the administrator adds an activity.
-##### v0.0.18-k: Modify the project's registration and login logic, use hashing and salting to save and verify passwords.
-##### v0.0.19-k: Add branch_details.html to display branch introductions and announcements
-##### v0.0.20-j: Implemented email notifications via Google's OAuth2: an email will be sent to the branch members when a post is updated or an event is held.
-##### v0.0.21-j: Integrated with the user management section and refactored the User interface using Vue.js.
-##### v0.0.22-z: Completed the RSVP section and made corresponding modifications to the database. Branch managers can now view RSVP information for different events.
+##### v0.0.8-z: Finish features of administrator, including editing, adding and deleting users.
+##### v0.0.9-j: Merged the branch of manager and administrator, applied JWT verification to both manager and administrator login strategy.
+##### v0.0.10-w: Improved the personal profile interface, including the ability to change avatars and edit personal profile information. Users can now change their passwords with added requirements for password security levels and restrictions to ensure passwords are not the same as before.
+##### v0.0.11-w: Implemented partial refresh and modal box functionality for user interface elements. Enhanced the display of user information on active pages, providing a more dynamic and seamless user experience.
+##### v0.0.12-z: Finish features of administrator, including editing, adding and managers and branches.
+##### v0.0.13-z: In adding users, organization, branch or administrator: setting to pop up a table to let popole operate.
+##### v0.0.14-j: Completed the update post functionality for the branch manager section and improved the corresponding database logic. Now, the manager can choose to publish notifications as public, inside branch, or private categories.
+##### v0.0.15-j: Improved and integrated the UI design for the manager section, ensuring consistency between the manager and administrator UI. Updated the CSS for the footer section.
+##### v0.0.16-j: The authentication part of the entire management system has been completed using cookie-parser. Upon successful login, the system places the token in a cookie and sends it to the client.
+##### v0.0.17-k: Use regular expressions to verify email format and password length when users and managers register, and make correct prompts.
+##### v0.0.18-k: Complete third-party login
+##### v0.0.19-k: Use twitter-api-v2 to synchronize activity information to Twitter after the administrator adds an activity.
+##### v0.0.20-k: Modify the project's registration and login logic, use hashing and salting to save and verify passwords.
+##### v0.0.21-k: Add branch_details.html to display branch introductions and announcements
+##### v0.0.22-j: Implemented email notifications via Google's OAuth2: an email will be sent to the branch members when a post is updated or an event is held.
+##### v0.0.23-j: Integrated with the user management section and refactored the User interface using Vue.js.
+##### v0.0.24-z: Completed the RSVP section and made corresponding modifications to the database. Branch managers can now view RSVP information for different events.
+##### v0.0.25-z: Finish the connection of administrator to the database, including when editing, adding or deleting users, the database updates too.
+##### v0.0.26-z: Finish features of administrator, including sign up other administrators.
+##### v0.0.27-z: Finish the connection of administrator to the database, including when editing, adding or deleting managers and branches, the database updates too.
+##### v0.0.25-z: Finish the connection of administrator to the database, including when signing up other administrators, the database updates too.
