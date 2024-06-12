@@ -62,54 +62,64 @@
 
 
     document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();  // 阻止表单的常规提交
-    const email = document.querySelector('input[name="email"]').value;
-    const password = document.querySelector('input[name="password"]').value;
+        event.preventDefault();  // 阻止表单的常规提交
+        const email = document.querySelector('input[name="email"]').value;
+        const password = document.querySelector('input[name="password"]').value;
 
-    fetch('/users/user_login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-    })
-    .then(response => {
-        if(response.ok) {
-            window.location.href = '/user/profile'; // 登录成功，重定向
-        } else {
-            return response.text();
+        fetch('/users/user_login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+        })
+        .then(response => {
+            if(response.ok) {
+                window.location.href = '/user/profile'; // 登录成功，重定向
+            } else {
+                return response.text();
+            }
+        })
+        .then(text => {
+            if (text) {
+                alert(text); // 显示错误消息
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    window.addEventListener('message', function(event) {
+        if (event.origin !== window.location.origin) {
+            return; // 确保消息是从同一来源发送的
         }
-    })
-    .then(text => {
-        if (text) {
-            alert(text); // 显示错误消息
+        const data = event.data;
+        if (data.token) {
+            // 处理接收到的 token，比如存储在 localStorage 或 cookie 中
+            document.cookie = `jwt=${data.token}; path=/; max-age=3600; secure; sameSite=Strict`;
+            console.log(data.message);
+            // 你可以在这里进行其他操作，例如更新 UI 或发出进一步的请求
         }
-    })
-    .catch(error => console.error('Error:', error));
-});
-
-
-
+    });
 
     function openCenteredWindow() {
-    // 获取屏幕的宽度和高度
-    var screenWidth = window.screen.width;
-    var screenHeight = window.screen.height;
+        // 获取屏幕的宽度和高度
+        var screenWidth = window.screen.width;
+        var screenHeight = window.screen.height;
 
-    // 设置弹窗的宽度和高度
-    var width = 500;
-    var height = 500;
+        // 设置弹窗的宽度和高度
+        var width = 500;
+        var height = 500;
 
-    // 计算弹窗的新位置，使其居中
-    var left = (screenWidth / 2) - (width / 2);
-    var top = (screenHeight / 2) - (height / 2);
+        // 计算弹窗的新位置，使其居中
+        var left = (screenWidth / 2) - (width / 2);
+        var top = (screenHeight / 2) - (height / 2);
 
-    // 设置窗口的特性，包括居中位置
-    var windowFeatures = `width=${width}, height=${height}, left=${left}, top=${top}, resizable=yes, scrollbars=yes, status=yes, location=no`;
+        // 设置窗口的特性，包括居中位置
+        var windowFeatures = `width=${width}, height=${height}, left=${left}, top=${top}, resizable=yes, scrollbars=yes, status=yes, location=no`;
 
-    // 打开窗口
-    window.open('/githubsignin', 'GitHubLogin', windowFeatures);
-}
+        // 打开窗口
+        window.open('/githubsignin', 'GitHubLogin', windowFeatures);
+    }
 </script>
 </body>
 

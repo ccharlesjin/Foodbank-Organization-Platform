@@ -37,7 +37,7 @@ const generateHash = (password, salt = '10') => {
 router.post('/user_login', function(req, res) {
     const { email, password } = req.body;
     const hashedPassword = generateHash(password); // 对密码进行哈希处理
-    const sqlQuery = 'SELECT User_ID, branch_id FROM User WHERE email = ? AND password = ?';
+    const sqlQuery = 'SELECT user_id, branch_id FROM User WHERE email = ? AND password = ?';
     db.query(sqlQuery, [email, hashedPassword], (err, results) => {
         if (err) {
             console.error('Database error:', err);
@@ -46,9 +46,8 @@ router.post('/user_login', function(req, res) {
         }
         if (results.length > 0) {
             const user = results[0];
-            //console.log(user.User_ID,email,user.branch_id);
             const token = jwt.sign({
-                user_id: user.User_ID,
+                user_id: user.user_id,
                 email: email,
                 branch_id: user.branch_id
             }, SECRET_KEY_User, { expiresIn: '1h' });
@@ -84,7 +83,36 @@ router.post('/user_register', function(req, res) {
             return;
         }
         //注册步骤1完成，继续添加信息
-        res.sendFile(path.join(__dirname, '../public', '/Profile.html'));
+        const sqlQuery = 'SELECT user_id, branch_id FROM User WHERE email = ? AND password = ?';
+        db.query(sqlQuery, [email, hashedPassword], (err, results) => {
+            if (err) {
+                console.error('Database error:', err);
+                res.status(500).json({ message: 'Internal server error' });
+                return;
+            }
+            if (results.length > 0) {
+                const user = results[0];
+                const token = jwt.sign({
+                    user_id: user.user_id,
+                    email: email,
+                    branch_id: user.branch_id
+                }, SECRET_KEY_User, { expiresIn: '1h' });
+                res.cookie('jwt', token, {
+                    httpOnly: true, // 使 cookie 仅服务器可访问，增加安全性
+                    secure: true, // 仅通过 HTTPS 发送 cookie
+                    sameSite: 'strict', // 严格的同站策略，增强 CSRF 保护
+                    maxAge: 3600000 // 有效期，单位毫秒
+                });
+                console.log("Sending token:", token); // 添加日志输出token
+                res.json({ token: token, message: 'Login successful' });
+                return;
+            } else {
+
+                res.status(401).send('Email or password is incorrect'); // 使用 401 状态码表示授权失败
+                return;
+            }
+        });
+        // res.sendFile(path.join(__dirname, '../public', '/Profile.html'));
     });
 });
 
@@ -96,7 +124,7 @@ router.post('/user_register', function(req, res) {
 router.post('/manager_login', function(req, res) {
     const { email, password } = req.body;
     const hashedPassword = generateHash(password); // 对密码进行哈希处理
-    const sqlQuery = 'SELECT User_ID, branch_id FROM Manager WHERE email = ? AND password = ?';
+    const sqlQuery = 'SELECT user_id, branch_id FROM Manager WHERE email = ? AND password = ?';
     db.query(sqlQuery, [email, hashedPassword], (err, results) => {
         if (err) {
             console.error('Database error:', err);
@@ -105,9 +133,8 @@ router.post('/manager_login', function(req, res) {
         }
         if (results.length > 0) {
             const user = results[0];
-            //console.log(user.User_ID,email,user.branch_id);
             const token = jwt.sign({
-                user_id: user.User_ID,
+                user_id: user.user_id,
                 email: email,
                 branch_id: user.branch_id
             }, SECRET_KEY_MANAGER, { expiresIn: '1h' });

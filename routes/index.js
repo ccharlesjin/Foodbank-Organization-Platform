@@ -7,8 +7,9 @@ const db = require('../db');
 var passport = require('passport');
 var GitHubStrategy = require('passport-github2').Strategy;
 
+const jwt = require('jsonwebtoken');
 const { authenticateUserToken, authenticateManagerToken, authenticateAdminToken } = require('../middleware/authMiddleware');
-
+const SECRET_KEY_User = 'user_secret_key';
 
 //Protected static file routes
 router.get('/Profile.html', authenticateUserToken, function(req, res) {
@@ -185,7 +186,25 @@ router.get('/api/announcements', (req, res) => {
         }
         if (results.length > 0) {
             // If email exists in the User table, login successful
-            res.send('<script>window.opener.location.href = "/Profile.html"; window.close();</script>');
+            const user = results[0];
+            //console.log(user.User_ID,email,user.branch_id);
+            const token = jwt.sign({
+                user_id: user.user_id,
+                email: user.email,
+                branch_id: user.branch_id
+            }, SECRET_KEY_User, { expiresIn: '1h' });
+            res.cookie('jwt', token, {
+                httpOnly: true, // 使 cookie 仅服务器可访问，增加安全性
+                secure: true, // 仅通过 HTTPS 发送 cookie
+                sameSite: 'strict', // 严格的同站策略，增强 CSRF 保护
+                maxAge: 3600000 // 有效期，单位毫秒
+            });
+            console.log("Sending token:", token); // 添加日志输出token
+            res.send(`<script>
+                window.opener.postMessage({ token: '${token}', message: 'Login successful' }, '*');
+                window.opener.location.href = "/Profile.html";
+                window.close();
+            </script>`);
         } else {
             // If email does not exist
             res.send('<script>alert("未查询到用户，请注册"); window.opener.location.href = "/register.html"; window.close();</script>');
