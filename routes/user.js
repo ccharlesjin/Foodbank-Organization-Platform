@@ -265,7 +265,7 @@ router.post('/api/join_activity', (req, res) => {
             res.status(500).send('Internal server error');
             return;
         }
-        res.json({ message: '成功参加该活动' });
+        res.json({ message: 'Successfully participate in the event' });
     });
 });
 
@@ -280,7 +280,7 @@ router.post('/api/leave_activity', (req, res) => {
             res.status(500).send('Internal server error');
             return;
         }
-        res.json({ message: '已成功退出活动' });
+        res.json({ message: 'The activity was successfully exited' });
     });
 });
 

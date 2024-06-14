@@ -48,3 +48,4 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
 ##### v0.0.27-z: Finish the connection of administrator to the database, including when editing, adding or deleting managers and branches, the database updates too.
 ##### v0.0.28-z: Finish the connection of administrator to the database, including when signing up other administrators, the database updates too.
 ##### v0.0.29-j: Fixed en error of register and third-party login section, now the token would be correctly sent.
+##### v0.0.30-k: Update AddDetail.html to dynamically obtain branch information and optimize registration logic.

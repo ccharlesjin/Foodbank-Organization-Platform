@@ -60,52 +60,48 @@
         flag = !flag
     }, 5000)
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('form');
-        const emailInput = document.querySelector('input[name="email"]');
-        const passwordInput = document.querySelector('input[name="password"]');
+    $(document).ready(function() {
+        $('#registerForm').on('submit', function(event) {
+            event.preventDefault();
 
-        form.addEventListener('submit', function(event) {
+            const emailInput = document.querySelector('input[name="email"]');
+            const passwordInput = document.querySelector('input[name="password"]');
+            const userNameInput = document.querySelector('input[name="user_name"]');
             const email = emailInput.value;
             const password = passwordInput.value;
+            const userName = userNameInput.value;
             let valid = true;
             let errorMessage = '';
 
             // 验证电子邮箱格式
             if (!email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
-                errorMessage += 'The email format is not valid.';
+                errorMessage += 'The email format is not valid.\n';
                 valid = false;
             }
 
             // 验证密码长度
             if (password.length < 8) {
-                errorMessage += 'Passwords need to be at least 8 characters.';
+                errorMessage += 'Passwords need to be at least 8 characters.\n';
+                valid = false;
+            }
+
+            // 验证用户名是否为空
+            if (userName.trim() === '') {
+                errorMessage += 'Name is required.\n';
                 valid = false;
             }
 
             // 如果验证失败，显示错误消息并阻止表单提交
             if (!valid) {
                 alert(errorMessage);
-                event.preventDefault();
+                return;
             }
-        });
-    });
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const userNotFound = urlParams.get('userNotFound');
-        if (userNotFound) {
-            alert('No user found, please register');
 
-        }
-    };
-    $(document).ready(function() {
-        $('#registerForm').on('submit', function(event) {
-            event.preventDefault();
-
+            // 如果验证通过，使用 AJAX 提交表单
             var formData = {
-                user_name: $('input[name="user_name"]').val(),
-                email: $('input[name="email"]').val(),
-                password: $('input[name="password"]').val()
+                user_name: userName,
+                email: email,
+                password: password
             };
 
             $.ajax({
@@ -114,7 +110,7 @@
                 data: formData,
                 success: function(response) {
                     if (response.token) {
-                        window.location.href = '/user/profile';
+                        window.location.href = '/AddDetail.html';
                     } else {
                         alert(response.message);
                     }
@@ -125,7 +121,6 @@
             });
         });
     });
-
 </script>
 </body>
 

@@ -4,7 +4,7 @@ body {
     align-items: center;
     height: 100vh;
     background-color: #eef1ef;
-    background-image: url('signin-background.jpg');
+    background-image: url('./pictures/signin-background1.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -16,7 +16,7 @@ form {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-input[type="text"], input[type="Phonenumber"],select {
+input[type="text"], input[type="number"],select {
     width: 100%;
     padding: 10px;
     margin: 10px 0;

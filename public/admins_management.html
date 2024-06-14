@@ -32,13 +32,7 @@
 
         <main class="main full-height flex-grow">
             <h1 class="logo">Administrator Management</h1>
-            <!-- 添加成员的表单 -->
-            <!-- <form v-show="showAddForm" @submit.prevent="addAdministrator">
-                <input type="text" v-model="newAdministrator.User_Name" placeholder="Username" required>
-                <input type="password" v-model="newAdministrator.Password" placeholder="Password" required>
-                <input type="email" v-model="newAdministrator.Email" placeholder="Email" required>
-                <button class="edit-volunteers add-member" type="submit">Submit</button>
-            </form> -->
+
             <div class="content-right">
                 <button type="button" class="edit-volunteers add-member" id="showAddForm" @click="showAddForm = !showAddForm">Sign Up New Admins</button>
             </div>
@@ -112,7 +106,6 @@
                 });
             }
 
-            // 可以添加其他 'section' 处理逻辑，如果 'loadSection' 用于多个目的
         }
         Vue.createApp({
             data() {

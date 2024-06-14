@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS User (
 );
 
 -- 插入 User 数据
+-- johndoe@example.com hfeuiah32323
 INSERT INTO User (user_name, email, password, phone_number, full_name, branch_id) VALUES
 ('JohnDoe', 'johndoe@example.com', '341ef5f7f28eb2a19ce02b725152c94e9a88715ad0a021cf66b6ceefdc2083cb921716bbd3ed56d18ae3b10a7fcf808831d3eabfbbd754a1418e699a65879a8c', '1234567890', 'John Doe', 1),
 ('JaneDoe', 'janedoe@example.com', 'cbab9bfe6be68a7b0cfe6cc9c079d357393f2b8702fa31cd25cdeff4e49930c079108604cf07b10e42123af11676bc694883bc2da08d5cfb6e357b72aba5018e', '0987654321', 'Jane Doe', 2),
@@ -57,6 +58,7 @@ CREATE TABLE IF NOT EXISTS Manager (
 );
 
 -- 插入 Manager 数据
+-- johndoe@example.com fihuewhiu49874
 INSERT INTO Manager (user_name, email, password, phone_number, full_name, branch_id) VALUES
 ('JohnDoe', 'johndoe@example.com', 'ec529a18f23133d970f4de2e103f56af6a816112d9664ec469be9a22c23aa526dc1e65a26d5fe35846e3377fa46108f3359d783db9018cc879c9e2e8408ed81b', '1234567890', 'John Doe', 1),
 ('JaneDoe', 'janedoe@example.com', '7a1394fc877cb99f505662f64c94a034b8415d2f2c8c34c3b4d12142bc1501757f36e5327358ec92d59ef56bcf482354c67d750fe15168d8ab3b410c3d04c4b0', '0987654321', 'Jane Doe', 2),
@@ -110,6 +112,7 @@ CREATE TABLE IF NOT EXISTS Administrator (
     Email VARCHAR(255) NOT NULL
 );
 
+-- johndoe@example.com fihuewhiu49874
 INSERT INTO Administrator (User_Name, Email, Password) VALUES ('JohnDoe', 'johndoe@example.com', 'ec529a18f23133d970f4de2e103f56af6a816112d9664ec469be9a22c23aa526dc1e65a26d5fe35846e3377fa46108f3359d783db9018cc879c9e2e8408ed81b');
 
 -- 创建 Updates 表

@@ -32,16 +32,7 @@
 
         <main class="main full-height flex-grow">
             <h1 class="logo">Member Management</h1>
-            <!-- 添加成员的表单 -->
-            <!-- <form v-show="showAddForm" @submit.prevent="addMember">
-                <input type="text" v-model="newMember.user_name" placeholder="Username" required>
-                <input type="password" v-model="newMember.password" placeholder="Password" required>
-                <input type="email" v-model="newMember.email" placeholder="Email" required>
-                <input type="text" v-model="newMember.phone_number" placeholder="Phone Number">
-                <input type="text" v-model="newMember.full_name" placeholder="Full Name">
-                <input type="number" v-model="newMember.branch_id" placeholder="Branch ID" required>
-                <button class="edit-volunteers add-member" type="submit">Submit</button>
-            </form> -->
+
             <div class="content-right">
                 <button type="button" id="showAddForm" class="edit-volunteers add-member" @click="showAddForm = !showAddForm">Add New Member</button>
             </div>

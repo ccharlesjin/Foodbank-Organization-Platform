@@ -112,11 +112,77 @@ router.post('/user_register', function(req, res) {
                 return;
             }
         });
-        // res.sendFile(path.join(__dirname, '../public', '/Profile.html'));
+        //  res.sendFile(path.join(__dirname, '../public', '/AddDetail.html'));
     });
 });
 
 
+// 添加用户详细信息
+router.post('/add_detail', function(req, res) {
+    const { Phonenumber, fullname, organization } = req.body;
+    const token = req.cookies.jwt;
+
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided.' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, SECRET_KEY_User);
+        const userId = decoded.user_id;
+
+        // 从 Branches 表中查找对应的 branch_id
+        const branchSql = 'SELECT branch_id FROM Branches WHERE branch_name = ?';
+        db.query(branchSql, [organization], (branchError, branchResults) => {
+            if (branchError) {
+                return res.status(500).json({ message: 'Error fetching branch details: ' + branchError.message });
+            }
+
+            if (branchResults.length === 0) {
+                return res.status(404).json({ message: 'Organization not found.' });
+            }
+
+            const branchId = branchResults[0].branch_id;
+
+            // 更新 User 表
+            const userSql = 'UPDATE User SET phone_number = ?, full_name = ?, branch_id = ? WHERE user_id = ?';
+            db.execute(userSql, [Phonenumber, fullname, branchId, userId], (userError, userResults) => {
+                if (userError) {
+                    return res.status(500).json({ message: 'Error updating user details: ' + userError.message });
+                }
+                // 生成新的 token 包含 branch_id
+                const newToken = jwt.sign({
+                    user_id: userId,
+                    email: decoded.email,
+                    branch_id: branchId
+                }, SECRET_KEY_User, { expiresIn: '1h' });
+
+                // 设置新的 cookie
+                res.cookie('jwt', newToken, {
+                    httpOnly: true, // 使 cookie 仅服务器可访问，增加安全性
+                    secure: true, // 仅通过 HTTPS 发送 cookie
+                    sameSite: 'strict', // 严格的同站策略，增强 CSRF 保护
+                    maxAge: 3600000 // 有效期，单位毫秒
+                });
+                res.json({ success: true, message: 'Details updated successfully' });
+            });
+        });
+    } catch (error) {
+        return res.status(401).json({ message: 'Failed to authenticate token.' });
+    }
+});
+
+// 获取所有分支名称
+router.get('/branches', function(req, res) {
+    const sqlQuery = 'SELECT branch_name FROM Branches';
+    db.query(sqlQuery, (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            res.status(500).json({ message: 'Internal server error' });
+            return;
+        }
+        res.json(results);
+    });
+});
 
 
 

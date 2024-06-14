@@ -207,7 +207,7 @@ router.get('/api/announcements', (req, res) => {
             </script>`);
         } else {
             // If email does not exist
-            res.send('<script>alert("未查询到用户，请注册"); window.opener.location.href = "/register.html"; window.close();</script>');
+            res.send('<script>alert("No user found, please register"); window.opener.location.href = "/register.html"; window.close();</script>');
         }
     });
 

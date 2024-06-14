@@ -53,34 +53,4 @@ function sendEmail(to, subject, text) {
 
 module.exports = { sendEmail };
 
-// emailService.js
-// const nodemailer = require('nodemailer');
 
-// // 创建可重用邮件传输器
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail', // 你可以使用其他服务，比如 'hotmail', 'yahoo', 'outlook', '163'
-//     auth: {
-//         user: 'your-email@gmail.com', // 你的邮箱地址
-//         pass: 'your-email-password'   // 你的邮箱密码或应用密码
-//     }
-// });
-
-// // 发送电子邮件的函数
-// function sendEmail(to, subject, text) {
-//     const mailOptions = {
-//         from: 'your-email@gmail.com',
-//         to,
-//         subject,
-//         text
-//     };
-
-//     transporter.sendMail(mailOptions, (error, info) => {
-//         if (error) {
-//             console.error('Error sending email:', error);
-//         } else {
-//             console.log('Email sent:', info.response);
-//         }
-//     });
-// }
-
-// module.exports = { sendEmail };

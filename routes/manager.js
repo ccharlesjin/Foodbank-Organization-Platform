@@ -229,52 +229,7 @@ router.delete('/delete-event/:id', (req, res) => {
 });
 
 
-// router.post('/add-event', (req, res) => {
-//     const { activity_name, activity_date, activity_number_of_people, activity_information } = req.body;
-//     const branch_id = req.user.branch_id;
 
-//     // 首先插入活动
-//     const sqlInsert = `
-//         INSERT INTO Activity (activity_name, activity_date, activity_number_of_people, activity_information, branch_id)
-//         VALUES (?, ?, ?, ?, ?);
-//     `;
-
-//     db.query(sqlInsert, [activity_name, activity_date, activity_number_of_people, activity_information, branch_id], (err, result) => {
-//         if (err) {
-//             console.error('Database error:', err);
-//             res.status(500).json({ message: 'Error adding event' });
-//             return;
-//         }
-
-//         // 获取 branch_name
-//         const getBranchNameQuery = `SELECT branch_name FROM Branches WHERE branch_id = ?`;
-
-//         db.query(getBranchNameQuery, [branch_id], (err, branchResult) => {
-//             if (err) {
-//                 console.error('Database error:', err);
-//                 res.status(500).json({ message: 'Error fetching branch name' });
-//                 return;
-//             }
-
-//             const branch_name = branchResult[0].branch_name;
-
-//             const textTweet = async () => {
-//                 try {
-//                     const tweetContent = `New event created: ${activity_name} on ${activity_date} in ${branch_name}. Number of participants: ${activity_number_of_people}. Details: ${activity_information}`;
-//                     await rwClient.v2.tweet(tweetContent);
-//                 } catch (error) {
-//                     console.error("Error sending tweet:", error);
-//                 }
-//             };
-
-//             // 调用函数
-//             textTweet();
-
-//             // 发送响应
-//             res.json({ message: 'Event added successfully.', newEvent: req.body });
-//         });
-//     });
-// });
 
 router.post('/add-event', (req, res) => {
     const { activity_name, activity_date, activity_number_of_people, activity_information } = req.body;
@@ -534,32 +489,6 @@ router.delete('/delete-update/:id', (req, res) => {
     });
 });
 
-// router.put('/update-update/:id', (req, res) => {
-//     const updateId = req.params.id;
-//     const { title, content } = req.body;
-//     const editTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
-//     if (!title || !content) {
-//         return res.status(400).json({ message: 'Title and content are required' });
-//     }
-
-//     const sqlUpdate = `
-//         UPDATE Updates
-//         SET title = ?, content = ?, post_time = ?
-//         WHERE update_id = ?;
-//     `;
-
-//     db.query(sqlUpdate, [title, content, editTime, updateId], (err, result) => {
-//         if (err) {
-//             console.error('Database error:', err);
-//             return res.status(500).json({ message: 'Error updating update' });
-//         }
-
-
-
-//         res.json({ message: 'Update edited successfully.' });
-//     });
-// });
 
 // 更新现有更新
 router.put('/update-update/:id', (req, res) => {

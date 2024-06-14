@@ -86,32 +86,6 @@
         });
     });
 
-    // document.querySelector('form').addEventListener('submit', function(event) {
-    //     event.preventDefault();  // 阻止表单的常规提交
-    //     const Email = document.querySelector('input[name="Email"]').value;
-    //     const Password = document.querySelector('input[name="Password"]').value;
-
-    //     fetch('/users/admin_login', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/x-www-form-urlencoded',
-    //         },
-    //         body: `Email=${encodeURIComponent(Email)}&Password=${encodeURIComponent(Password)}`
-    //     })
-    //     .then(response => {
-    //         if(response.ok) {
-    //             window.location.href = 'manager.html'; // 登录成功，重定向
-    //         } else {
-    //             return response.text();
-    //         }
-    //     })
-    //     .then(text => {
-    //         if (text) {
-    //             alert(text); // 显示错误消息
-    //         }
-    //     })
-    //     .catch(error => console.error('Error:', error));
-    // });
 </script>
 </body>
 
