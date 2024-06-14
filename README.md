@@ -4,6 +4,9 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
 # Environmental dependence
  Windows 10 or later, macOS Catalina or later, or any of the current major Linux distributions are recommended.
 
+# Presentation video
+Presentation video can be found at ./FoodBank_Presentation.mp4.
+
 # Sample login email and password
 Since all passwords in FoodBank.sql are salted, we provide some unsalted password for testing:
 ### User Table
@@ -65,3 +68,4 @@ Since all passwords in FoodBank.sql are salted, we provide some unsalted passwor
 ##### v0.0.29-j: Fixed en error of register and third-party login section, now the token would be correctly sent.
 ##### v0.0.30-k: Update AddDetail.html to dynamically obtain branch information and optimize registration logic.
 ##### v0.0.31-j: Fixed error in rsvp of manager system and profile.
+##### v0.0.32-j: Finished the presentation video.
