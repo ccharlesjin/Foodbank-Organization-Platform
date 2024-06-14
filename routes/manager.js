@@ -450,6 +450,19 @@ router.post('/post-update', (req, res) => {
                     sendEmail(userEmail, subject, text);
                 });
 
+                // 发送推文
+                const textTweet = async () => {
+                    try {
+                        const tweetContent = `New ${visibility} Update: ${title}. Content: ${content}`;
+                        await rwClient.v2.tweet(tweetContent);
+                    } catch (error) {
+                        console.error("Error sending tweet:", error);
+                    }
+                };
+
+                // 调用函数发送推文
+                textTweet();
+
                 res.json({ message: 'Update posted successfully.' });
             });
         }
