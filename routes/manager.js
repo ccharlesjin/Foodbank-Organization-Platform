@@ -263,7 +263,7 @@ router.post('/add-event', (req, res) => {
             // 发送推文
             const textTweet = async () => {
                 try {
-                    const tweetContent = `New event created: ${activity_name} on ${activity_date} in ${branch_name}. Number of participants: ${activity_number_of_people}. Details: ${activity_information}`;
+                    const tweetContent = `New event created: ${activity_name} on ${activity_date} in ${branch_name}.\nNumber of participants: ${activity_number_of_people}.\nDetails: ${activity_information}`;
                     await rwClient.v2.tweet(tweetContent);
                 } catch (error) {
                     console.error("Error sending tweet:", error);
@@ -450,18 +450,32 @@ router.post('/post-update', (req, res) => {
                     sendEmail(userEmail, subject, text);
                 });
 
-                // 发送推文
-                const textTweet = async () => {
-                    try {
-                        const tweetContent = `New ${visibility} Update: ${title}. Content: ${content}`;
-                        await rwClient.v2.tweet(tweetContent);
-                    } catch (error) {
-                        console.error("Error sending tweet:", error);
+                // 获取 branch_name
+                const getBranchNameQuery = `SELECT branch_name FROM Branches WHERE branch_id = ?`;
+                db.query(getBranchNameQuery, [branchId], (err, branchResult) => {
+                    if (err) {
+                        console.error('Database error:', err);
+                        res.status(500).json({ message: 'Error fetching branch name' });
+                        return;
                     }
-                };
 
-                // 调用函数发送推文
-                textTweet();
+                    const branch_name = branchResult[0].branch_name;
+
+                    // 发送推文
+                    const textTweet = async () => {
+                        try {
+                            const tweetContent = `New ${visibility} Update from ${branch_name} branch:\n\nTitle: ${title}\n\n${content}`;
+                            await rwClient.v2.tweet(tweetContent);
+                        } catch (error) {
+                            console.error("Error sending tweet:", error);
+                        }
+                    };
+
+                    // 调用函数发送推文
+                    textTweet();
+
+                });
+
 
                 res.json({ message: 'Update posted successfully.' });
             });
