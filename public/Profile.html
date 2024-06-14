@@ -62,13 +62,13 @@
                     <div class="modal-body">
                         <form @submit.prevent="saveUserInfo">
                             <label for="username">Username:</label>
-                            <input type="text" v-model="editUserInfo.user_name">
+                            <input type="text" v-model="editUserInfo[0].user_name">
                             <label for="email">Email:</label>
-                            <input type="text" v-model="editUserInfo.email">
+                            <input type="text" v-model="editUserInfo[0].email">
                             <label for="fullname">Full Name:</label>
-                            <input type="text" v-model="editUserInfo.full_name">
+                            <input type="text" v-model="editUserInfo[0].full_name">
                             <label for="phone_number">Phone Number:</label>
-                            <input type="text" v-model="editUserInfo.phone_number">
+                            <input type="text" v-model="editUserInfo[0].phone_number">
                             <button type="submit">Save</button>
                         </form>
                     </div>
@@ -100,22 +100,9 @@
         const app = Vue.createApp({
             data() {
                 return {
-                    // managerBranchId: [],
                     user: [],
                     branches: [],
-                    userInfo: {
-                        username: '',
-                        email: '',
-                        fullname: '',
-                        phoneNumber: '',
-                        organization: ''
-                    },
-                    editUserInfo: {
-                        user_name: '',
-                        email: '',
-                        full_name: '',
-                        phone_number: ''
-                    },
+                    editUserInfo: [],
                     showEditModal: false,
                     showChangePasswordModal: false,
                     avatar: '../pictures/1.jpg',
@@ -159,6 +146,8 @@
                     .then(data => {
                         console.log("Loaded user:", data);
                         this.user = data;
+                        this.editUserInfo = data;
+                        console.log("Loaded editUserInfo:", data);
                     })
                     .catch(error => console.error('Error loading the user-info:', error));
                 },
@@ -171,7 +160,7 @@
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(this.editUserInfo)
+                            body: JSON.stringify(this.editUserInfo[0])
                         });
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
@@ -245,7 +234,6 @@
                     if (section === 'logout') {
                         fetch('/user/logout', { method: 'GET' })
                         .then(response => {
-
                             window.location.href = '/login.html';
                         })
                         .catch(error => {
@@ -259,7 +247,7 @@
                 },
                 changePassword() {
                     this.showChangePasswordModal = true;
-                    console.log('showChangePasswordModal:', this.showChangePasswordModal);
+                    console.log('showChangePasswordModal:', this.showChangePasswordModal); // 调试模态框显示状态
                 },
             },
             mounted() {

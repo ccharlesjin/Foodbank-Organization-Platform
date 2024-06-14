@@ -4,7 +4,7 @@ const mysql = require('mysql2');
 const db = mysql.createConnection({
     host: 'localhost',
     database: 'FoodBank',
-    connectTimeout: 30000,
+    connectTimeout: 50000,
 });
 db.connect(err => {
     if (err) {

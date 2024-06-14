@@ -18,7 +18,7 @@
                         <li><a href="/home">Home</a></li>
                         <li><a href="/about">About</a></li>
                         <li><a href="/location">Location</a></li>
-                        <li><a href="#" id="logout-button" onclick="loadSection('logout', event)">Logout</a></li>
+                        <li><a href="#" id="logout-button" @click="loadSection('logout')">Logout</a></li>
                     </ul>
                 </nav>
             </div>
@@ -59,9 +59,9 @@
                             </thead>
                             <tbody>
                                 <tr v-for="attendee in attendees" :key="attendee.user_id">
-                                    <td v-for="memberInActivities in membersInActivities" :key="memberInActivities.user_id">
+                                    <td>
                                         <div v-for="member in members" :key="member.user_id">
-                                            <div v-if="member.user_id === memberInActivities.user_id">
+                                            <div v-if="attendee.user_id === member.user_id">
                                                 {{ member.user_name }}
                                             </div>
                                         </div>
@@ -109,6 +109,35 @@
                 };
             },
             methods: {
+                loadSection(section) {
+                    console.log('load section!');
+                    if (section === 'logout') {
+                        fetch('/manager/logout', { method: 'GET' })
+                        .then(response => {
+                            window.location.href = '/manager_login.html';
+                        })
+                        .catch(error => {
+                            console.error('Logout failed:', error);
+                        });
+                    } else if (section === 'info') {
+                        window.location.href = '/manager/profile'; // Ensure this path is correct
+                    } else if (section === this.currentSection) {
+                        window.location.reload();
+                    } else {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('GET', '/manager/' + section, true);
+                        xhr.onreadystatechange = () => {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                document.querySelector('.content').innerHTML = xhr.responseText;
+                                this.currentSection = section;
+                                this.$nextTick(() => {
+                                    console.log('Content loaded and Vue.js re-rendered');
+                                });
+                            }
+                        };
+                        xhr.send();
+                    }
+                },
                 fetchMembers() {
                     fetch('/manager/api/members', {
                         method: 'GET',

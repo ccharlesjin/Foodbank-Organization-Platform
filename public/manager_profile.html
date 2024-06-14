@@ -164,7 +164,7 @@
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(this.editInfo)
+                            body: JSON.stringify(this.editInfo[0])
                         });
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
@@ -236,9 +236,11 @@
                 loadSection(section) {
                     console.log('load section!');
                     if (section === 'logout') {
+
                         fetch('/manager/logout', { method: 'GET' })
                         .then(response => {
-                            window.location.href = '/manager_login.html';
+
+                            window.location.href = '/manager_login.html';  // Redirect to login
                         })
                         .catch(error => {
                             console.error('Logout failed:', error);

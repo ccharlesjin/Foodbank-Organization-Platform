@@ -21,7 +21,7 @@
                 <nav>
                     <ul>
                         <li><a href="/admin/manager">Members</a></li>
-                        <li><a href="/admin/organization">Organization</a></li>
+                        <li><a href="/admin/organization">Manager</a></li>
                         <li><a href="/admin/branch">Branch Management</a></li>
                         <li><a href="/admin/admins_management">Administrator Management</a></li>
                         <li><a href="#" id="logout-button" onclick="loadSection('logout', event)">Logout</a></li>
@@ -113,7 +113,7 @@
 
     <script>
         function loadSection(section, event) {
-            event.preventDefault(); 
+            event.preventDefault();
             if (section === 'logout') {
 
                 fetch('/admin/logout', { method: 'GET' })

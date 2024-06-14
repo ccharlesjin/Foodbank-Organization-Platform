@@ -4,7 +4,22 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
 # Environmental dependence
  Windows 10 or later, macOS Catalina or later, or any of the current major Linux distributions are recommended.
 
-# Directory structure
+# Sample login email and password
+Since all passwords in FoodBank.sql are salted, we provide some unsalted password for testing:
+### User Table
+1. **JohnDoe**: `johndoe@example.com` / `hfeuiah32323`
+2. **JaneDoe**: `janedoe@example.com` / `fjoaije2143`
+3. **AliceJohnson**: `alicej@example.com` / `dfpkrpokgopr7868`
+4. **BobSmith**: `bobsmith@example.com` / `fejoaifjei7658`
+
+### Manager Table
+1. **JohnDoe**: `johndoe@example.com` / `fihuewhiu49874`
+2. **JaneDoe**: `janedoe@example.com` / `fjdoiajfio3490`
+3. **AliceJohnson**: `alicej@example.com` / `froihri4ueh39289`
+4. **BobSmith**: `bobsmith@example.com` / `fnirhoiorjeio4839`
+
+### Administrator Table
+1. **JohnDoe**: `johndoe@example.com` / `fihuewhiu49874`
 
 
 # Instructions for use
@@ -49,3 +64,4 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
 ##### v0.0.28-z: Finish the connection of administrator to the database, including when signing up other administrators, the database updates too.
 ##### v0.0.29-j: Fixed en error of register and third-party login section, now the token would be correctly sent.
 ##### v0.0.30-k: Update AddDetail.html to dynamically obtain branch information and optimize registration logic.
+##### v0.0.31-j: Fixed error in rsvp of manager system and profile.

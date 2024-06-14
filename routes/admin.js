@@ -70,20 +70,28 @@ router.post('/update-member/:id', (req, res) => {
     });
 });
 
-
 router.delete('/delete-member/:id', (req, res) => {
     const { id } = req.params;
-    const sqlDelete = 'DELETE FROM User WHERE User_ID = ?';
+    // const sqlDelete = 'DELETE FROM User WHERE User_ID = ?';
+    const sqlDelete = 'DELETE FROM User_in_activities WHERE user_id = ?';
+
     db.query(sqlDelete, [id], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).json({ error: 'Database error' });
             return;
         }
-        res.json({ message: 'Member deleted successfully.' });
+        const sqlDelete = 'DELETE FROM User WHERE user_id = ?';
+        db.query(sqlDelete, [id], (err, result) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: 'Database error' });
+                return;
+            }
+            res.json({ message: 'Member deleted successfully.' });
+        });
     });
 });
-
 
 router.post('/add-member', (req, res) => {
     const { user_name, password, email, phone_number, full_name, branch_id } = req.body;
