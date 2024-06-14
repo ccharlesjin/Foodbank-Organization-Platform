@@ -68,20 +68,16 @@
         const password = passwordInput.value;
         let valid = true;
         let errorMessage = '';
-
-        // 验证电子邮箱格式
         if (!email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
             errorMessage += 'The email format is not valid.';
             valid = false;
         }
 
-        // 验证密码长度
         if (password.length < 8) {
             errorMessage += 'Passwords need to be at least 8 characters.';
             valid = false;
         }
 
-        // 如果验证失败，显示错误消息并阻止表单提交
         if (!valid) {
             alert(errorMessage);
             event.preventDefault();

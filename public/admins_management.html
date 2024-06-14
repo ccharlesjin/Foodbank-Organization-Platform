@@ -93,13 +93,13 @@
 
     <script>
         function loadSection(section, event) {
-            event.preventDefault();  // 阻止<a>标签的默认行为
+            event.preventDefault();  
             if (section === 'logout') {
-                // 发送请求到服务器端的logout路由
+
                 fetch('/admin/logout', { method: 'GET' })
                 .then(response => {
-                    // 可以根据服务器响应处理逻辑
-                    window.location.href = '/admin_login.html';  // 重定向到登录页面
+
+                    window.location.href = '/admin_login.html';
                 })
                 .catch(error => {
                     console.error('Logout failed:', error);
@@ -217,11 +217,11 @@
                 }
             },
             validateData(data, isAdding = false) {
-                // 检查必需字段是否非空
+                // Check that the required fields are not empty
                 if (!data.User_Name || !data.Email || !data.Password ) {
                     return false;
                 }
-                // 使用正则表达式检查电子邮件格式
+                // Check email formats with regular expressions
                 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
                 if (!emailRegex.test(data.Email)) {
                     return false;

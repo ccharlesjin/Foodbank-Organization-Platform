@@ -32,16 +32,6 @@
             </ul>
         </div>
 
-        <!-- <div class="content">
-            <h2>Activities</h2>
-            <ul>
-                <li v-for="activity in activities" :key="activity.activity_id" @click="showActivityModal(activity)">
-                    {{ activity.activity_name }} - {{ getBranchName(activity.branch_id) }} - {{ new Date(activity.activity_date).toLocaleDateString() }} - {{ activity.activity_number_of_people }} people
-                    <button type="button" v-if="isUserJoined(activity.activity_id)" @click.stop="leaveActivity(activity.activity_id)">out activity</button>
-                </li>
-            </ul>
-        </div> -->
-
         <main class="main full-height flex-grow content">
             <h2>Activities</h2>
 
@@ -97,7 +87,7 @@
         const app = Vue.createApp({
             data() {
                 return {
-                    activities: [],  // 确保初始化 activities 属性
+                    activities: [],
                     selectedActivity: {},
                     showActivityModalFlag: false,
                     remark: '',
@@ -136,7 +126,7 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        this.user_id = data.user_id; // 获取当前用户ID
+                        this.user_id = data.user_id;
                     })
                     .catch(error => console.error('Error loading user info:', error));
                 },

@@ -60,13 +60,13 @@
                     .then(response => {
                         const announcements = response.data.announcements;
                         const container = document.getElementById('announcements-container');
-                        container.innerHTML = ''; // 清空容器
+                        container.innerHTML = '';
                         if (announcements.length > 0) {
                             announcements.forEach(content => {
                                 const p = document.createElement('p');
                                 p.className = 'announcement';
-                                p.innerText = `• ${content}`; // 在内容前添加圆点
-                                p.style.marginBottom = '20px'; // 设置底部间距
+                                p.innerText = `• ${content}`;
+                                p.style.marginBottom = '20px';
                                 container.appendChild(p);
                             });
                         } else {

@@ -88,7 +88,7 @@ router.get('/api/branches', (req, res) => {
 
 
 
-//第三方登录
+
 passport.use(new GitHubStrategy({
     clientID: "Iv23li6OLrzh1xVrbyGt",
     clientSecret: "d0eb868362e55e35d93107b6498da7ed34e87d53",
@@ -111,7 +111,6 @@ passport.use(new GitHubStrategy({
 
 
 
-// 获取图片和简介的路由
   router.get('/api/branch', (req, res) => {
     const branchName = req.query.branch_name;
     if (!branchName) {
@@ -139,7 +138,7 @@ passport.use(new GitHubStrategy({
 
 
 
-// 获取公告的路由
+
 router.get('/api/announcements', (req, res) => {
     const branchName = req.query.branch_name;
     if (!branchName) {
@@ -194,12 +193,12 @@ router.get('/api/announcements', (req, res) => {
                 branch_id: user.branch_id
             }, SECRET_KEY_User, { expiresIn: '1h' });
             res.cookie('jwt', token, {
-                httpOnly: true, // 使 cookie 仅服务器可访问，增加安全性
-                secure: true, // 仅通过 HTTPS 发送 cookie
-                sameSite: 'strict', // 严格的同站策略，增强 CSRF 保护
-                maxAge: 3600000 // 有效期，单位毫秒
+                httpOnly: true,
+                secure: true,
+                sameSite: 'strict',
+                maxAge: 3600000
             });
-            console.log("Sending token:", token); // 添加日志输出token
+            console.log("Sending token:", token);
             res.send(`<script>
                 window.opener.postMessage({ token: '${token}', message: 'Login successful' }, '*');
                 window.opener.location.href = "/Profile.html";
@@ -213,18 +212,6 @@ router.get('/api/announcements', (req, res) => {
 
 
   });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = router;

@@ -13,27 +13,12 @@ const twitterClient = new TwitterApi({
     accessSecret: 'iOBKbdpZA8fFyGKLLg89BFviC6hSlYaEedm3TxNJoJEKx',
   });
 
-// 创建一个读写权限的客户端
+
 const rwClient = twitterClient.readWrite;
 const generateHash = (password, salt = '10') => {
     const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
     return hash ;
 };
-//   // 定义一个异步函数发送推文
-//   const textTweet = async () => {
-//     try {
-//       // 使用v2 API发送推文
-//       await rwClient.v2.tweet("This tweet has been created using nodejs and OAuth 1.0a User Context");
-
-//     } catch (error) {
-//       console.error("Error sending tweet:", error);
-//     }
-// };
-
-//   // 调用函数
-//   textTweet();
-
-// const { authenticateManagerToken } = require('../middleware/authMiddleware');
 
 router.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../public', '/members.html'));
@@ -71,7 +56,7 @@ router.get('/manager.css', function(req, res) {
     res.sendFile(path.join(__dirname, '../public', '/manager.css'));
 });
 
-// 设置路由以提供成员数据
+
 
 router.get('/api/members', (req, res) => {
     const sqlQuery = `SELECT branch_id, email, full_name, phone_number, user_id, user_name FROM User WHERE branch_id = ?`;
@@ -120,7 +105,7 @@ router.post('/update-member/:id', (req, res) => {
     });
 });
 
-// 删除成员
+
 router.delete('/delete-member/:id', (req, res) => {
     const { id } = req.params;
     const sqlDelete = 'DELETE FROM User WHERE User_ID = ?';
@@ -135,13 +120,12 @@ router.delete('/delete-member/:id', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    // 清除JWT cookie
     res.cookie('jwt', '', {
         expires: new Date(0),
-        path: '/',       // 如果设置时指定了路径，这里也需要指定相同的路径
-        secure: true,    // 如果设置时指定了仅在HTTPS下有效，这里也需要指定
-        httpOnly: true,  // 如果设置时指定了HTTP Only，这里也需要指定
-        sameSite: 'strict' // 如果设置时使用了sameSite属性，这里也需要保持一致
+        path: '/',
+        secure: true,
+        httpOnly: true,
+        sameSite: 'strict'
     });
     console.log("Cookies should not be available:", req.cookies);
     res.status(200).send("Logged out");
@@ -162,20 +146,20 @@ router.get('/api/events', (req, res) => {
 
 router.get('/api/branch_id', (req, res) => {
     if (req.user.branch_id) {
-        // 正确的分支 ID 存在，返回这个 ID
-        return res.json([req.user.branch_id]); // 使用 return 确保函数在此结束
+
+        return res.json([req.user.branch_id]);
     } else {
-        // 分支 ID 不存在，返回一个 500 错误
+
         return res.status(404).send('Branch ID not found');
     }
 });
 
 router.get('/api/user_id', (req, res) => {
     if (req.user.user_id) {
-        // 正确的分支 ID 存在，返回这个 ID
-        return res.json([req.user.user_id]); // 使用 return 确保函数在此结束
+
+        return res.json([req.user.user_id]);
     } else {
-        // 分支 ID 不存在，返回一个 500 错误
+
         return res.status(404).send('Branch ID not found');
     }
 });
@@ -192,7 +176,7 @@ router.get('/api/managers', (req, res) => {
             res.status(500).json({ message: 'Error retrieving managers' });
             return;
         }
-        res.json(result);  // 将查询结果以 JSON 格式发送
+        res.json(result);
     });
 });
 
@@ -214,7 +198,6 @@ router.post('/update-event/:id', (req, res) => {
     });
 });
 
-// 删除活动
 router.delete('/delete-event/:id', (req, res) => {
     const { id } = req.params;
     const sqlDelete = 'DELETE FROM Activity WHERE Activity_Id = ?';
@@ -235,7 +218,6 @@ router.post('/add-event', (req, res) => {
     const { activity_name, activity_date, activity_number_of_people, activity_information } = req.body;
     const branch_id = req.user.branch_id;
 
-    // 首先插入活动
     const sqlInsert = `
         INSERT INTO Activity (activity_name, activity_date, activity_number_of_people, activity_information, branch_id)
         VALUES (?, ?, ?, ?, ?);
@@ -248,7 +230,6 @@ router.post('/add-event', (req, res) => {
             return;
         }
 
-        // 获取 branch_name
         const getBranchNameQuery = `SELECT branch_name FROM Branches WHERE branch_id = ?`;
 
         db.query(getBranchNameQuery, [branch_id], (err, branchResult) => {
@@ -260,7 +241,7 @@ router.post('/add-event', (req, res) => {
 
             const branch_name = branchResult[0].branch_name;
 
-            // 发送推文
+
             const textTweet = async () => {
                 try {
                     const tweetContent = `New event created: ${activity_name} on ${activity_date} in ${branch_name}.\nNumber of participants: ${activity_number_of_people}.\nDetails: ${activity_information}`;
@@ -270,10 +251,10 @@ router.post('/add-event', (req, res) => {
                 }
             };
 
-            // 调用函数发送推文
+
             textTweet();
 
-            // 获取该分支的所有用户邮箱并发送邮件通知
+
             const getEmailsQuery = `SELECT email FROM User WHERE branch_id = ?`;
 
             db.query(getEmailsQuery, [branch_id], (err, emailResult) => {
@@ -288,11 +269,11 @@ router.post('/add-event', (req, res) => {
                     const subject = `New Event: ${activity_name}`;
                     const text = `A new event has been created in your branch (${branch_name}):\n\nEvent Name: ${activity_name}\nDate: ${activity_date}\nNumber of Participants: ${activity_number_of_people}\nDetails: ${activity_information}`;
 
-                    // 发送邮件
+
                     sendEmail(userEmail, subject, text);
                 });
 
-                // 发送响应
+
                 res.json({ message: 'Event added successfully and emails sent.', newEvent: req.body });
             });
         });
@@ -406,7 +387,7 @@ router.post('/post-update', (req, res) => {
                     return;
                 }
 
-                // 发送电子邮件通知
+
                 selectedMembers.forEach(userId => {
                     const getUserEmailQuery = 'SELECT email FROM User WHERE user_id = ?';
                     db.query(getUserEmailQuery, [userId], (err, userResult) => {
@@ -441,7 +422,7 @@ router.post('/post-update', (req, res) => {
                     return;
                 }
 
-                // 去重处理
+
                 const uniqueEmails = [...new Set(membersResult.map(member => member.email))];
 
                 uniqueEmails.forEach(userEmail => {
@@ -450,7 +431,7 @@ router.post('/post-update', (req, res) => {
                     sendEmail(userEmail, subject, text);
                 });
 
-                // 获取 branch_name
+
                 const getBranchNameQuery = `SELECT branch_name FROM Branches WHERE branch_id = ?`;
                 db.query(getBranchNameQuery, [branchId], (err, branchResult) => {
                     if (err) {
@@ -461,7 +442,7 @@ router.post('/post-update', (req, res) => {
 
                     const branch_name = branchResult[0].branch_name;
 
-                    // 发送推文
+
                     const textTweet = async () => {
                         try {
                             const tweetContent = `New ${visibility} Update from ${branch_name} branch:\n\nTitle: ${title}\n\n${content}`;
@@ -471,7 +452,6 @@ router.post('/post-update', (req, res) => {
                         }
                     };
 
-                    // 调用函数发送推文
                     textTweet();
 
                 });
@@ -486,8 +466,6 @@ router.post('/post-update', (req, res) => {
 
 router.delete('/delete-update/:id', (req, res) => {
     const updateId = req.params.id;
-
-    // 首先删除Updates_Users表中的关联记录
     const deleteFromUpdatesUsers = `
         DELETE FROM Updates_Users WHERE update_id = ?;
     `;
@@ -498,8 +476,6 @@ router.delete('/delete-update/:id', (req, res) => {
             res.status(500).json({ message: 'Error deleting update' });
             return;
         }
-
-        // 然后删除Updates表中的记录
         const deleteFromUpdates = `
             DELETE FROM Updates WHERE update_id = ?;
         `;
@@ -517,7 +493,6 @@ router.delete('/delete-update/:id', (req, res) => {
 });
 
 
-// 更新现有更新
 router.put('/update-update/:id', (req, res) => {
     const updateId = req.params.id;
     const { title, content } = req.body;

@@ -73,31 +73,31 @@
             let valid = true;
             let errorMessage = '';
 
-            // 验证电子邮箱格式
+
             if (!email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
                 errorMessage += 'The email format is not valid.\n';
                 valid = false;
             }
 
-            // 验证密码长度
+
             if (password.length < 8) {
                 errorMessage += 'Passwords need to be at least 8 characters.\n';
                 valid = false;
             }
 
-            // 验证用户名是否为空
+
             if (userName.trim() === '') {
                 errorMessage += 'Name is required.\n';
                 valid = false;
             }
 
-            // 如果验证失败，显示错误消息并阻止表单提交
+
             if (!valid) {
                 alert(errorMessage);
                 return;
             }
 
-            // 如果验证通过，使用 AJAX 提交表单
+           
             var formData = {
                 user_name: userName,
                 email: email,

@@ -13,7 +13,7 @@ const twitterClient = new TwitterApi({
     accessSecret: 'iOBKbdpZA8fFyGKLLg89BFviC6hSlYaEedm3TxNJoJEKx',
   });
 
-// 创建一个读写权限的客户端
+
 const rwClient = twitterClient.readWrite;
 const generateHash = (password, salt = '10') => {
     const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
@@ -40,7 +40,6 @@ router.get('/manager.css', function(req, res) {
     res.sendFile(path.join(__dirname, '../public', '/manager.css'));
 });
 
-// 设置路由以提供成员数据
 router.get('/api/user_info', (req, res) => {
     const sqlQuery = `SELECT user_id, branch_id, email, full_name, phone_number, user_id, user_name FROM User WHERE user_id = ?`;
     db.query(sqlQuery, [req.user.user_id], (err, result) => {
@@ -55,13 +54,13 @@ router.get('/api/user_info', (req, res) => {
 
 
 router.get('/logout', (req, res) => {
-    // 清除JWT cookie
+
     res.cookie('jwt', '', {
         expires: new Date(0),
-        path: '/',       // 如果设置时指定了路径，这里也需要指定相同的路径
-        secure: true,    // 如果设置时指定了仅在HTTPS下有效，这里也需要指定
-        httpOnly: true,  // 如果设置时指定了HTTP Only，这里也需要指定
-        sameSite: 'strict' // 如果设置时使用了sameSite属性，这里也需要保持一致
+        path: '/',
+        secure: true,
+        httpOnly: true,
+        sameSite: 'strict'
     });
     console.log("Cookies should not be available:", req.cookies);
     res.status(200).send("Logged out");
@@ -71,20 +70,20 @@ router.get('/logout', (req, res) => {
 
 router.get('/api/branch_id', (req, res) => {
     if (req.user.branch_id) {
-        // 正确的分支 ID 存在，返回这个 ID
-        return res.json([req.user.branch_id]); // 使用 return 确保函数在此结束
+
+        return res.json([req.user.branch_id]);
     } else {
-        // 分支 ID 不存在，返回一个 500 错误
+
         return res.status(404).send('Branch ID not found');
     }
 });
 
 router.get('/api/user_id', (req, res) => {
     if (req.user.user_id) {
-        // 正确的分支 ID 存在，返回这个 ID
-        return res.json([req.user.user_id]); // 使用 return 确保函数在此结束
+
+        return res.json([req.user.user_id]);
     } else {
-        // 分支 ID 不存在，返回一个 500 错误
+
         return res.status(404).send('Branch ID not found');
     }
 });
@@ -101,7 +100,7 @@ router.get('/api/User', (req, res) => {
             res.status(500).json({ message: 'Error retrieving User' });
             return;
         }
-        res.json(result);  // 将查询结果以 JSON 格式发送
+        res.json(result);
     });
 });
 
@@ -219,7 +218,7 @@ router.get('/api/managers', (req, res) => {
             res.status(500).json({ message: 'Error retrieving manager' });
             return;
         }
-        res.json(result);  // 将查询结果以 JSON 格式发送
+        res.json(result);
     });
 });
 

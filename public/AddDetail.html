@@ -26,12 +26,11 @@
 
     <script>
         $(document).ready(function() {
-            // 获取所有分支名称并填充到选择框中
             $.ajax({
                 url: '/users/branches',
                 type: 'GET',
                 success: function(data) {
-                    console.log('Branches:', data); // 在控制台输出所有的 branch_name
+                    console.log('Branches:', data);
                     var select = $('#organization');
                     data.forEach(function(branch) {
                         select.append('<option value="' + branch.branch_name + '">' + branch.branch_name + '</option>');

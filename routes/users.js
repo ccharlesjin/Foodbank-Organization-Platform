@@ -11,15 +11,13 @@ const jwt = require('jsonwebtoken');
 
 
 const crypto = require('crypto');
-// 添加一个密钥用于签名 JWT
-// const SECRET_KEY_MANAGER = crypto.randomBytes(32).toString('base64');
-// const SECRET_KEY_ADMIN = crypto.randomBytes(32).toString('base64');
+
 const SECRET_KEY_MANAGER = 'manager_secret_key';
 const SECRET_KEY_ADMIN = 'admin_secret_key';
 const SECRET_KEY_User = 'user_secret_key';
 
 
-// 配置静态文件服务
+
 router.use(express.static(path.join(__dirname, '../public')));
 
 router.get('/profile', function(req, res) {
@@ -27,16 +25,15 @@ router.get('/profile', function(req, res) {
 });
 
 
-// 生成盐和哈希函数
 const generateHash = (password, salt = '10') => {
     const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
     return hash ;
 };
 
-//用户登录
+
 router.post('/user_login', function(req, res) {
     const { email, password } = req.body;
-    const hashedPassword = generateHash(password); // 对密码进行哈希处理
+    const hashedPassword = generateHash(password);
     const sqlQuery = 'SELECT user_id, branch_id FROM User WHERE email = ? AND password = ?';
     db.query(sqlQuery, [email, hashedPassword], (err, results) => {
         if (err) {
@@ -52,17 +49,17 @@ router.post('/user_login', function(req, res) {
                 branch_id: user.branch_id
             }, SECRET_KEY_User, { expiresIn: '1h' });
             res.cookie('jwt', token, {
-                httpOnly: true, // 使 cookie 仅服务器可访问，增加安全性
-                secure: true, // 仅通过 HTTPS 发送 cookie
-                sameSite: 'strict', // 严格的同站策略，增强 CSRF 保护
-                maxAge: 3600000 // 有效期，单位毫秒
+                httpOnly: true,
+                secure: true,
+                sameSite: 'strict',
+                maxAge: 3600000
             });
-            console.log("Sending token:", token); // 添加日志输出token
+            console.log("Sending token:", token);
             res.json({ token: token, message: 'Login successful' });
             return;
         } else {
 
-            res.status(401).send('Email or password is incorrect'); // 使用 401 状态码表示授权失败
+            res.status(401).send('Email or password is incorrect');
             return;
         }
     });
@@ -72,17 +69,17 @@ router.post('/user_login', function(req, res) {
 
 
 
-//用户注册
+
 router.post('/user_register', function(req, res) {
     const { user_name, password, email } = req.body;
-    const hashedPassword = generateHash(password); // 对密码进行哈希处理
+    const hashedPassword = generateHash(password);
     const sql = 'INSERT INTO User (user_name, password, email) VALUES (?, ?, ?)';
     db.execute(sql, [user_name, hashedPassword, email], (error, results) => {
         if (error) {
             res.send('Error during registration: ' + error.message);
             return;
         }
-        //注册步骤1完成，继续添加信息
+
         const sqlQuery = 'SELECT user_id, branch_id FROM User WHERE email = ? AND password = ?';
         db.query(sqlQuery, [email, hashedPassword], (err, results) => {
             if (err) {
@@ -98,17 +95,17 @@ router.post('/user_register', function(req, res) {
                     branch_id: user.branch_id
                 }, SECRET_KEY_User, { expiresIn: '1h' });
                 res.cookie('jwt', token, {
-                    httpOnly: true, // 使 cookie 仅服务器可访问，增加安全性
-                    secure: true, // 仅通过 HTTPS 发送 cookie
-                    sameSite: 'strict', // 严格的同站策略，增强 CSRF 保护
-                    maxAge: 3600000 // 有效期，单位毫秒
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'strict',
+                    maxAge: 3600000
                 });
-                console.log("Sending token:", token); // 添加日志输出token
+                console.log("Sending token:", token);
                 res.json({ token: token, message: 'Login successful' });
                 return;
             } else {
 
-                res.status(401).send('Email or password is incorrect'); // 使用 401 状态码表示授权失败
+                res.status(401).send('Email or password is incorrect');
                 return;
             }
         });
@@ -117,7 +114,7 @@ router.post('/user_register', function(req, res) {
 });
 
 
-// 添加用户详细信息
+
 router.post('/add_detail', function(req, res) {
     const { Phonenumber, fullname, organization } = req.body;
     const token = req.cookies.jwt;
@@ -130,7 +127,7 @@ router.post('/add_detail', function(req, res) {
         const decoded = jwt.verify(token, SECRET_KEY_User);
         const userId = decoded.user_id;
 
-        // 从 Branches 表中查找对应的 branch_id
+
         const branchSql = 'SELECT branch_id FROM Branches WHERE branch_name = ?';
         db.query(branchSql, [organization], (branchError, branchResults) => {
             if (branchError) {
@@ -143,25 +140,25 @@ router.post('/add_detail', function(req, res) {
 
             const branchId = branchResults[0].branch_id;
 
-            // 更新 User 表
+
             const userSql = 'UPDATE User SET phone_number = ?, full_name = ?, branch_id = ? WHERE user_id = ?';
             db.execute(userSql, [Phonenumber, fullname, branchId, userId], (userError, userResults) => {
                 if (userError) {
                     return res.status(500).json({ message: 'Error updating user details: ' + userError.message });
                 }
-                // 生成新的 token 包含 branch_id
+
                 const newToken = jwt.sign({
                     user_id: userId,
                     email: decoded.email,
                     branch_id: branchId
                 }, SECRET_KEY_User, { expiresIn: '1h' });
 
-                // 设置新的 cookie
+
                 res.cookie('jwt', newToken, {
-                    httpOnly: true, // 使 cookie 仅服务器可访问，增加安全性
-                    secure: true, // 仅通过 HTTPS 发送 cookie
-                    sameSite: 'strict', // 严格的同站策略，增强 CSRF 保护
-                    maxAge: 3600000 // 有效期，单位毫秒
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'strict',
+                    maxAge: 3600000
                 });
                 res.json({ success: true, message: 'Details updated successfully' });
             });
@@ -171,7 +168,7 @@ router.post('/add_detail', function(req, res) {
     }
 });
 
-// 获取所有分支名称
+
 router.get('/branches', function(req, res) {
     const sqlQuery = 'SELECT branch_name FROM Branches';
     db.query(sqlQuery, (err, results) => {
@@ -186,10 +183,10 @@ router.get('/branches', function(req, res) {
 
 
 
-//经理登录
+
 router.post('/manager_login', function(req, res) {
     const { email, password } = req.body;
-    const hashedPassword = generateHash(password); // 对密码进行哈希处理
+    const hashedPassword = generateHash(password);
     const sqlQuery = 'SELECT user_id, branch_id FROM Manager WHERE email = ? AND password = ?';
     db.query(sqlQuery, [email, hashedPassword], (err, results) => {
         if (err) {
@@ -205,17 +202,17 @@ router.post('/manager_login', function(req, res) {
                 branch_id: user.branch_id
             }, SECRET_KEY_MANAGER, { expiresIn: '1h' });
             res.cookie('jwt', token, {
-                httpOnly: true, // 使 cookie 仅服务器可访问，增加安全性
-                secure: true, // 仅通过 HTTPS 发送 cookie
-                sameSite: 'strict', // 严格的同站策略，增强 CSRF 保护
-                maxAge: 3600000 // 有效期，单位毫秒
+                httpOnly: true,
+                secure: true,
+                sameSite: 'strict',
+                maxAge: 3600000
             });
-            console.log("Sending token:", token); // 添加日志输出token
+            console.log("Sending token:", token);
             res.json({ token: token, message: 'Login successful' });
             return;
         } else {
 
-            res.status(401).send('Email or password is incorrect'); // 使用 401 状态码表示授权失败
+            res.status(401).send('Email or password is incorrect');
             return;
         }
     });
@@ -224,17 +221,17 @@ router.post('/manager_login', function(req, res) {
 
 
 
-  //经理注册
+
 router.post('/manager_register', function(req, res) {
     const { user_name, password, email } = req.body;
-    const hashedPassword = generateHash(password); // 对密码进行哈希处理
+    const hashedPassword = generateHash(password);
     const sql = 'INSERT INTO Manager (user_name, password, email) VALUES (?, ?, ?)';
     db.execute(sql, [user_name, hashedPassword, email], (error, results) => {
           if (error) {
               res.send('Error during registration: ' + error.message);
               return;
           }
-          //注册步骤1完成，继续添加信息
+
           res.sendFile(path.join(__dirname, '../public', '/AddDetail.html'));
       });
   });
@@ -242,10 +239,10 @@ router.post('/manager_register', function(req, res) {
 
 
 
-//管理登录
+
 router.post('/admin_login', function(req, res) {
     const { email, password } = req.body;
-    const hashedPassword = generateHash(password); // 对密码进行哈希处理
+    const hashedPassword = generateHash(password);
     const sqlQuery = 'SELECT User_ID, Email FROM Administrator WHERE email = ? AND password = ?';
     db.query(sqlQuery, [email, hashedPassword], (err, results) => {
         if (err) {
@@ -260,17 +257,17 @@ router.post('/admin_login', function(req, res) {
                 email: email,
             }, SECRET_KEY_ADMIN, { expiresIn: '1h' });
             res.cookie('jwt', token, {
-                httpOnly: true, // 使 cookie 仅服务器可访问，增加安全性
-                secure: true, // 仅通过 HTTPS 发送 cookie
-                sameSite: 'strict', // 严格的同站策略，增强 CSRF 保护
-                maxAge: 3600000 // 有效期，单位毫秒
+                httpOnly: true,
+                secure: true,
+                sameSite: 'strict',
+                maxAge: 3600000
             });
-            console.log("Sending token:", token); // 添加日志输出token
+            console.log("Sending token:", token);
             res.json({ token: token, message: 'Login successful' });
             return;
         } else {
 
-            res.status(401).send('Email or password is incorrect'); // 使用 401 状态码表示授权失败
+            res.status(401).send('Email or password is incorrect');
             return;
         }
     });
@@ -336,8 +333,8 @@ router.get('/:section', function(req, res, next) {
 });
 
 router.get('/api/updates', (req, res) => {
-    const userId = req.user.user_id; // 获取当前用户ID
-    const branchId = req.user.branch_id; // 获取当前用户所属分支ID
+    const userId = req.user.user_id;
+    const branchId = req.user.branch_id;
 
     const sqlQuery = `
         SELECT *

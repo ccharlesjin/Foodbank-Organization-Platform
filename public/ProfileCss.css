@@ -6,17 +6,17 @@ body, html {
 }
 
 .navbar {
-    background-color: white; /* 背景颜色 */
-    color: black; /* 文字颜色 */
-    display: flex; /* 使用flex布局 */
-    justify-content: space-between; /* 两端对齐 */
-    align-items: center; /* 垂直居中 */
-    padding: 20px; /* 内边距设置为20像素 */
-    width: 100%; /* 宽度100%，填满容器 */
-    position: fixed; /* 固定位置 */
-    top: 0; /* 顶部对齐 */
-    z-index: 1000; /* Z轴索引高，确保在最上层 */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 轻微阴影，增加层次感 */
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     height: 45px
 }
 
@@ -53,18 +53,18 @@ body, html {
     color: black;
     text-decoration: none;
     padding: 6px;
-    width: 60px; /* 固定宽度 */
-    height: 17px; /* 固定高度，总高度将包括内边距 */
+    width: 60px;
+    height: 17px;
     text-align: center;
-    line-height: 17px; /* 确保文字垂直居中 */
-    overflow: hidden; /* 隐藏超出部分 */
+    line-height: 17px;
+    overflow: hidden;
 }
 
 .navbar nav ul li:last-child {
-    margin-right: 100px; /* 在最后一个元素即登录选项与右侧添加额外间距 */
+    margin-right: 100px;
 }
 .navbar nav ul li a:hover {
-    color: #32aa27; /* 鼠标悬停时变深 */
+    color: #32aa27;
     text-decoration: underline;
 }
 
@@ -147,32 +147,32 @@ button:hover {
 
 .activity-row {
     display: flex;
-    align-items: center; /* 垂直居中对齐 */
+    align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ddd; /* 每行下方添加边框作为分隔 */
+    border-bottom: 1px solid #ddd;
     margin-bottom: 10px;
 }
 
 .activity-image {
     width: 100px;
-    height: 100px; /* 调整高度使之与宽度相同 */
+    height: 100px;
     margin-right: 20px;
 }
 
 .activity-text {
-    flex: 1; /* 使所有文本框有相等的弹性空间 */
-    margin-right: 10px; /* 在文本之间添加间隔 */
+    flex: 1;
+    margin-right: 10px;
 }
 
 .activity-join {
-    margin-left: auto; /* 将勾选框推至最右侧 */
+    margin-left: auto;
 }
 
 
 .avatar-container {
     position: relative;
-    width: 150px; /* 根据你的头像大小调整 */
-    height: 150px; /* 根据你的头像大小调整 */
+    width: 150px;
+    height: 150px;
     cursor: pointer;
 }
 
@@ -189,18 +189,18 @@ button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.5); /* 半透明白色背景 */
+    background: rgba(255, 255, 255, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
     color: black;
-    font-size: 20px; /* 调整文字大小 */
+    font-size: 20px;
     opacity: 0;
     transition: opacity 0.3s;
 }
 
 .avatar-container:hover .overlay {
-    opacity: 1; /* 当鼠标悬停时显示overlay层 */
+    opacity: 1;
 }
 
 /* Base styles for modal */
@@ -339,7 +339,7 @@ button:hover {
 }
 
 .modal-body textarea {
-    width: calc(100% - 20px); /* 与 input[type="text"] 一致的宽度 */
+    width: calc(100% - 20px); 
 }
 
 .modal-body button[type="submit"] {

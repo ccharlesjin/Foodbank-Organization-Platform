@@ -1,4 +1,4 @@
-/* 基础样式 */
+
 body, html {
     margin: 0;
     padding: 0;
@@ -11,35 +11,34 @@ body, html {
 }
 
 .body, .html {
-    height: 100%;  /* 确保 html 和 body 元素充满整个视口高度 */
+    height: 100%;
     margin: 0;
     padding: 0;
 }
 
 
 .full-height{
-    height: 100%; /* 确保整个HTML和BODY充满整个视口高度 */
+    height: 100%;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    /* 使内容垂直排列 */
     flex: 1
 }
 
-/* 导航栏样式 */
+/* nav */
 .navbar {
-    background-color: white; /* 背景颜色 */
-    color: black; /* 文字颜色 */
-    display: flex; /* 使用flex布局 */
-    justify-content: space-between; /* 两端对齐 */
-    align-items: center; /* 垂直居中 */
-    padding: 20px; /* 内边距设置为20像素 */
-    width: 100%; /* 宽度100%，填满容器 */
-    position: fixed; /* 固定位置 */
-    top: 0; /* 顶部对齐 */
-    z-index: 1000; /* Z轴索引高，确保在最上层 */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 轻微阴影，增加层次感 */
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     height: 45px
 }
 
@@ -76,22 +75,21 @@ body, html {
     color: black;
     text-decoration: none;
     padding: 6px;
-    /* width: 60px; 固定宽度 */
-    height: 17px; /* 固定高度，总高度将包括内边距 */
+    height: 17px;
     text-align: center;
-    line-height: 17px; /* 确保文字垂直居中 */
-    overflow: hidden; /* 隐藏超出部分 */
+    line-height: 17px;
+    overflow: hidden;
 }
 
 .navbar nav ul li:last-child {
-    margin-right: 100px; /* 在最后一个元素即登录选项与右侧添加额外间距 */
+    margin-right: 100px;
 }
 .navbar nav ul li a:hover {
-    color: #32aa27; /* 鼠标悬停时变深 */
+    color: #32aa27;
     text-decoration: underline;
 }
 
-/* 英雄区域样式 */
+
 .hero {
     margin : 85px 0px 0px 0px;
     overflow: clip;
@@ -101,7 +99,7 @@ body, html {
     justify-content: center;
     align-items: center;
 
-    /* padding-top: 60px; 为顶部导航栏留出空间 */
+
 }
 
 .hero-content {
@@ -135,16 +133,13 @@ body, html {
 }
 
 
-/* 其他样式保持不变 */
-
-/* 内容包裹器样式 */
 .content-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-around;
     /* padding: 20px 0 0 0; */
     max-width: 1200px;
-    margin: 85px auto 0 auto; /* 上边距为80px以避开固定的导航栏 */
+    margin: 85px auto 0 auto;
     height: calc(100vh - 85px);
     box-sizing: border-box;
     overflow: clip;
@@ -157,11 +152,10 @@ body, html {
 }
 
 .image-content img {
-    width: 418.333px; /* 设置图片宽度 */
-    height: auto; /* 保持图片比例 */
-    padding-left: 43.833px; /* 左侧内边距 */
-    /* padding-top: 30px; 左侧内边距 */
-    display: block; /* 确保内边距正确显示 */
+    width: 418.333px;
+    height: auto;
+    padding-left: 43.833px;
+    display: block;
 
 }
 
@@ -188,7 +182,7 @@ body, html {
 }
 
 .flex-grow {
-    flex-grow: 1; /* 允许主内容区伸展以填充额外空间 */
+    flex-grow: 1;
 }
 
 .product-header{
@@ -202,8 +196,8 @@ body, html {
 }
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 每行三个项目 */
-    gap: 20px; /* 设置网格间隙 */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
     margin-left: 200px;
     margin-right: 200px;
     padding-bottom: 30px;
@@ -215,11 +209,11 @@ body, html {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
     width: 321px;
-    transition: box-shadow 0.3s ease, color 0.3s ease; /* 平滑过渡效果 */
+    transition: box-shadow 0.3s ease, color 0.3s ease;
 }
 .product-item:hover {
 
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3); /* 悬停时增加阴影效果 */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
 }
 .picture{
     width: 100%;
@@ -229,7 +223,7 @@ body, html {
 }
 
 .product-item img {
-    width: 100%; /* 图片宽度自适应容器 */
+    width: 100%;
     height: 230px;
     margin-bottom: 10px;
     overflow: clip;
@@ -242,7 +236,7 @@ body, html {
     margin: 4px;
 }
 .product-item:hover h2 {
-    color: #32aa27; /* 悬停时的字体颜色 */
+    color: #32aa27;
 }
 .product-item:hover svg {
     fill:#32aa27;
@@ -252,8 +246,8 @@ body, html {
     color: #666;
 }
 .word_and_svg{
-    display: flex;  /* 使用flex布局使子元素水平排列 */
-    align-items: center;  /* 垂直居中 */
+    display: flex;
+    align-items: center;
     justify-content: center;
     transition: fill 0.3s ease;
     fill: #000;
@@ -326,11 +320,11 @@ th, td {
 footer {
     text-align: center;
     padding: 10px 0;
-    background-color: white; /* 背景颜色 */
-    color: black; /* 文字颜色 */
-    width: 100%; /* 宽度100%，填满容器 */
-    box-shadow: 0px -4px 4px rgba(0,0,0,0.1); /* 轻微阴影，增加层次感 */
-    margin-top: auto; /* 将页脚推到底部 */
+    background-color: white;
+    color: black;
+    width: 100%;
+    box-shadow: 0px -4px 4px rgba(0,0,0,0.1);
+    margin-top: auto;
 }
 
 footer p {
@@ -422,7 +416,7 @@ form input, form button {
 }
 
 .modal-body textarea {
-    width: calc(100% - 20px); /* 与 input[type="text"] 一致的宽度 */
+    width: calc(100% - 20px);
 }
 
 .modal-body button[type="submit"] {
@@ -450,12 +444,12 @@ form input, form button {
     display: flex;
 }
 
-/* 模态框过渡效果 */
+
 .modal-enter-active, .modal-leave-active {
     transition: opacity 0.3s ease;
 }
 
-.modal-enter, .modal-leave-to /* .modal-leave-active in <2.1.8 */ {
+.modal-enter, .modal-leave-to {
     opacity: 0;
 }
 
@@ -474,13 +468,12 @@ html,body{height:100%;margin:0;padding:0;}
 
 footer {
     text-align: center;
-    /* padding: 10px 0; */
-    background-color: white; /* 背景颜色 */
-    color: black; /* 文字颜色 */
-    width: 100%; /* 宽度100%，填满容器 */
-    box-shadow: 0px -4px 4px rgba(0,0,0,0.1); /* 轻微阴影，增加层次感 */
+
+    background-color: white;
+    color: black;
+    width: 100%;
+    box-shadow: 0px -4px 4px rgba(0,0,0,0.1);
     /* margin-top: auto; */
-    /* 将页脚推到底部 */
     /* margin-left: 240px; */
     position: fixed;
     bottom: 5px;

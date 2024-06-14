@@ -243,11 +243,10 @@
                 loadSection(section) {
                     console.log('load section!');
                     if (section === 'logout') {
-                        // 发送请求到服务器端的logout路由
                         fetch('/user/logout', { method: 'GET' })
                         .then(response => {
-                            // 可以根据服务器响应处理逻辑
-                            window.location.href = '/login.html';  // 重定向到登录页面
+
+                            window.location.href = '/login.html';
                         })
                         .catch(error => {
                             console.error('Logout failed:', error);
@@ -260,7 +259,7 @@
                 },
                 changePassword() {
                     this.showChangePasswordModal = true;
-                    console.log('showChangePasswordModal:', this.showChangePasswordModal); // 调试模态框显示状态
+                    console.log('showChangePasswordModal:', this.showChangePasswordModal);
                 },
             },
             mounted() {

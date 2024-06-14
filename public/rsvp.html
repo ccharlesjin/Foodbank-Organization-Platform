@@ -80,6 +80,20 @@
         </footer>
     </div>
     <script>
+        function loadSection(section, event) {
+            event.preventDefault();
+            if (section === 'logout') {
+                // Sends the request to the logout route on the server side
+                fetch('/manager/logout', { method: 'GET' })
+                .then(response => {
+                    window.location.href = '/manager_login.html';  // Redirect to the login page
+                })
+                .catch(error => {
+                    console.error('Logout failed:', error);
+                });
+            }
+
+        }
         Vue.createApp({
             data() {
                 return {

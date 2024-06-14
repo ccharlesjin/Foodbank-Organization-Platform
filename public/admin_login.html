@@ -54,7 +54,7 @@
 
 
     document.querySelector('form').addEventListener('submit', function(event) {
-        event.preventDefault();  // 阻止表单的常规提交
+        event.preventDefault();  
         const email = document.querySelector('input[name="email"]').value;
         const password = document.querySelector('input[name="password"]').value;
 
@@ -67,22 +67,22 @@
         })
         .then(response => {
             if (response.ok) {
-                return response.json(); // 确保响应是 200 OK
+                return response.json();
             } else {
-                throw new Error('Failed to login'); // 抛出错误，如果状态码不是 200
+                throw new Error('Failed to login');
             }
         })
         .then(data => {
             if (data.token) {
-                localStorage.setItem('jwt', data.token); // 保存 JWT 到 localStorage
-                window.location.href = '/admin'; // 跳转到管理页面
+                localStorage.setItem('jwt', data.token);
+                window.location.href = '/admin';
             } else {
                 alert("No token received, check server response.");
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Login failed: ' + error.message); // 显示错误消息
+            alert('Login failed: ' + error.message);
         });
     });
 

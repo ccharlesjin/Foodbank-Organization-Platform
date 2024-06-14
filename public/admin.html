@@ -73,16 +73,6 @@
                 </table>
             </div>
 
-            <!-- <form v-show="showAddForm" @submit.prevent="addMember">
-                <input type="text" v-model="newMember.user_name" placeholder="Username" required>
-                <input type="password" v-model="newMember.password" placeholder="Password" required>
-                <input type="email" v-model="newMember.email" placeholder="Email" required>
-                <input type="text" v-model="newMember.phone_number" placeholder="Phone Number">
-                <input type="text" v-model="newMember.full_name" placeholder="Full Name">
-                <input type="number" v-model="newMember.branch_id" placeholder="Branch ID" required>
-                <button class="edit-volunteers add-member" type="submit">Submit</button>
-            </form> -->
-
             <div name="modal">
                 <div class="modal-overlay" v-if="showAddForm">
                     <div class="modal-container">
@@ -247,19 +237,19 @@
                 }
             },
             validateData(data, isAdding = false) {
-                // 检查必需字段是否非空
+                // Check that the required fields are not empty
                 if (!data.user_name || !data.email || !data.full_name || (isAdding && !data.password)) {
                     return false;
                 }
 
-                // 使用正则表达式检查电子邮件格式
+                // Check email formats with regular expressions
                 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
                 if (!emailRegex.test(data.email)) {
                     return false;
                 }
 
                 if (data.p) {
-                    const phoneRegex = /^\d{10,}$/;  // 简单的数字验证
+                    const phoneRegex = /^\d{10,}$/;
                     if (!phoneRegex.test(data.p)) {
                         return false;
                     }

@@ -40,17 +40,6 @@
 
         <main class="main full-height flex-grow content">
             <h2>Updates Management</h2>
-            <!-- <div class="search-bar">
-                <input type="text" v-model="searchTitle" placeholder="输入公告标题">
-                <input type="text" v-model="searchAuthor" placeholder="输入操作人员">
-                <select v-model="searchType">
-                    <option value="">公告类型</option>
-                    <option value="公告">公告</option>
-                    <option value="通知">通知</option>
-                </select>
-                <button @click="searchUpdates">搜索</button>
-                <button @click="resetSearch">重置</button>
-            </div> -->
 
             <div class="content-right">
                 <button type="button" class="edit-volunteers add-member" id="showAddForm" @click="showForm = true">Post New Update</button>
@@ -151,19 +140,19 @@
 
     <script>
         function loadSection(section, event) {
-            event.preventDefault();  // 阻止<a>标签的默认行为
+            event.preventDefault();
             if (section === 'logout') {
-                // 发送请求到服务器端的logout路由
+
                 fetch('/manager/logout', { method: 'GET' })
                 .then(response => {
-                    // 可以根据服务器响应处理逻辑
-                    window.location.href = '/manager_login.html';  // 重定向到登录页面
+
+                    window.location.href = '/manager_login.html';
                 })
                 .catch(error => {
                     console.error('Logout failed:', error);
                 });
             }
-            // 可以添加其他 'section' 处理逻辑，如果 'loadSection' 用于多个目的
+
         }
 
         const { createApp } = Vue;
@@ -218,7 +207,6 @@
                         selectedMembers: this.selectedMembers,
                     };
                     console.log('Posting update:', update);
-                    // 在这里添加发送请求到服务器的逻辑，例如:
                     fetch('/manager/post-update', {
                         method: 'POST',
                         headers: {
@@ -249,19 +237,8 @@
                         this.selectedMembers = [];
                     }
                 },
-                // toggleSelectAll() {
-                //     this.selectedUpdates = this.selectAll ? this.Updates.map(post => post.timestamp) : [];
-                // },
-                // searchUpdates() {
-                //     // 触发过滤逻辑
-                // },
-                // resetSearch() {
-                //     this.searchTitle = '';
-                //     this.searchAuthor = '';
-                //     this.searchType = '';
-                // },
+
                 editUpdate(id) {
-                    // 编辑逻辑
                     this.showEdit = true;
                     this.editUpdateId = id;
                     const update = this.updates.find(m => m.update_id === id);
@@ -365,7 +342,7 @@
                         }
                     }).then(data => {
                         alert('Update edited successfully');
-                        this.fetchUpdates(); // 重新获取更新的数据
+                        this.fetchUpdates();
                         this.showEdit = false;
                     }).catch(error => {
                         console.error('Error updating update:', error);

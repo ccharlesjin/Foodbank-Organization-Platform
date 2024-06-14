@@ -32,13 +32,6 @@
 
         <main class="main full-height flex-grow">
             <h1 class="logo">Branch Management</h1>
-            <!-- 添加分支的表单 -->
-            <!-- <form v-show="showAddForm" @submit.prevent="addBranch">
-                <input type="text" v-model="newBranch.branch_name" placeholder="branch_name" required>
-                <input type="text" v-model="newBranch.description" placeholder="description" required>
-                <input type="text" v-model="newBranch.image_url" placeholder="image_url" required>
-                <button class="edit-volunteers add-member" type="submit">Submit</button>
-            </form> -->
             <div class="content-right">
                 <button type="button" class="edit-volunteers add-member" id="showAddForm" @click="showAddForm = !showAddForm">Sign Up New Branch</button>
             </div>
@@ -100,20 +93,19 @@
 
     <script>
         function loadSection(section, event) {
-            event.preventDefault();  // 阻止<a>标签的默认行为
+            event.preventDefault();
             if (section === 'logout') {
-                // 发送请求到服务器端的logout路由
+
                 fetch('/admin/logout', { method: 'GET' })
                 .then(response => {
-                    // 可以根据服务器响应处理逻辑
-                    window.location.href = '/admin_login.html';  // 重定向到登录页面
+
+                    window.location.href = '/admin_login.html';
                 })
                 .catch(error => {
                     console.error('Logout failed:', error);
                 });
             }
 
-            // 可以添加其他 'section' 处理逻辑，如果 'loadSection' 用于多个目的
         }
         Vue.createApp({
             data() {
@@ -225,7 +217,6 @@
                 }
             },
             validateData(data, isAdding = false) {
-                // 检查必需字段是否非空
                 if (!data.branch_name || !data.description ) {
                     return false;
                 }
