@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" class="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator Management</title>
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+        input, select { display: block; width: 100%; }
+        .hidden, [style*="display: none"] { display: none !important; }
+    </style>
+</head>
+
+<body class="full-height body">
+    <div id="app" class="container">
+        <header>
+            <div class="navbar">
+                <div class="logo">Administrator Management</div>
+                <nav>
+                    <ul>
+                        <li><a href="/admin/manager">Members</a></li>
+                        <li><a href="/admin/organization">Manager</a></li>
+                        <li><a href="/admin/branch">Branch Management</a></li>
+                        <li><a href="/admin/admins_management">Administrator Management</a></li>
+                        <li><a href="#" id="logout-button" onclick="loadSection('logout', event)">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main full-height flex-grow">
+            <h1 class="logo">Branch Management</h1>
+            <div class="content-right">
+                <button type="button" class="edit-volunteers add-member" id="showAddForm" @click="showAddForm = !showAddForm">Sign Up New Branch</button>
+            </div>
+            <div class="table-container">
+                <table id="membersTable">
+                    <thead>
+                        <tr>
+                            <th>branch name</th>
+                            <th>description</th>
+                            <th>image_url</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="branch in branches" :key="branch.branch_id">
+                            <td v-if="editBranchId !== branch.branch_id">{{ branch.branch_name}}</td>
+                            <td v-else><input type="text" v-model="editData.branch_name"></td>
+                            <!-- Similar setup for other fields -->
+                            <td v-if="editBranchId !== branch.branch_id">{{ branch.description }}</td>
+                            <td v-else><input type="text" v-model="editData.description"></td>
+                            <td v-if="editBranchId !== branch.branch_id">{{ branch.image_url }}</td>
+                            <td v-else><input type="text" v-model="editData.image_url"></td>
+                            <td>
+                                <button type="button" class="edit-volunteers edit-member" v-if="editBranchId !== branch.branch_id" @click="editBranch(branch.branch_id)">Edit</button>
+                                <button type="button" class="edit-volunteers edit-member" v-if="editBranchId === branch.branch_id" @click="saveChanges(branch.branch_id)">Save</button>
+                                <button type="button" class="edit-volunteers delete-member" @click="deleteBranch(branch.branch_id)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div name="modal">
+                <div class="modal-overlay" v-if="showAddForm">
+                    <div class="modal-container">
+                        <div class="modal-header">
+                            <h3>Add new Branch</h3>
+                            <button type="button" @click="showAddForm = false">X</button>
+                        </div>
+                        <div class="modal-body">
+                            <form @submit.prevent="addBranch">
+                                <label>Branch Name:</label>
+                                <input type="text" v-model="newBranch.branch_name" placeholder="branch_name" required>
+                                <label>Description:</label>
+                                <input type="text" v-model="newBranch.description" placeholder="description" required>
+                                <label>Image Url:</label>
+                                <input type="text" v-model="newBranch.image_url" placeholder="image_url" required>
+                                <button class="edit-volunteers add-member" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        <div class="empty"></div>
+        <footer>
+            <p>Administrators Management System &copy; 2024</p>
+        </footer>
+    </div>
+
+    <script>
+        function loadSection(section, event) {
+            event.preventDefault();
+            if (section === 'logout') {
+
+                fetch('/admin/logout', { method: 'GET' })
+                .then(response => {
+
+                    window.location.href = '/admin_login.html';
+                })
+                .catch(error => {
+                    console.error('Logout failed:', error);
+                });
+            }
+
+        }
+        Vue.createApp({
+            data() {
+                return {
+                    branches: [],
+                    showAddForm: false,
+                    newBranch: {
+                        branch_name: '',
+                        description: '',
+                        image_url: '',
+                    },
+                    editBranchId: null,
+                    editData: {}
+                };
+            },
+        methods: {
+            fetchBranches() {
+                fetch('/api/branches')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Loaded branches:", data);
+                    this.branches = data;
+                })
+                .catch(error => console.error('Error loading the branches:', error));
+            },
+            addBranch() {
+                if (this.validateData(this.newBranch, true)) {
+                    fetch('/admin/add-branch', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(this.newBranch)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to add branch');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.branches.push(this.newBranch);
+                        this.newBranch = {}; // reset form
+                        this.showAddForm = false; // hide form
+                        alert(data.message);
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(error.message);
+                    });
+                } else {
+                    alert('Data format is not correct');
+                }
+            },
+            editBranch(id) {
+                this.editBranchId = id;
+                const branch = this.branches.find(a => a.branch_id === id);
+                this.editData = { ...branch};  // include branch id for editing
+            },
+            saveChanges(id) {
+                if (this.validateData(this.editData)) {
+                    fetch(`/admin/update-branch/${id}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(this.editData)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert(data.message); // The backend sends a message on success
+                        this.fetchBranches(); // Re-fetch members or update the local state
+                        this.editBranchId = null;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+
+                        alert('Failed to save data');
+                    });
+                } else {
+                    alert('Data format is not correct');
+                }
+            },
+            deleteBranch(id) {
+                if (confirm("Are you sure you want to delete this branch?")) {
+                    fetch(`/admin/delete-branch/${id}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Failed to delete branch');
+                    })
+                    .then(data => {
+                        this.branches = this.branches.filter(m => m.branch_id !== id);
+                        alert(data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(error.message);
+                    });
+                }
+            },
+            validateData(data, isAdding = false) {
+                if (!data.branch_name || !data.description ) {
+                    return false;
+                }
+
+                return true;
+            }
+        },
+        mounted() {
+            this.fetchBranches();
+        }
+    }).mount('#app');
+    </script>
+</body>
+</html>

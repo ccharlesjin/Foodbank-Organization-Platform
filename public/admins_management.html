@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" class="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator Management</title>
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+        input, select { display: block; width: 100%; }
+        .hidden, [style*="display: none"] { display: none !important; }
+    </style>
+</head>
+
+<body class="full-height body">
+    <div id="app" class="container">
+        <header>
+            <div class="navbar">
+                <div class="logo">Administrator Management</div>
+                <nav>
+                    <ul>
+                        <li><a href="/admin/manager">Members</a></li>
+                        <li><a href="/admin/organization">Manager</a></li>
+                        <li><a href="/admin/branch">Branch Management</a></li>
+                        <li><a href="/admin/admins_management">Administrator Management</a></li>
+                        <li><a href="#" id="logout-button" onclick="loadSection('logout', event)">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main full-height flex-grow">
+            <h1 class="logo">Administrator Management</h1>
+
+            <div class="content-right">
+                <button type="button" class="edit-volunteers add-member" id="showAddForm" @click="showAddForm = !showAddForm">Sign Up New Admins</button>
+            </div>
+            <div class="table-container">
+                <table id="membersTable">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="administrator in administrators" :key="administrator.User_ID">
+                            <td v-if="editAdministratorId !== administrator.User_ID">{{ administrator.User_Name }}</td>
+                            <td v-else><input type="text" v-model="editData.User_Name"></td>
+                            <!-- Similar setup for other fields -->
+                            <td v-if="editAdministratorId !== administrator.User_ID">{{ administrator.Email }}</td>
+                            <td v-else><input type="email" v-model="editData.Email"></td>
+                            <td>
+                                <button type="button" class="edit-volunteers edit-member" v-if="editAdministratorId !== administrator.User_ID" @click="editAdministrator(administrator.User_ID)">Edit</button>
+                                <button type="button" class="edit-volunteers edit-member" v-if="editAdministratorId === administrator.User_ID" @click="saveChanges(administrator.User_ID)">Save</button>
+                                <button type="button" class="edit-volunteers delete-member" @click="deleteAdministrator(administrator.User_ID)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div name="modal">
+                <div class="modal-overlay" v-if="showAddForm">
+                    <div class="modal-container">
+                        <div class="modal-header">
+                            <h3>Add new administrator</h3>
+                            <button type="button" @click="showAddForm = false">X</button>
+                        </div>
+                        <div class="modal-body">
+                            <form @submit.prevent="addAdministrator">
+                                <label>Username:</label>
+                                <input type="text" v-model="newAdministrator.User_Name" placeholder="Username" required>
+                                <label>Password:</label>
+                                <input type="password" v-model="newAdministrator.Password" placeholder="Password" required>
+                                <label>Email:</label>
+                                <input type="email" v-model="newAdministrator.Email" placeholder="Email" required>
+                                <button class="edit-volunteers add-member" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div class="empty"></div>
+        <footer>
+            <p>Administrators Management System &copy; 2024</p>
+        </footer>
+    </div>
+
+    <script>
+        function loadSection(section, event) {
+            event.preventDefault();
+            if (section === 'logout') {
+
+                fetch('/admin/logout', { method: 'GET' })
+                .then(response => {
+
+                    window.location.href = '/admin_login.html';
+                })
+                .catch(error => {
+                    console.error('Logout failed:', error);
+                });
+            }
+
+        }
+        Vue.createApp({
+            data() {
+                return {
+                    administrators: [],
+                    showAddForm: false,
+                    newAdministrator: {
+                        User_Name: '',
+                        Password: '',
+                        Email: '',
+                    },
+                    editAdministratorId: null,
+                    editData: {}
+                };
+            },
+        methods: {
+            fetchAdministrators() {
+                fetch('/admin/api/administrators')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Loaded administrators:", data);
+                    this.administrators = data;
+                })
+                .catch(error => console.error('Error loading the administrators:', error));
+            },
+            addAdministrator() {
+                if (this.validateData(this.newAdministrator, true)) {
+                    fetch('/admin/add-administrator', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(this.newAdministrator)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to add administrator');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.administrators.push(this.newAdministrator);
+                        this.newAdministrator = {}; // reset form
+                        this.showAddForm = false; // hide form
+                        alert(data.message);
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(error.message);
+                    });
+                } else {
+                    alert('Data format is not correct');
+                }
+            },
+            editAdministrator(id) {
+                this.editAdministratorId = id;
+                const administrator = this.administrators.find(a => a.User_ID === id);
+                this.editData = { ...administrator};  // include branch id for editing
+            },
+            saveChanges(id) {
+                if (this.validateData(this.editData)) {
+                    fetch(`/admin/update-administrator/${id}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(this.editData)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert(data.message); // The backend sends a message on success
+                        this.fetchAdministrators(); // Re-fetch members or update the local state
+                        this.editAdministratorId = null;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+
+                        alert('Failed to save data');
+                    });
+                } else {
+                    alert('Data format is not correct');
+                }
+            },
+            deleteAdministrator(id) {
+                if (confirm("Are you sure you want to delete this administrator?")) {
+                    fetch(`/admin/delete-administrator/${id}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Failed to delete administrator');
+                    })
+                    .then(data => {
+                        this.administrators = this.administrators.filter(m => m.User_ID !== id);
+                        alert(data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(error.message);
+                    });
+                }
+            },
+            validateData(data, isAdding = false) {
+                // Check that the required fields are not empty
+                if (!data.User_Name || !data.Email || !data.Password ) {
+                    return false;
+                }
+                // Check email formats with regular expressions
+                const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                if (!emailRegex.test(data.Email)) {
+                    return false;
+                }
+
+                return true;
+            }
+        },
+        mounted() {
+            this.fetchAdministrators();
+        }
+    }).mount('#app');
+    </script>
+</body>
+</html>

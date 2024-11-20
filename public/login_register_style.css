@@ -107,16 +107,20 @@ body {
   margin: 10px 0;
   transition: 0.5s;
   background-color: #fff;
+  font-size: 18px;
+  font-family: PlastoTrial_ExtraBold;
   border-radius: 10px;
   border: 1px solid rgb(207, 209, 212);
-  box-sizing: border-box;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .box .forms .form-wrapper .other-login svg {
   width: 30px;
   height: 30px;
   fill: #000;
   vertical-align: middle;
+  margin-right: 10px;
 }
 .box .forms .form-wrapper .other-login span {
   vertical-align: middle;

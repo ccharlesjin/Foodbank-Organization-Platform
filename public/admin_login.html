@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="login_register_style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
+<body>
 <div class="box">
     <div class="forms">
         <div class="form-wrapper">
@@ -19,19 +20,14 @@
                 <div class="input-wrapper">
                     <div class="input-item">
                         <span class="input-title">Email*</span>
-                        <input type="text" class="ipt" name="Email">
+                        <input type="text" class="ipt" name="email">
                     </div>
                     <div class="input-item">
                         <span class="input-title">Password*</span>
-                        <input type="password" class="ipt" name="Password">
+                        <input type="password" class="ipt" name="password">
                         <span class="tips">Mast be at least 8 characters</span>
                     </div>
                     <button class="btn" type="submit">Get Started</button>
-                    <div class="other-login">
-                        <svg t="1715166733677" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1459" width="128" height="128">
-                            <path d="M1024 512c0-282.763636-229.236364-512-512-512C229.236364 0 0 229.236364 0 512s229.236364 512 512 512C794.763636 1024 1024 794.763636 1024 512zM374.504727 512 374.504727 414.021818l60.043636 0L434.548364 354.769455c0-79.918545 23.877818-137.495273 111.383273-137.495273l104.075636 0 0 97.745455-73.262545 0c-36.724364 0-45.056 24.389818-45.056 49.943273l0 49.058909 112.919273 0L629.201455 512l-97.512727 0 0 295.517091L434.548364 807.517091 434.548364 512 374.504727 512z" p-id="1460"></path></svg>
-                        <span>FaceBook</span>
-                    </div>
                 </div>
             </form>
         </div>
@@ -58,34 +54,39 @@
 
 
     document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();  // 阻止表单的常规提交
-    const Email = document.querySelector('input[name="Email"]').value;
-    const Password = document.querySelector('input[name="Password"]').value;
+        event.preventDefault();  
+        const email = document.querySelector('input[name="email"]').value;
+        const password = document.querySelector('input[name="password"]').value;
 
-    fetch('/users/admin_login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `Email=${encodeURIComponent(Email)}&Password=${encodeURIComponent(Password)}`
-    })
-    .then(response => {
-        if(response.ok) {
-            window.location.href = 'user.html'; // 登录成功，重定向
-        } else {
-            return response.text();
-        }
-    })
-    .then(text => {
-        if (text) {
-            alert(text); // 显示错误消息
-        }
-    })
-    .catch(error => console.error('Error:', error));
-});
+        fetch('/users/admin_login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to login');
+            }
+        })
+        .then(data => {
+            if (data.token) {
+                localStorage.setItem('jwt', data.token);
+                window.location.href = '/admin';
+            } else {
+                alert("No token received, check server response.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Login failed: ' + error.message);
+        });
+    });
+
 </script>
-
-<body>
 </body>
 
 </html>

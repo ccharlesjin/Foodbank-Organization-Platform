@@ -10,11 +10,26 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "all": "^0.0.0",
     "axios": "^1.6.8",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
     "express-mysql-session": "^3.0.2",
     "express-session": "^1.18.0",
+    "google-auth-library": "^6.0.1",
+    "googleapis": "^140.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "~1.9.1",
     "mysql": "^2.18.1",
-    "mysql2": "^3.9.7"
+    "mysql2": "^3.9.7",
+    "nodemailer": "^6.9.13",
+    "passport": "^0.4.1",
+    "passport-github2": "^0.1.12",
+    "twit": "^2.2.11",
+    "twitter-api-v2": "^1.17.1"
+  },
+  "devDependencies": {
+    "babel-plugin-component": "^1.1.1"
   }
 }

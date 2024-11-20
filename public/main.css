@@ -1,10 +1,9 @@
-/* 基本 CSS */
 body {
-    font-family: Arial, sans-serif; /* 使用无衬线字体 */
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: #f4f4f4; /* 设置背景色 */
-    color: #333; /* 主文字颜色 */
+    background: #f4f4f4;
+    color: #333;
 }
 
 .container {
@@ -20,7 +19,6 @@ body {
     padding: 10px 0;
 }
 
-/* 响应式布局 */
 @media (max-width: 768px) {
     .container {
         width: 95%;

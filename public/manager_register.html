@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="login_register_style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
+<body>
 <div class="box">
     <div class="forms">
         <div class="form-wrapper">
@@ -57,9 +58,33 @@
         }
         flag = !flag
     }, 5000)
-</script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const emailInput = document.querySelector('input[name="email"]');
+    const passwordInput = document.querySelector('input[name="password"]');
 
-<body>
+    form.addEventListener('submit', function(event) {
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        let valid = true;
+        let errorMessage = '';
+        if (!email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
+            errorMessage += 'The email format is not valid.';
+            valid = false;
+        }
+
+        if (password.length < 8) {
+            errorMessage += 'Passwords need to be at least 8 characters.';
+            valid = false;
+        }
+
+        if (!valid) {
+            alert(errorMessage);
+            event.preventDefault();
+        }
+    });
+});
+</script>
 </body>
 
 </html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add More Detail</title>
+    <link rel="stylesheet" href="AddDetail.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <form id="detailForm" action="/AddDetail" method="post">
+        <h1>Just one step to complete registration!</h1>
+        <label for="Phonenumber">Phone number:</label>
+        <input type="number" id="Phonenumber" name="Phonenumber" required>
+
+        <label for="fullname">Full Name:</label>
+        <input type="text" id="fullname" name="fullname" required>
+
+        <label for="organization">Registering Organization:</label>
+        <select id="organization" name="organization" required>
+            <!-- Options will be populated by JavaScript -->
+        </select>
+
+        <input type="submit" value="Complete, All done!">
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '/users/branches',
+                type: 'GET',
+                success: function(data) {
+                    console.log('Branches:', data);
+                    var select = $('#organization');
+                    data.forEach(function(branch) {
+                        select.append('<option value="' + branch.branch_name + '">' + branch.branch_name + '</option>');
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error: ' + errorThrown);
+                }
+            });
+
+            $('#detailForm').on('submit', function(e) {
+                e.preventDefault();
+
+                var formData = {
+                    Phonenumber: $('input[name="Phonenumber"]').val(),
+                    fullname: $('input[name="fullname"]').val(),
+                    organization: $('select[name="organization"]').val()
+                };
+
+                $.ajax({
+                    url: '/users/add_detail',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            document.cookie = "jwt=" + response.token + "; path=/; secure; HttpOnly; sameSite=strict";
+                            window.location.href = '/Profile.html';
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Error: ' + errorThrown);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

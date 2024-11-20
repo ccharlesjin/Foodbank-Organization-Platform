@@ -7,7 +7,9 @@
     <title>Document</title>
     <link rel="stylesheet" href="login_register_style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+<body>
 <div class="box">
     <div class="forms">
         <div class="form-wrapper">
@@ -15,7 +17,7 @@
                 <h1>JOIN US</h1>
                 <span>Start Your Fantasy Journey</span>
             </div>
-            <form action="/users/user_register" method="POST">
+            <form id="registerForm" method="POST">
                 <div class="input-wrapper">
                     <div class="input-item">
                         <span class="input-title">Name*</span>
@@ -28,7 +30,7 @@
                     <div class="input-item">
                         <span class="input-title">Password*</span>
                         <input type="password" class="ipt" name="password">
-                        <span class="tips">Mast be at least 8 characters</span>
+                        <span class="tips">Must be at least 8 characters</span>
                     </div>
                     <button class="btn" type="submit">Regist</button>
                     <div class="login-tips">
@@ -57,9 +59,69 @@
         }
         flag = !flag
     }, 5000)
-</script>
 
-<body>
+    $(document).ready(function() {
+        $('#registerForm').on('submit', function(event) {
+            event.preventDefault();
+
+            const emailInput = document.querySelector('input[name="email"]');
+            const passwordInput = document.querySelector('input[name="password"]');
+            const userNameInput = document.querySelector('input[name="user_name"]');
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const userName = userNameInput.value;
+            let valid = true;
+            let errorMessage = '';
+
+
+            if (!email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
+                errorMessage += 'The email format is not valid.\n';
+                valid = false;
+            }
+
+
+            if (password.length < 8) {
+                errorMessage += 'Passwords need to be at least 8 characters.\n';
+                valid = false;
+            }
+
+
+            if (userName.trim() === '') {
+                errorMessage += 'Name is required.\n';
+                valid = false;
+            }
+
+
+            if (!valid) {
+                alert(errorMessage);
+                return;
+            }
+
+           
+            var formData = {
+                user_name: userName,
+                email: email,
+                password: password
+            };
+
+            $.ajax({
+                url: '/users/user_register',
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.token) {
+                        window.location.href = '/AddDetail.html';
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error: ' + errorThrown);
+                }
+            });
+        });
+    });
+</script>
 </body>
 
 </html>
