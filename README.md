@@ -1,5 +1,10 @@
 # Project introduction
-The "FoodBank" platform is a comprehensive web application designed to enhance engagement and management within volunteer organizations. This platform will enable users to seamlessly sign up, log in, and interact with their respective volunteer organizations through a variety of intuitive features. Leveraging technologies such as NodeJS, Express, Vue.JS, and AJAX, alongside a MySQL database, our application aims to provide a robust and accessible environment for both volunteers and organization managers.
+
+The "FoodBank" platform is a comprehensive web application designed to enhance engagement and management within volunteer organizations.\
+This platform will enable users to seamlessly sign up, log in, and interact with their respective volunteer organizations through a variety of intuitive features.\
+Leveraging technologies such as NodeJS, Express, Vue.JS, and AJAX, alongside a MySQL database, our application aims to provide a robust and accessible environment for both volunteers and organization managers.
+
+A demo video is avaliable on YouTube [FoodBank Organization Platform Demo](https://www.youtube.com/watch?v=SKAsz3ZzhVY).
 
 # Environmental dependence
  Windows 10 or later, macOS Catalina or later, or any of the current major Linux distributions are recommended.
