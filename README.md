@@ -9,9 +9,6 @@ A demo video is avaliable on YouTube [FoodBank Organization Platform Demo](https
 # Environmental dependence
  Windows 10 or later, macOS Catalina or later, or any of the current major Linux distributions are recommended.
 
-# Presentation video
-Presentation video can be found at ./FoodBank_Presentation.mp4.
-
 # Sample login email and password
 Since all passwords in FoodBank.sql are salted, we provide some unsalted password for testing:
 ### User Table
@@ -36,9 +33,6 @@ Since all passwords in FoodBank.sql are salted, we provide some unsalted passwor
  3. Migrate the database according to FoodBank.sql
  4. Start the project on port 3018:`node app.js`
 
-
-# Please check Milestone 1 related description file: '/FoodBank_Project_Description.pdf'
-
 # Version updates
 ##### v0.0.1-k: Static File Implementation: index.html,about.html,location.html,login.html,register.html.
 ##### v0.0.2-k: Create the Branches table and implement location.html to dynamically update the name and location of the organization's branches by querying the Branches table.
@@ -47,9 +41,6 @@ Since all passwords in FoodBank.sql are salted, we provide some unsalted passwor
 ##### v0.0.4-k: Separate the database connection file db.js, delete unnecessary files, complete the back-end logon logic, and jump to user.html after success.
 ##### v0.0.4-k: Create manager registration and login page, implement back-end logon and registration logic; Create an administrator login page to implement the back-end login logic.
 ##### v0.0.5-j: Implemented the member data management of the branch administrator, allowing administrators to add, edit, and delete member data.
-<<<<<<< HEAD
-##### v0.0.6-j: The file structure has been modified to ensure consistency with the main branch, using a new database structure.
-=======
 ##### v0.0.6-j: The file structure has been modified to ensure consistency with the main branch, using a new database structure.
 ##### v0.0.7-j: Use cookie and JWT to verify manager's identity. Manager will not be able to login or fetch the member data if not verified.
 ##### v0.0.8-z: Finish features of administrator, including editing, adding and deleting users.
@@ -77,4 +68,3 @@ Since all passwords in FoodBank.sql are salted, we provide some unsalted passwor
 ##### v0.0.30-k: Update AddDetail.html to dynamically obtain branch information and optimize registration logic.
 ##### v0.0.31-j: Fixed error in rsvp of manager system and profile.
 ##### v0.0.32-j: Finished the presentation video.
->>>>>>> 893772bfab6bc0e1454fdca622070be70f4642b4
