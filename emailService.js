@@ -3,14 +3,14 @@ const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
 const oauth2Client = new OAuth2(
-    '920888800688-ghvj9cmddhcaub9jl1ajbjpbvk64kiod.apps.googleusercontent.com',
-    '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',
+    'actual-client-id',
+    'actual-client-secret',
     'https://developers.google.com/oauthplayground'
 );
 
 
 oauth2Client.setCredentials({
-    refresh_token: '1//04-YNm0euEly9CgYIARAAGAQSNgF-L9IrFjpKI6C1xKZsMFJdQ6F9HbPhaORSXTjzKtAXZKznb1k5tdw1VHOCw6e4lEPuwOF9Yg'
+    refresh_token: 'actual-refresh-token'
 });
 
 
@@ -26,9 +26,9 @@ function sendEmail(to, subject, text) {
             auth: {
                 type: 'OAuth2',
                 user: 'foodbank.organization@gmail.com',
-                clientId: '920888800688-ghvj9cmddhcaub9jl1ajbjpbvk64kiod.apps.googleusercontent.com',
-                clientSecret: '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',
-                refreshToken: '1//04-YNm0euEly9CgYIARAAGAQSNgF-L9IrFjpKI6C1xKZsMFJdQ6F9HbPhaORSXTjzKtAXZKznb1k5tdw1VHOCw6e4lEPuwOF9Yg',
+                clientId: 'actual-client-id',
+                clientSecret: 'actual-client-secret',
+                refreshToken: 'actual-refresh-token',
                 accessToken: token,
             },
         });
