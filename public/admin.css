@@ -4,6 +4,7 @@ body, html {
     padding: 0;
     width: 100%;
     /* height: 100vh; */
+    background-color: #f4f7fc;
 
     font-family: Arial, sans-serif;
     /* overflow-y: hidden; */
@@ -85,7 +86,7 @@ body, html {
     margin-right: 100px;
 }
 .navbar nav ul li a:hover {
-    color: #32aa27;
+    color: #424242;
     text-decoration: underline;
 }
 
@@ -118,7 +119,7 @@ body, html {
 }
 
 .hero-button {
-    background-color: green;
+    background-color: #363636;
     color: white;
     padding: 10px 20px;
     text-decoration: none;
@@ -126,10 +127,11 @@ body, html {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+
 }
 
 .hero-button:hover {
-    background-color: darkgreen;
+    background-color: #424242;
 }
 
 
@@ -143,7 +145,7 @@ body, html {
     height: calc(100vh - 85px);
     box-sizing: border-box;
     overflow: clip;
-    background-color: #eef1ef;
+    background-color: #f4f7fc;
     overflow-y: hidden;
 }
 
@@ -167,6 +169,7 @@ body, html {
     color: white;
     text-decoration: none;
     border-radius: 5px;
+
 }
 
 .cta-button:hover {
@@ -174,7 +177,7 @@ body, html {
 }
 
 .main{
-    background-color: #eef1ef;
+    background-color: #f4f7fc;
     margin: 85px auto 0 auto;
     /* padding:20px 0 0 0; */
     text-align: center;
@@ -188,11 +191,11 @@ body, html {
 .product-header{
     padding-top: 20px;
     margin-left: 135px;
-    background-color: #eef1ef;
+    background-color: #f4f7fc;
 }
 .product-header h1{
     margin-top: 20px;
-    background-color: #eef1ef;
+    background-color: #f4f7fc;
 }
 .products-grid {
     display: grid;
@@ -236,10 +239,10 @@ body, html {
     margin: 4px;
 }
 .product-item:hover h2 {
-    color: #32aa27;
+    color: #424242;
 }
 .product-item:hover svg {
-    fill:#32aa27;
+    fill:#424242;
 }
 .product-item p {
     font-size: 14px;
@@ -254,13 +257,14 @@ body, html {
 }
 
 .edit-volunteers {
-    background-color: #5cb85c; /* Green */
+    background-color: #363636; /* #363636 */
     border: none;
     color: white;
     padding: 5px 5px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    border-radius: 5px;
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
@@ -268,7 +272,7 @@ body, html {
 }
 
 .add-member:hover {
-    background-color: #1b6e13;
+    background-color: #424242;
 }
 
 .add-member{
@@ -276,7 +280,7 @@ body, html {
 }
 
 .edit-member:hover {
-    background-color: #1b6e13;
+    background-color: #424242;
 }
 
 .delete-member:hover {
@@ -284,7 +288,7 @@ body, html {
 }
 
 .edit-member {
-    background-color: #4cae4c;
+    background-color: #363636;
     width: 70px;
 }
 
@@ -294,7 +298,7 @@ body, html {
 }
 
 .edit-members :hover{
-    background-color: #4cae4c;
+    background-color: #363636;
     width: 70px;
 }
 
@@ -334,7 +338,7 @@ footer p {
 form {
     margin: 20px;
     padding: 20px;
-    background: #f4f4f4;
+    background-color: #f4f7fc;
     border-radius: 8px;
 }
 
@@ -343,6 +347,7 @@ form input, form button {
     margin: 5px;
     display: block;
     width: 95%;
+    border-radius: 5px;
 }
 
 .table-container {
@@ -385,7 +390,7 @@ form input, form button {
 }
 
 .modal-header button {
-    background: #28a745;
+    background: #363636;
     border: none;
     color: white;
     padding: 5px 10px;
@@ -413,6 +418,7 @@ form input, form button {
     border: 1px solid #ddd;
     border-radius: 4px;
     width: 100%;
+    border-radius: 5px;
 }
 
 .modal-body textarea {
@@ -420,14 +426,15 @@ form input, form button {
 }
 
 .modal-body button[type="submit"] {
-    background-color: #28a745;
+    background-color: #363636;
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 .modal-body button[type="submit"]:hover {
-    background-color: #218838;
+    background-color: #424242;
 }
 
 .members-select {

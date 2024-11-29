@@ -4,6 +4,7 @@ body, html {
     width: 100%;
     height: 100%;
     font-family: Arial, sans-serif;
+    background-color: #f4f7fc;
 }
 
 .navbar {
@@ -121,7 +122,7 @@ body, html {
     height: calc(100vh - 85px);
     box-sizing: border-box;
     overflow: clip;
-    background-color: #eef1ef;
+    background-color: #f4f7fc;
     overflow-y: hidden;
 }
 
@@ -151,7 +152,7 @@ body, html {
 }
 
 .main{
-    background-color: #eef1ef;
+    background-color: #f4f7fc;
     margin: 85px auto 0 auto;
     /* padding:20px 0 0 0; */
     text-align: center;
@@ -165,11 +166,11 @@ body, html {
 .product-header{
     padding-top: 20px;
     margin-left: 135px;
-    background-color: #eef1ef;
+    background-color: #f4f7fc;
 }
 .product-header h1{
     margin-top: 20px;
-    background-color: #eef1ef;
+    background-color: #f4f7fc;
 }
 .products-grid {
     display: grid;
@@ -231,7 +232,7 @@ body, html {
 }
 
 .edit-volunteers {
-    background-color: #5cb85c; /* Green */
+    background-color: #363636; /* Green */
     border: none;
     color: white;
     padding: 5px 5px;
@@ -245,7 +246,7 @@ body, html {
 }
 
 .add-member:hover {
-    background-color: #1b6e13;
+    background-color: #424242;
 }
 
 .add-member{
@@ -253,7 +254,7 @@ body, html {
 }
 
 .edit-member:hover {
-    background-color: #1b6e13;
+    background-color: #424242;
 }
 
 .delete-member:hover {
@@ -261,7 +262,7 @@ body, html {
 }
 
 .edit-member {
-    background-color: #4cae4c;
+    background-color: #363636;
     width: 70px;
 }
 
@@ -271,7 +272,7 @@ body, html {
 }
 
 .edit-members :hover{
-    background-color: #4cae4c;
+    background-color: #424242;
     width: 70px;
 }
 
@@ -325,7 +326,7 @@ form input, form button {
     top: 80px;
     width: 200px;
     height: 100%;
-    background-color: #333;
+    background-color: #272727;
     color: white;
     padding: 20px;
 }
@@ -376,7 +377,7 @@ button {
     padding: 10px 20px;
     font-size: 16px;
     color: white;
-    background-color: #4CAF50;
+    background-color: #363636;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -423,58 +424,6 @@ button:hover {
     display: contents;
 }
 
-/* body {
-    font-family: 'Poppins', sans-serif;
-}
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #ddd;
-}
-.navbar ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-.navbar ul li {
-    margin-right: 15px;
-}
-.navbar ul li a {
-    text-decoration: none;
-    color: #007bff;
-}
-.sidebar {
-    width: 200px;
-    background-color: #343a40;
-    color: white;
-    position: fixed;
-    height: 100%;
-    padding-top: 20px;
-}
-.sidebar h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-.sidebar ul li {
-    padding: 10px;
-    text-align: center;
-}
-.sidebar ul li a {
-    text-decoration: none;
-    color: white;
-    display: block;
-}
-.sidebar ul li a:hover,
-.sidebar ul li a.active {
-    background-color: #495057;
-} */
 .main {
     margin-left: 220px;
     padding: 20px;
@@ -670,7 +619,7 @@ tr:hover {
 }
 
 .modal-body textarea {
-    width: calc(100% - 20px); 
+    width: calc(100% - 20px);
 }
 
 .modal-body button[type="submit"] {
@@ -710,7 +659,7 @@ tr:hover {
 .container{
     min-height:100%;
     margin-bottom:-10px;
-    background-color: #eef1ef;
+    background-color: #f4f7fc;
 }
 
 html,body{height:100%;margin:0;padding:0;}
@@ -723,7 +672,7 @@ html,body{height:100%;margin:0;padding:0;}
 
 .empty,footer{
     height:10px;
-    background-color: #eef1ef;
+    background-color: #f4f7fc;
 }
 
 footer {

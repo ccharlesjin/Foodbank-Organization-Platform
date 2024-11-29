@@ -3,6 +3,7 @@ body, html {
     padding: 0;
     height: 100%;
     font-family: Arial, sans-serif;
+    background-color: #f4f7fc;
 }
 
 .navbar {
@@ -73,7 +74,7 @@ body, html {
     top: 80px;
     width: 200px;
     height: 100%;
-    background-color: #333;
+    background-color: #272727;
     color: white;
     padding: 20px;
 }
@@ -308,14 +309,19 @@ button:hover {
 }
 
 .modal-header button {
-    background: #28a745;
+    background: #363636;
     border: none;
     color: white;
-    padding: 5px 10px;
+    padding: 6px 8px;
     cursor: pointer;
     border-radius: 50%;
     font-size: 16px;
     line-height: 1;
+
+    color: #aaaaaa;
+    float:right;
+
+
 }
 
 .modal-body {
@@ -335,20 +341,116 @@ button:hover {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    width: 100%;
+    width: 95%;
+    margin-bottom: 10px;
 }
 
 .modal-body textarea {
-    width: calc(100% - 20px); 
+    width: calc(100% - 20px);
 }
 
 .modal-body button[type="submit"] {
-    background-color: #28a745;
+    background-color: #363636;
     color: white;
     border: none;
     cursor: pointer;
 }
 
 .modal-body button[type="submit"]:hover {
-    background-color: #218838;
+    background-color: #424242;
+}
+
+/* * {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+} */
+
+.profile-card {
+    background: #fff;
+    width: 300px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    padding: 20px;
+    margin-top: 40px;
+  }
+
+  .profile-header {
+    position: relative;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+
+  .profile-header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .tagline {
+    font-size: 14px;
+    color: #888;
+    align-items: flex-start;
+  }
+
+  .profile-info, .profile-projects {
+    margin-bottom: 20px;
+    margin-left: 20px;
+  }
+
+  .profile-info h2, .profile-projects h2 {
+    font-size: 24px;
+    color: #222;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
+  ul {
+    list-style-type: none;
+    text-align: left;
+    margin-left: 0px;
+  }
+
+  .profile-info ul li {
+    margin-bottom: 10px;
+    margin-left: -30px;
+  }
+
+  ul li strong {
+    font-weight: bold;
+  }
+
+  .profile-footer {
+    font-size: 14px;
+    color: #aaa;
+    margin-top: 20px;
+  }
+
+  .profile-footer p {
+    margin: 0;
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #ddd;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    margin-top: 15px;
+  }
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #363636;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 15px;
 }

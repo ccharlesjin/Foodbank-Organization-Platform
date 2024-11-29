@@ -4,6 +4,27 @@ The "FoodBank" platform is a comprehensive web application designed to enhance e
 This platform will enable users to seamlessly sign up, log in, and interact with their respective volunteer organizations through a variety of intuitive features.\
 Leveraging technologies such as NodeJS, Express, Vue.JS, and AJAX, alongside a MySQL database, our application aims to provide a robust and accessible environment for both volunteers and organization managers.
 
+## Home Page
+![image](https://github.com/user-attachments/assets/d6ca591d-8616-480f-8222-625f5553b860)
+
+## Branch Location
+![image](https://github.com/user-attachments/assets/b793ed26-9aca-4bf3-9cb5-b61a75242b49)
+
+## About Page
+![image](https://github.com/user-attachments/assets/456f7700-6bb3-4d09-a90c-af9e94b43998)
+
+## Login Page
+![image](https://github.com/user-attachments/assets/6868cb4a-9988-4524-82b8-b03521a13c1d)
+
+## User Page
+![image](https://github.com/user-attachments/assets/55f29692-004c-419d-8c10-dbbce6e176c5)
+
+## Manager Page
+![image](https://github.com/user-attachments/assets/4ebabd3e-66fe-4011-95d1-db10a35f12e4)
+
+## Administrator Page
+![image](https://github.com/user-attachments/assets/401232af-e431-4db8-a5fc-14444a5a1aeb)
+
 A demo video is avaliable on YouTube [FoodBank Organization Platform Demo](https://www.youtube.com/watch?v=SKAsz3ZzhVY).
 
 # Environmental dependence
